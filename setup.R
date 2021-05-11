@@ -14,3 +14,5 @@ usethis::use_readme_rmd()
 unlink(".git/hooks/pre-commit")
 # Edit the paper/readme
 file.edit("README.Rmd")
+
+usethis::use_github_action("render-rmarkdown")
