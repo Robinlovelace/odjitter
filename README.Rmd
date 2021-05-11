@@ -23,6 +23,7 @@ bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd")
 # Origin-destination Jittering: Methods for Generating Desire Lines for Realistic Route Networks 
 
 <!-- badges: start -->
+[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
 <!-- badges: end -->
 
 Origin-destination (OD) datasets are ubiquitous for representing travel behavior in transport planning and modelling.
