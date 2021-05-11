@@ -18,6 +18,14 @@ file.edit("README.Rmd")
 usethis::use_github_action("render-rmarkdown")
 file.edit(".github/workflows/render-rmarkdown.yaml")
 
-# Get OD data for Edinburgh
+# Get and process OD data for Edinburgh
+library(tidyverse)
+library(sf)
 
+iz_zones11_uk = readRDS("iz_zones11_uk.Rds")
+
+
+iz_zones11_ed = iz_zones11_uk %>% filter(InterZone %in% iz_cents11_ed$InterZone)
+plot(iz_zones11_ed$geometry)
+saveRDS(iz_zones11_ed, "clean-data/iz_zones11_ed.Rds")
 
