@@ -4,6 +4,8 @@
 # Origin-destination Jittering: Methods for Generating Desire Lines for Realistic Route Networks
 
 <!-- badges: start -->
+
+[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
 <!-- badges: end -->
 
 Origin-destination (OD) datasets are ubiquitous for representing travel
@@ -13,15 +15,35 @@ data sources, OD data continues to play an established — if not central
 applications ranging from analysis of the evolution of urban activity
 and shared mobility services over time (e.g. Shi et al. 2019; Li et al.
 2019) to inference of congestion and mode split (Bachir et al. 2019; Gao
-et al. 2021). Perhaps in part because it is so well established, there
-has been little research in recent years on new methods for processing
-OD datasets to add value and insight, notwithstanding notable exceptions
-for OD dataset validation (Alexander et al. 2015), aggregation (He et
-al. 2018; Liu et al. 2021) and disaggregation (Katranji et al. 2016).
+et al. 2021). Perhaps in part because they are so well established,
+there has been little research in recent years on new methods for
+processing OD datasets to add value and insight, notwithstanding notable
+exceptions for OD dataset validation (Alexander et al. 2015),
+aggregation (He et al. 2018; Liu et al. 2021) and disaggregation
+(Katranji et al. 2016).
 
-consist of records that report at least three things:
+Before consist of records that report at least three things:
 
 -   A point of
+
+# Research question and hypothesis
+
+# Methods and data
+
+# Findings
+
+We found that resampling origin and start points during the conversion
+of tabular OD datasets to their representation as geographic ‘desire
+lines’ can be undertaken in a variety of ways, including simple random
+sampling, sampling nodes on transport networks and simulating origin and
+destination points in polygons representing building. Building on the
+established practice of jittering in data visualisation (**ref?**), we
+label this group of techniques ‘origin-destination jittering.’
+
+We found that OD jittering led to substantially more dense and realistic
+route networks.
+
+# References
 
 <!-- The goal of odjitter is to ... -->
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
