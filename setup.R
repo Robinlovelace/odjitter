@@ -16,3 +16,8 @@ unlink(".git/hooks/pre-commit")
 file.edit("README.Rmd")
 
 usethis::use_github_action("render-rmarkdown")
+file.edit(".github/workflows/render-rmarkdown.yaml")
+
+# Get OD data for Edinburgh
+
+

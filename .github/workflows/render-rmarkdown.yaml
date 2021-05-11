@@ -30,10 +30,10 @@ jobs:
 
       - name: Install packages
         run: |
-          R -e 'install.packages("remotes")'
           R -e 'install.packages("renv")'
-          R -e 'remotes::install_cran("rmarkdown")'
           R -e 'renv::restore()'
+          R -e 'install.packages("remotes")'
+          R -e 'remotes::install_cran("rmarkdown")'
 
       - name: Render Rmarkdown files
         run: |
