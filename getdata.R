@@ -75,5 +75,5 @@ setwd("../..")
 # Takes some time:
 saveRDS(iz_zones11_uk, "iz_zones11_uk.Rds")
 iz_zones11_uk = rmapshaper::ms_simplify(iz_zones11_uk, 0.08, sys = TRUE)
-saveRDS(iz_zones11_uk, "iz_zones11_uk.Rds")
+saveRDS(iz_zones11_uk, "iz_zones11_uk_simplified.Rds")
 mapview::mapview(iz_zones11_uk[1:9, ])
