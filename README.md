@@ -30,6 +30,21 @@ Before consist of records that report at least three things:
 
 # Methods and data
 
+    #>   geo_code1 geo_code2 all from_home train bus car_driver car_passenger bicycle
+    #> 1 S02001576 S02001576 151         0     0   6         61             7       5
+    #> 2 S02001576 S02001577 132         0     0  11         84            10      11
+    #> 3 S02001576 S02001578  40         0     0   5         32             2       0
+    #> 4 S02001576 S02001579  17         0     0   4         13             0       0
+    #> 5 S02001576 S02001580   2         0     0   0          2             0       0
+    #> 6 S02001576 S02001581  11         0     1   2          8             0       0
+    #>   foot other
+    #> 1   70     2
+    #> 2   15     1
+    #> 3    1     0
+    #> 4    0     0
+    #> 5    0     0
+    #> 6    0     0
+
 # Findings
 
 We found that resampling origin and start points during the conversion
