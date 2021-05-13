@@ -41,6 +41,15 @@ consist of records that report at least three things:
 
 # Methods and data
 
+```{r}
+u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/od_iz_ed.Rds"
+f = basename(u)
+if(!file.exists(f)) download.file(u, f)
+od = readRDS("od_iz_ed.Rds")
+head(od)
+```
+
+
 
 # Findings
 
