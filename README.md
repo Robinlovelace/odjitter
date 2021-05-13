@@ -30,6 +30,10 @@ Before consist of records that report at least three things:
 
 # Methods and data
 
+## A synthetic example: synthetic zones
+
+## Real world example: Edinburgh
+
     #>   geo_code1 geo_code2 all from_home train bus car_driver car_passenger bicycle
     #> 1 S02001576 S02001576 151         0     0   6         61             7       5
     #> 2 S02001576 S02001577 132         0     0  11         84            10      11
@@ -59,17 +63,6 @@ We found that OD jittering led to substantially more dense and realistic
 route networks.
 
 # References
-
-<!-- The goal of odjitter is to ... -->
-<!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
-<!-- ```{r cars} -->
-<!-- summary(cars) -->
-<!-- ``` -->
-<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/master/examples>. -->
-<!-- Test. -->
-<!-- Update readme. -->
-<!-- Tests from hackmd.io. -->
-<!-- Test. -->
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
