@@ -69,9 +69,13 @@ if(!file.exists(f)) download.file(u, f)
 centroids = readRDS(f)
 head(centroids)
 
-plot(centroids)
 
 ```
+
+```{r overview}
+plot(centroids)
+```
+
 
 
 
