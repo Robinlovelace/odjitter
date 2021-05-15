@@ -74,7 +74,7 @@ plot(centroids)
 
 # Findings
 
-We found that resampling origin and start points during the conversion of tabular OD datasets to their representation as geographic 'desire lines' can be undertaken in a variety of ways, including simple random sampling, sampling nodes on transport networks and simulating origin and destination points in polygons representing building.
+We found that re-sampling origin and start points during the conversion of tabular OD datasets to their representation as geographic 'desire lines' can be undertaken in a variety of ways, including simple random sampling, sampling nodes on transport networks and simulating origin and destination points in polygons representing building.
 Building on the established practice of jittering in data visualisation [@ref], we label this group of techniques 'origin-destination jittering'.
 
 We found that OD jittering led to substantially more dense and realistic route networks.

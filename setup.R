@@ -40,4 +40,5 @@ saveRDS(iz_cents11_ed, "iz_cents11_ed.Rds")
 saveRDS(od_iz_ed, "od_iz_ed.Rds")
 
 f = list.files(pattern = "_ed")
-piggyback::pb_upload(f)
+piggyback::pb_upload(f, repo = "itsleeds/od")
+piggyback::pb_download_url(f)
