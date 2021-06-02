@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   echo = FALSE
 )
 library(sf)
+library(tmap)
 ```
 
 ```{r, eval=FALSE}
