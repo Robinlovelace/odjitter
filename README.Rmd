@@ -21,9 +21,7 @@ bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd")
 ```
 
 
-
-
-# Origin-destination Jittering: Methods for Generating Desire Lines for Realistic Route Networks 
+# Origin-destination Jittering: A computationally efficient method for generating realistic route networks from origin-destination data 
 
 <!-- badges: start -->
 [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
