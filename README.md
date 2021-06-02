@@ -82,7 +82,7 @@ Before consist of records that report at least three things:
     #> 5  321320   668240 POINT (-3.259901 55.90082)
     #> 6  322169   668751 POINT (-3.246474 55.90554)
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-gfm/overview-1.png)<!-- -->
 
 # Findings
 
