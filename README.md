@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Origin-destination Jittering: Methods for Generating Desire Lines for Realistic Route Networks
+# Origin-destination Jittering: A computationally efficient method for generating realistic route networks from origin-destination data
 
 <!-- badges: start -->
 
