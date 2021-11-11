@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Origin-destination Jittering: Methods for Generating Desire Lines for Realistic Route Networks
+# Origin-destination Jittering: A computationally efficient method for generating realistic route networks from origin-destination data
 
 <!-- badges: start -->
 
@@ -34,55 +34,60 @@ Before consist of records that report at least three things:
 
 ## Real world example: Edinburgh
 
-    #>   geo_code1 geo_code2 all from_home train bus car_driver car_passenger bicycle
-    #> 1 S02001576 S02001576 151         0     0   6         61             7       5
-    #> 2 S02001576 S02001577 132         0     0  11         84            10      11
-    #> 3 S02001576 S02001578  40         0     0   5         32             2       0
-    #> 4 S02001576 S02001579  17         0     0   4         13             0       0
-    #> 5 S02001576 S02001580   2         0     0   0          2             0       0
-    #> 6 S02001576 S02001581  11         0     1   2          8             0       0
-    #>   foot other
-    #> 1   70     2
-    #> 2   15     1
-    #> 3    1     0
-    #> 4    0     0
-    #> 5    0     0
-    #> 6    0     0
-    #>   geo_code1 geo_code2 all from_home train bus car_driver car_passenger bicycle
-    #> 1 S02001576 S02001576 151         0     0   6         61             7       5
-    #> 2 S02001576 S02001577 132         0     0  11         84            10      11
-    #> 3 S02001576 S02001578  40         0     0   5         32             2       0
-    #> 4 S02001576 S02001579  17         0     0   4         13             0       0
-    #> 5 S02001576 S02001580   2         0     0   0          2             0       0
-    #> 6 S02001576 S02001581  11         0     1   2          8             0       0
-    #>   foot other
-    #> 1   70     2
-    #> 2   15     1
-    #> 3    1     0
-    #> 4    0     0
-    #> 5    0     0
-    #> 6    0     0
+    #> # A tibble: 6 × 11
+    #>   geo_code1 geo_code2   all from_home train   bus car_driver car_passenger
+    #>   <chr>     <chr>     <dbl>     <dbl> <dbl> <dbl>      <dbl>         <dbl>
+    #> 1 S02001576 S02001576   151         0     0     6         61             7
+    #> 2 S02001576 S02001577   132         0     0    11         84            10
+    #> 3 S02001576 S02001578    40         0     0     5         32             2
+    #> 4 S02001576 S02001579    17         0     0     4         13             0
+    #> 5 S02001576 S02001580     2         0     0     0          2             0
+    #> 6 S02001576 S02001581    11         0     1     2          8             0
+    #> # … with 3 more variables: bicycle <dbl>, foot <dbl>, other <dbl>
+    #> Simple feature collection with 6 features and 9 fields
+    #> Geometry type: MULTIPOLYGON
+    #> Dimension:     XY
+    #> Bounding box:  xmin: -3.434535 ymin: 55.81879 xmax: -3.205699 ymax: 55.92223
+    #> Geodetic CRS:  WGS 84
+    #> # A tibble: 6 × 10
+    #>   InterZone Name            TotPop2011 ResPop2011 HHCnt2011 StdAreaHa StdAreaKm2
+    #>   <chr>     <chr>                <int>      <int>     <int>     <dbl>      <dbl>
+    #> 1 S02001576 Balerno and Bo…       5796       5771      2365     4805.      48.0 
+    #> 2 S02001577 Currie West           4782       3272      1386      810.       8.10
+    #> 3 S02001578 Currie East           3050       3050      1273      216.       2.16
+    #> 4 S02001579 Baberton and J…       3954       3918      1694      117.       1.17
+    #> 5 S02001580 Bonaly and The…       4295       4273      1767     1973.      19.7 
+    #> 6 S02001581 Colinton and K…       4112       3743      1587      302.       3.02
+    #> # … with 3 more variables: Shape_Leng <dbl>, Shape_Area <dbl>,
+    #> #   geometry <MULTIPOLYGON [°]>
     #> Simple feature collection with 6 features and 7 fields
     #> Geometry type: POINT
     #> Dimension:     XY
     #> Bounding box:  xmin: -3.342444 ymin: 55.88086 xmax: -3.246474 ymax: 55.90971
     #> Geodetic CRS:  WGS 84
-    #>   InterZone                           Name TotPop2011 ResPop2011 HHCnt2011
-    #> 1 S02001576 Balerno and Bonnington Village       5796       5771      2365
-    #> 2 S02001577                    Currie West       4782       3272      1386
-    #> 3 S02001578                    Currie East       3050       3050      1273
-    #> 4 S02001579     Baberton and Juniper Green       3954       3918      1694
-    #> 5 S02001580       Bonaly and The Pentlands       4295       4273      1767
-    #> 6 S02001581        Colinton and Kingsknowe       4112       3743      1587
-    #>   Easting Northing                   geometry
-    #> 1  316116   666116 POINT (-3.342444 55.88086)
-    #> 2  317812   667813 POINT (-3.315858 55.89639)
-    #> 3  318655   668420 POINT (-3.302564 55.90199)
-    #> 4  319584   669262 POINT (-3.287961 55.90971)
-    #> 5  321320   668240 POINT (-3.259901 55.90082)
-    #> 6  322169   668751 POINT (-3.246474 55.90554)
+    #> # A tibble: 6 × 8
+    #>   InterZone Name                TotPop2011 ResPop2011 HHCnt2011 Easting Northing
+    #>   <chr>     <chr>                    <int>      <int>     <int>   <dbl>    <dbl>
+    #> 1 S02001576 Balerno and Bonnin…       5796       5771      2365  316116   666116
+    #> 2 S02001577 Currie West               4782       3272      1386  317812   667813
+    #> 3 S02001578 Currie East               3050       3050      1273  318655   668420
+    #> 4 S02001579 Baberton and Junip…       3954       3918      1694  319584   669262
+    #> 5 S02001580 Bonaly and The Pen…       4295       4273      1767  321320   668240
+    #> 6 S02001581 Colinton and Kings…       4112       3743      1587  322169   668751
+    #> # … with 1 more variable: geometry <POINT [°]>
 
 ![](README_files/figure-gfm/overview-1.png)<!-- -->
+
+    #> 0 origins with no match in zone ids
+    #> 0 destinations with no match in zone ids
+    #>  points not in od data removed.
+    #> [1] 101
+    #> Warning: plotting the first 9 out of 11 attributes; use max.plot = 11 to plot
+    #> all
+
+![](README_files/figure-gfm/desire-1.png)<!-- -->
+
+![](README_files/figure-gfm/jittered-1.png)<!-- -->![](README_files/figure-gfm/jittered-2.png)<!-- -->
 
 # Findings
 
@@ -92,7 +97,7 @@ lines’ can be undertaken in a variety of ways, including simple random
 sampling, sampling nodes on transport networks and simulating origin and
 destination points in polygons representing building. Building on the
 established practice of jittering in data visualisation (**ref?**), we
-label this group of techniques ‘origin-destination jittering.’
+label this group of techniques ‘origin-destination jittering’.
 
 We found that OD jittering led to substantially more dense and realistic
 route networks.

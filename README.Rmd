@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
 )
 library(sf)
 library(tmap)
+library(tidyverse)
 ```
 
 ```{r, eval=FALSE}
@@ -49,7 +50,7 @@ consist of records that report at least three things:
 
 ## Real world example: Edinburgh
 
-```{r}
+```{r input-data}
 u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/od_iz_ed.Rds"
 f = basename(u)
 if(!file.exists(f)) download.file(u, f)
@@ -59,7 +60,7 @@ head(od)
 u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_zones11_ed.Rds"
 f = basename(u)
 if(!file.exists(f)) download.file(u, f)
-zones = readRDS("od_iz_ed.Rds")
+zones = readRDS("iz_zones11_ed.Rds")
 head(zones)
 
 u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_cents11_ed.Rds"
@@ -71,11 +72,30 @@ head(centroids)
 
 ```
 
+
+
+
+
 ```{r overview}
 plot(centroids)
 ```
 
 
+
+```{r desire}
+od_top_100 = od %>% 
+  top_n(n = 100, wt = all)
+desire_lines = od::od_to_sf(x = od_top_100, z = centroids)
+nrow(desire_lines)
+plot(desire_lines)
+subpoints = sf::st_sample(x = zones, size = 10000)
+```
+
+```{r jittered}
+desire_lines_jittered = od::od_jitter(od = desire_lines, z = zones)
+plot(desire_lines$geometry)
+plot(desire_lines_jittered$geometry)
+```
 
 
 # Findings
