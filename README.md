@@ -51,9 +51,10 @@ investment in active transport in the wake of the coronavirus pandemic
 funding, comparable tools have yet to be developed for other countries.
 With the exception of regionally specific models using software such as
 sDNA (Cooper 2017) (the results of which are usually not in the public
-domain) and bespoke city-specific models (**larsen_build_2013?**;
-**zhang_prioritizing_2014?**), there are few large scale tools using OD
-data that are free for public use that we are aware of.
+domain) and bespoke city-specific models (Larsen, Patterson, and
+El-Geneidy 2013; Zhang, Magalhaes, and Wang 2014), there are few large
+scale tools using OD data that are free for public use that we are aware
+of.
 
 In this context, this paper outlines methods to add further value to OD
 data through processes of disaggregating OD data and ‘jittering’ to
@@ -191,6 +192,16 @@ Intelligent Transportation Systems (ITSC)*, 1672–77.
 
 </div>
 
+<div id="ref-larsen_build_2013" class="csl-entry">
+
+Larsen, Jacob, Zachary Patterson, and Ahmed El-Geneidy. 2013. “Build It.
+But Where? The Use of Geographic Information Systems in Identifying
+Locations for New Cycling Infrastructure.” *International Journal of
+Sustainable Transportation* 7 (4): 299–317.
+<http://www.tandfonline.com/doi/abs/10.1080/15568318.2011.631098>.
+
+</div>
+
 <div id="ref-li_effects_2019" class="csl-entry">
 
 Li, Haojie, Yingheng Zhang, Hongliang Ding, and Gang Ren. 2019. “Effects
@@ -232,6 +243,16 @@ Lovelace, Robin, Joseph Talbot, Malcolm Morgan, and Martin Lucas-Smith.
 Shi, Xiaoying, Fanshun Lv, Dewen Seng, Baixi Xing, and Jing Chen. 2019.
 “Exploring the Evolutionary Patterns of Urban Activity Areas Based on
 Origin-Destination Data.” *IEEE Access* 7: 20416–31.
+
+</div>
+
+<div id="ref-zhang_prioritizing_2014" class="csl-entry">
+
+Zhang, Dapeng, David Jose Ahouagi Vaz Magalhaes, and Xiaokun (Cara)
+Wang. 2014. “Prioritizing Bicycle Paths in Belo Horizonte City, Brazil:
+Analysis Based on User Preferences and Willingness Considering
+Individual Heterogeneity.” *Transportation Research Part A: Policy and
+Practice* 67: 268–78. <https://doi.org/10.1016/j.tra.2014.07.010>.
 
 </div>
 
