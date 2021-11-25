@@ -1,5 +1,5 @@
 ---
-output: github_document
+output: bookdown::github_document2
 bibliography: references.bib
 ---
 
@@ -19,7 +19,10 @@ library(tidyverse)
 ```{r, eval=FALSE}
 # Generate citations (requires Zotero)
 library(rbbt)
-bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd"), overwrite = TRUE)
+# old way:
+# bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd"), overwrite = TRUE)
+# new way:
+bbt_update_bib("README.Rmd", "references.bib")
 ```
 
 
@@ -29,14 +32,35 @@ bbt_write_bib(path = "references.bib", keys = bbt_detect_citations("README.Rmd")
 [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
 <!-- badges: end -->
 
+# Introduction
+
 Origin-destination (OD) datasets are ubiquitous for representing travel behavior in transport planning and modelling.
 Despite emerging large data sources, OD data continues to play an established --- if not central --- role in transport research in the 21^st^ century, with recent applications ranging from analysis of the evolution of urban activity and shared mobility services over time [e.g. @shi_exploring_2019; @li_effects_2019] to inference of congestion and mode split [@bachir_inferring_2019; @gao_method_2021]. 
 Perhaps in part because they are so well established, there has been little research in recent years on new methods for processing OD datasets to add value and insight, notwithstanding notable exceptions for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021] and disaggregation [@katranji_mobility_2016].
 
-Before 
-consist of records that report at least three things:
+An example of the utility of OD data, and the utility of open access (anonymised and aggregtated) OD data in particular, is Propensity to Cycle Tool (PCT), first launched nationally across England in 2017 [@lovelace_propensity_2017].
+The PCT provides a strong and consistent evidence-base that local authorities across England and Wales are using to inform strategic Local Cycling and Walking Plans.
+Based on OD data --- initially for commuting trips only but subsequently also based on travel to school data [@goodman_scenarios_2019] --- the tool visualises cycling potential at zone, desire line, route and route network levels.
+The PCT makes open OD data 'come to life' by converting a 'haystack' of data into meaningful insights into currently cycling levels and future potential, highlighting the need to invest in cohesive networks of cycling interventions, as illustrated in Figure \@ref(fig:haystack).
 
-- A point of
+```{r haystack, fig.cap="Illustration of how geographic visualisation and routing can add value to OD datasets and make them more policy relevant."}
+# todo: update this
+knitr::include_graphics("https://user-images.githubusercontent.com/1825120/142071229-81358e26-5e8d-437e-9ef8-91704a4e690f.png")
+```
+
+
+The PCT is available for use by local authorities, consultancies, cycling advocacy groups, academic researchers and members of the public.
+Subsequent work building on the tool has been used to prioritise investment in active transport in the wake of the coronavirus pandemic [@lovelace_methods_2020].
+Due to lack of comparable OD data and/or lack of funding, comparable tools have yet to be developed for other countries.
+With the exception of regionally specific models using software such as sDNA [@cooper_using_2017] (the results of which are usually not in the public domain) and bespoke city-specific models [@larsen_build_2013; @zhang_prioritizing_2014], there are few large scale tools using OD data that are free for public use that we are aware of.
+
+In this context, this paper outlines methods to add further value to OD data through processes of disaggregating OD data and 'jittering' to increase the density of route networks arising from the conversion of OD data into route network outputs of the kind illustrated in Figure \@ref(fig:haystack).
+
+Before describing the methods, it is worth briefly defining OD data: datasets that consist of:
+
+- **Origins**: information the departure for trips, typically a code that refers to a geographic zone or a coordinate representing an approximate point of departure
+- **Destination**: information representing the destination of trips
+- **Attributes**: typically the number of trips made between each 'OD pair', sometimes by mode and with additional attributes such as the Euclidean and route distance between the each OD pair
 
 # Research question and hypothesis
 
@@ -44,8 +68,10 @@ consist of records that report at least three things:
 
 # Methods and data
 
+The methods described in this paper were developed to support a project to support Edinburgh City Council with their strategic cycle network planning activity.
+To understand the method and results it makes sense to start by introducing the case study area.
 
-## A synthetic example: synthetic zones
+<!-- ## A synthetic example: synthetic zones -->
 
 
 ## Real world example: Edinburgh
@@ -101,7 +127,7 @@ plot(desire_lines_jittered$geometry)
 # Findings
 
 We found that re-sampling origin and start points during the conversion of tabular OD datasets to their representation as geographic 'desire lines' can be undertaken in a variety of ways, including simple random sampling, sampling nodes on transport networks and simulating origin and destination points in polygons representing building.
-Building on the established practice of jittering in data visualisation [@ref], we label this group of techniques 'origin-destination jittering'.
+Building on the established practice of jittering in data visualisation [ref], we label this group of techniques 'origin-destination jittering'.
 
 We found that OD jittering led to substantially more dense and realistic route networks.
 

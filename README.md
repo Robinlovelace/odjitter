@@ -1,12 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Origin-destination Jittering: A computationally efficient method for generating realistic route networks from origin-destination data
+# 1 Origin-destination Jittering: A computationally efficient method for generating realistic route networks from origin-destination data
 
 <!-- badges: start -->
 
 [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
 <!-- badges: end -->
+
+# 2 Introduction
 
 Origin-destination (OD) datasets are ubiquitous for representing travel
 behavior in transport planning and modelling. Despite emerging large
@@ -22,17 +24,55 @@ exceptions for OD dataset validation (Alexander et al. 2015),
 aggregation (He et al. 2018; Liu et al. 2021) and disaggregation
 (Katranji et al. 2016).
 
+An example of the utility of OD data, and the utility of open access
+(anonymised and aggregtated) OD data in particular, is Propensity to
+Cycle Tool (PCT), first launched nationally across England in 2017
+(Lovelace et al. 2017). The PCT provides a strong and consistent
+evidence-base that local authorities across England and Wales are using
+to inform strategic Local Cycling and Walking Plans. Based on OD data —
+initially for commuting trips only but subsequently also based on travel
+to school data (Goodman et al. 2019) — the tool visualises cycling
+potential at zone, desire line, route and route network levels. The PCT
+makes open OD data ‘come to life’ by converting a ‘haystack’ of data
+into meaningful insights into currently cycling levels and future
+potential, highlighting the need to invest in cohesive networks of
+cycling interventions, as illustrated in Figure
+<a href="#fig:haystack">2.1</a>.
+
+![Figure 2.1: Illustration of how geographic visualisation and routing
+can add value to OD datasets and make them more policy
+relevant.](https://user-images.githubusercontent.com/1825120/142071229-81358e26-5e8d-437e-9ef8-91704a4e690f.png)
+
+available for use by local authorities, consultancies, cycling advocacy
+groups, academic researchers and members of the public. Subsequent work
+building on the tool has been used to prioritise investment in active
+transport in the wake of the coronavirus pandemic (Lovelace et al.
+2020).
+
+Due to the perceived unavailability of comparable OD data and lack of
+funding, a comparable tool has yet to be developed for Scotland.
+<!-- With the exception of regional models using software such as sDNA [@cooper_using_2017] (the results of which are usually not in the public domain), we are unaware of large scale -->
+This document sets out an approach that could lead to the development of
+a tool to inform strategic cycle networks across Scotland, starting with
+a project to develop a tool for City of Edinburgh that meets regional
+policy needs.
+
 Before consist of records that report at least three things:
 
 -   A point of
 
-# Research question and hypothesis
+# 3 Research question and hypothesis
 
-# Methods and data
+# 4 Methods and data
 
-## A synthetic example: synthetic zones
+The methods described in this paper were developed to support a project
+to support Edinburgh City Council with their strategic cycle network
+planning activity. To understand the method and results it makes sense
+to start by introducing the case study area.
 
-## Real world example: Edinburgh
+<!-- ## A synthetic example: synthetic zones -->
+
+## 4.1 Real world example: Edinburgh
 
     #> # A tibble: 6 × 11
     #>   geo_code1 geo_code2   all from_home train   bus car_driver car_passenger
@@ -89,20 +129,20 @@ Before consist of records that report at least three things:
 
 ![](README_files/figure-gfm/jittered-1.png)<!-- -->![](README_files/figure-gfm/jittered-2.png)<!-- -->
 
-# Findings
+# 5 Findings
 
 We found that re-sampling origin and start points during the conversion
 of tabular OD datasets to their representation as geographic ‘desire
 lines’ can be undertaken in a variety of ways, including simple random
 sampling, sampling nodes on transport networks and simulating origin and
 destination points in polygons representing building. Building on the
-established practice of jittering in data visualisation (**ref?**), we
+established practice of jittering in data visualisation \[ref\], we
 label this group of techniques ‘origin-destination jittering’.
 
 We found that OD jittering led to substantially more dense and realistic
 route networks.
 
-# References
+# 6 References
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 
@@ -131,6 +171,17 @@ Jiyi Zhang. 2021. “A Method for Exploring and Analyzing Spatiotemporal
 Patterns of Traffic Congestion in Expressway Networks Based on
 Origin–Destination Data.” *ISPRS International Journal of
 Geo-Information* 10 (5): 288.
+
+</div>
+
+<div id="ref-goodman_scenarios_2019" class="csl-entry">
+
+Goodman, Anna, Ilan Fridman Rojas, James Woodcock, Rachel Aldred,
+Nikolai Berkoff, Malcolm Morgan, Ali Abbas, and Robin Lovelace. 2019.
+“Scenarios of Cycling to School in England, and Associated Health and
+Carbon Impacts: Application of the ‘Propensity to Cycle Tool’.” *Journal
+of Transport & Health* 12 (March): 263–78.
+<https://doi.org/10.1016/j.jth.2019.01.008>.
 
 </div>
 
@@ -169,6 +220,24 @@ Liu, Qiliang, Jie Yang, Min Deng, Ci Song, and Wenkai Liu. 2021.
 “SNN\_flow: A Shared Nearest-Neighbor-Based Clustering Method for
 Inhomogeneous Origin-Destination Flows.” *International Journal of
 Geographical Information Science*, 1–27.
+
+</div>
+
+<div id="ref-lovelace_propensity_2017" class="csl-entry">
+
+Lovelace, Robin, Anna Goodman, Rachel Aldred, Nikolai Berkoff, Ali
+Abbas, and James Woodcock. 2017. “The Propensity to Cycle Tool: An Open
+Source Online System for Sustainable Transport Planning.” *Journal of
+Transport and Land Use* 10 (1). <https://doi.org/10.5198/jtlu.2016.862>.
+
+</div>
+
+<div id="ref-lovelace_methods_2020" class="csl-entry">
+
+Lovelace, Robin, Joseph Talbot, Malcolm Morgan, and Martin Lucas-Smith.
+2020. “Methods to Prioritise Pop-up Active Transport Infrastructure.”
+*Transport Findings*, July, 13421.
+<https://doi.org/10.32866/001c.13421>.
 
 </div>
 
