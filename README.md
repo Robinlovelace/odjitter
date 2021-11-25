@@ -88,69 +88,23 @@ South Moredun and Craigour to 10% in the IZ Marchmont West. There are
 
 # 4 Methods and data
 
-The methods described in this paper were developed to support a project
-to support Edinburgh City Council with their strategic cycle network
-planning activity. To understand the method and results it makes sense
-to start by introducing the case study area.
-
+<!-- The methods described in this paper were developed to support a project to support Edinburgh City Council with their strategic cycle network planning activity. -->
+<!-- To understand the method and results it makes sense to start by introducing the case study area. -->
 <!-- ## A synthetic example: synthetic zones -->
+<!-- ## Real world example: Edinburgh -->
 
-## 4.1 Real world example: Edinburgh
+Beyond the zone data illustrated in Figure
+<a href="#fig:izs"><strong>??</strong></a>, the input dataset consisted
+of open access OD data from the 2011 census. The OD data can be
+represented as both tabular and, when start and end points are assigned
+to centroids within each zone, as geographic entities, as illustrated in
+Figure <a href="#fig:od"><strong>??</strong></a>, which presents data at
+the zone and OD level for the top 3 OD pairs by number of interzonal
+travel between zones by all modes in Edinburgh in tabular and visual
+form. The zone boundaries are based on open boundary data provided by
+data.gov.uk at the Middle Super Output Area (MSOA) level.
 
-    #> # A tibble: 6 × 11
-    #>   geo_code1 geo_code2   all from_home train   bus car_driver car_passenger
-    #>   <chr>     <chr>     <dbl>     <dbl> <dbl> <dbl>      <dbl>         <dbl>
-    #> 1 S02001576 S02001576   151         0     0     6         61             7
-    #> 2 S02001576 S02001577   132         0     0    11         84            10
-    #> 3 S02001576 S02001578    40         0     0     5         32             2
-    #> 4 S02001576 S02001579    17         0     0     4         13             0
-    #> 5 S02001576 S02001580     2         0     0     0          2             0
-    #> 6 S02001576 S02001581    11         0     1     2          8             0
-    #> # … with 3 more variables: bicycle <dbl>, foot <dbl>, other <dbl>
-    #> Simple feature collection with 6 features and 9 fields
-    #> Geometry type: MULTIPOLYGON
-    #> Dimension:     XY
-    #> Bounding box:  xmin: -3.434535 ymin: 55.81879 xmax: -3.205699 ymax: 55.92223
-    #> Geodetic CRS:  WGS 84
-    #> # A tibble: 6 × 10
-    #>   InterZone Name            TotPop2011 ResPop2011 HHCnt2011 StdAreaHa StdAreaKm2
-    #>   <chr>     <chr>                <int>      <int>     <int>     <dbl>      <dbl>
-    #> 1 S02001576 Balerno and Bo…       5796       5771      2365     4805.      48.0 
-    #> 2 S02001577 Currie West           4782       3272      1386      810.       8.10
-    #> 3 S02001578 Currie East           3050       3050      1273      216.       2.16
-    #> 4 S02001579 Baberton and J…       3954       3918      1694      117.       1.17
-    #> 5 S02001580 Bonaly and The…       4295       4273      1767     1973.      19.7 
-    #> 6 S02001581 Colinton and K…       4112       3743      1587      302.       3.02
-    #> # … with 3 more variables: Shape_Leng <dbl>, Shape_Area <dbl>,
-    #> #   geometry <MULTIPOLYGON [°]>
-    #> Simple feature collection with 6 features and 7 fields
-    #> Geometry type: POINT
-    #> Dimension:     XY
-    #> Bounding box:  xmin: -3.342444 ymin: 55.88086 xmax: -3.246474 ymax: 55.90971
-    #> Geodetic CRS:  WGS 84
-    #> # A tibble: 6 × 8
-    #>   InterZone Name                TotPop2011 ResPop2011 HHCnt2011 Easting Northing
-    #>   <chr>     <chr>                    <int>      <int>     <int>   <dbl>    <dbl>
-    #> 1 S02001576 Balerno and Bonnin…       5796       5771      2365  316116   666116
-    #> 2 S02001577 Currie West               4782       3272      1386  317812   667813
-    #> 3 S02001578 Currie East               3050       3050      1273  318655   668420
-    #> 4 S02001579 Baberton and Junip…       3954       3918      1694  319584   669262
-    #> 5 S02001580 Bonaly and The Pen…       4295       4273      1767  321320   668240
-    #> 6 S02001581 Colinton and Kings…       4112       3743      1587  322169   668751
-    #> # … with 1 more variable: geometry <POINT [°]>
-
-![](README_files/figure-gfm/overview-1.png)<!-- -->
-
-    #> 0 origins with no match in zone ids
-    #> 0 destinations with no match in zone ids
-    #>  points not in od data removed.
-    #> [1] 101
-    #> Warning: plotting the first 9 out of 11 attributes; use max.plot = 11 to plot
-    #> all
-
-![](README_files/figure-gfm/desire-1.png)<!-- -->
-
-![](README_files/figure-gfm/jittered-1.png)<!-- -->![](README_files/figure-gfm/jittered-2.png)<!-- -->
+<img src="figures/od-top-3-table.png" title="Illustration of input data in tabular (above) and geographic form (below)." alt="Illustration of input data in tabular (above) and geographic form (below)." width="100%" /><img src="figures/od-top-3.png" title="Illustration of input data in tabular (above) and geographic form (below)." alt="Illustration of input data in tabular (above) and geographic form (below)." width="100%" />
 
 # 5 Findings
 
