@@ -43,25 +43,48 @@ cycling interventions, as illustrated in Figure
 can add value to OD datasets and make them more policy
 relevant.](https://user-images.githubusercontent.com/1825120/142071229-81358e26-5e8d-437e-9ef8-91704a4e690f.png)
 
-available for use by local authorities, consultancies, cycling advocacy
-groups, academic researchers and members of the public. Subsequent work
-building on the tool has been used to prioritise investment in active
-transport in the wake of the coronavirus pandemic (Lovelace et al.
-2020).
+The PCT is available for use by local authorities, consultancies,
+cycling advocacy groups, academic researchers and members of the public.
+Subsequent work building on the tool has been used to prioritise
+investment in active transport in the wake of the coronavirus pandemic
+(Lovelace et al. 2020). Due to lack of comparable OD data and/or lack of
+funding, comparable tools have yet to be developed for other countries.
+With the exception of regionally specific models using software such as
+sDNA (Cooper 2017) (the results of which are usually not in the public
+domain) and bespoke city-specific models (**larsen_build_2013?**;
+**zhang_prioritizing_2014?**), there are few large scale tools using OD
+data that are free for public use that we are aware of.
 
-Due to the perceived unavailability of comparable OD data and lack of
-funding, a comparable tool has yet to be developed for Scotland.
-<!-- With the exception of regional models using software such as sDNA [@cooper_using_2017] (the results of which are usually not in the public domain), we are unaware of large scale -->
-This document sets out an approach that could lead to the development of
-a tool to inform strategic cycle networks across Scotland, starting with
-a project to develop a tool for City of Edinburgh that meets regional
-policy needs.
+In this context, this paper outlines methods to add further value to OD
+data through processes of disaggregating OD data and ‘jittering’ to
+increase the density of route networks arising from the conversion of OD
+data into route network outputs of the kind illustrated in Figure
+<a href="#fig:haystack">2.1</a>.
 
-Before consist of records that report at least three things:
+Before describing the methods, it is worth briefly defining OD data:
+datasets that consist of:
 
--   A point of
+-   **Origins**: information the departure for trips, typically a code
+    that refers to a geographic zone or a coordinate representing an
+    approximate point of departure
+-   **Destination**: information representing the destination of trips
+-   **Attributes**: typically the number of trips made between each ‘OD
+    pair’, sometimes by mode and with additional attributes such as the
+    Euclidean and route distance between the each OD pair
 
 # 3 Research question and hypothesis
+
+The study area is the City of Edinburgh, a local authority with a
+population of just over half a million (524,930 as of
+[2019](https://www.nrscotland.gov.uk/files/statistics/council-area-data-sheets/city-of-edinburgh-council-profile.html)).
+The population was 480,139 in the 2011 Census, 237,839 of whom were
+employed. In the 2011 Census, 4.3% of residents of the area reported
+cycling to work, ranging from 1% in Intermediate Zone (IZ) Ferniehill,
+South Moredun and Craigour to 10% in the IZ Marchmont West. There are
+101 IZs (2001 definition) in the study region (see Figure
+<a href="#fig:izs"><strong>??</strong></a>).
+
+<img src="figures/overview-zones-iz.png" title="Overview of the study region with the percentage cycling to work in 2011 at the level of Intermediate Zones corresponding to fill colour." alt="Overview of the study region with the percentage cycling to work in 2011 at the level of Intermediate Zones corresponding to fill colour." width="90%" />
 
 # 4 Methods and data
 
@@ -161,6 +184,15 @@ Bachir, Danya, Ghazaleh Khodabandelou, Vincent Gauthier, Mounim El
 Yacoubi, and Jakob Puchinger. 2019. “Inferring Dynamic
 Origin-Destination Flows by Transport Mode Using Mobile Phone Data.”
 *Transportation Research Part C: Emerging Technologies* 101: 254–75.
+
+</div>
+
+<div id="ref-cooper_using_2017" class="csl-entry">
+
+Cooper, Crispin H. V. 2017. “Using Spatial Network Analysis to Model
+Pedal Cycle Flows, Risk and Mode Choice.” *Journal of Transport
+Geography* 58 (January): 157–65.
+<https://doi.org/10.1016/j.jtrangeo.2016.12.003>.
 
 </div>
 
