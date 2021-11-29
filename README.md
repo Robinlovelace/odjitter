@@ -112,10 +112,7 @@ data.gov.uk at the Middle Super Output Area (MSOA) level.
 ## 4.2 Disaggregation
 
 ![Figure 4.1: Illustration of jittering and disaggregation of OD data on
-small input
-dataset.](README_files/figure-gfm/jitters-1.png)![(#fig:jitters-2)Illustration
-of jittering and disaggregation of OD data on small input
-dataset.](README_files/figure-gfm/jitters-2.png)
+small input dataset.](README_files/figure-gfm/jitters-1.png)
 
 # 5 Findings
 
