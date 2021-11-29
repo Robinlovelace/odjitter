@@ -107,6 +107,16 @@ data.gov.uk at the Middle Super Output Area (MSOA) level.
 
 <img src="figures/od-top-3-table.png" title="Illustration of input data in tabular (above) and geographic form (below)." alt="Illustration of input data in tabular (above) and geographic form (below)." width="100%" /><img src="figures/od-top-3.png" title="Illustration of input data in tabular (above) and geographic form (below)." alt="Illustration of input data in tabular (above) and geographic form (below)." width="100%" />
 
+## 4.1 Jittering
+
+## 4.2 Disaggregation
+
+![Figure 4.1: Illustration of jittering and disaggregation of OD data on
+small input
+dataset.](README_files/figure-gfm/jitters-1.png)![(#fig:jitters-2)Illustration
+of jittering and disaggregation of OD data on small input
+dataset.](README_files/figure-gfm/jitters-2.png)
+
 # 5 Findings
 
 We found that re-sampling origin and start points during the conversion
