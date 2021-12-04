@@ -5,3 +5,6 @@
 *.Rds
 data-raw/
 *.html
+*cache*
+*html*
+*docx*

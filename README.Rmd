@@ -98,6 +98,23 @@ Before describing the approach to answer this question, some definitions are in 
 
 The study area is the City of Edinburgh, a local authority with a population of just over half a million  [people](https://www.nrscotland.gov.uk/files/statistics/council-area-data-sheets/city-of-edinburgh-council-profile.html) (see Figure \@ref(fig:izs)).
 
+```{r get-osm-data, eval=FALSE}
+road_network_area = osmextract::oe_get_network(place = "Scotland", mode = "cycling")
+road_network = road_network_area[edinburgh_region, ]
+saveRDS(road_network, "road_network.Rds")
+road_network_touching = road_network[zones_touching, ]
+nrow(road_network) # 35k
+nrow(road_network_touching) # 6k
+table(road_network_touching$highway)
+road_network_min = road_network_touching %>% 
+  # filter(str_detect(string = highway, pattern = "cycle|prim|sec|tert"))
+  filter(highway %in% c("primary", "secondary", "tertiary"))
+nrow(road_network_min) # 800
+plot(road_network_min["highway"])
+saveRDS(road_network_min, "road_network_min.Rds")
+piggyback::pb_upload("road_network_min.Rds", repo = "itsleeds/od")
+piggyback::pb_download_url("road_network_min.Rds", repo = "itsleeds/od")
+```
 
 
 ```{r read-inputs}
@@ -117,6 +134,11 @@ u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_cents11_ed.Rds"
 f = basename(u)
 if(!file.exists(f)) download.file(u, f)
 centroids = readRDS(f)
+
+u = "https://github.com/ITSLeeds/od/releases/download/v0.3.1/road_network_min.Rds"
+f = basename(u)
+if(!file.exists(f)) download.file(u, f)
+road_network_min = readRDS(f)
 ```
 
 ```{r read-region}
@@ -172,6 +194,8 @@ k = odsf_top3 %>%
   sf::st_drop_geometry() %>%
   kableExtra::kable()
 # k
+# zones_touching = zones[zones_in_top3, ]
+# saveRDS(zones_touching, "zones_touching.Rds")
 bbox = sf::st_bbox(zones_in_top3)
 m1 = tm_shape(odsf_top3, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
@@ -197,8 +221,6 @@ knitr::include_graphics(c(
 The techniques outlined in the following sub-sections are perhaps best understood visually, as illustrated in Figure \@ref(fig:jitters).
 The remainder of this section describes the methods illustrated in each of the facetted maps in Figure \@ref(fig:jitters).
 
-
-
 ```{r jitters, fig.cap="Illustration of jittering and disaggregation of OD data on small input dataset."}
 set.seed(3)
 od_top3_jittered = od::od_jitter(odsf_top3, z = zones)
@@ -206,18 +228,26 @@ od_top3_disaggregated = od::od_disaggregate(odsf_top3, z = zones, max_per_od = 1
 m1 = tm_shape(odsf_top3, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
   tm_shape(zones) +
-  tm_borders()
+  tm_borders() +
+  tm_layout(title = "A) Single origin and destination point per zone", title.bg.color =  "white")
 m2 = tm_shape(od_top3_jittered, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
   tm_shape(zones) +
-  tm_borders()
-m3 = tm_shape(od_top3_disaggregated, bbox = bbox) +
+  tm_borders() +
+  tm_layout(title = "B) Randomised origin and destination points", title.bg.color =  "white")
+m3 = tm_shape(road_network_min, bbox = bbox) +
+  tm_lines(col = "darkgreen") +
+  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
+  tm_layout(title = "C) Randomised points sampled from transport network", title.bg.color =  "white")
+
+m4 = tm_shape(od_top3_disaggregated, bbox = bbox) +
   tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(0, 50, 60, 70, 80)) +
   tm_shape(zones) +
-  tm_borders() 
+  tm_borders()  +
+  tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white")
 # todo: add a 4th figure showing sampling on the network
 # m3
-tmap_arrange(m1, m2, m3, nrow = 1)
+tmap_arrange(m1, m2, m3, m4, nrow = 2)
 ```
 
 
