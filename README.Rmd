@@ -1,11 +1,10 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-# output: bookdown::github_document2
-output: bookdown::html_document2
+output: bookdown::github_document2
+# output: bookdown::html_document2
 # output: bookdown::word_document2
 bibliography: references.bib
 ---
-
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -224,7 +223,8 @@ The remainder of this section describes the methods illustrated in each of the f
 ```{r jitters, fig.cap="Illustration of jittering and disaggregation of OD data on small input dataset."}
 set.seed(3)
 od_top3_jittered = od::od_jitter(odsf_top3, z = zones)
-od_top3_disaggregated = od::od_disaggregate(odsf_top3, z = zones, max_per_od = 100)
+od_top3_road = od::od_disaggregate(odsf_top3, z = zones, road_network_min, max_per_od = 1000)
+od_top3_disaggregated = od::od_disaggregate(odsf_top3, z = zones, road_network_min, max_per_od = 100)
 m1 = tm_shape(odsf_top3, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
   tm_shape(zones) +
@@ -237,14 +237,18 @@ m2 = tm_shape(od_top3_jittered, bbox = bbox) +
   tm_layout(title = "B) Randomised origin and destination points", title.bg.color =  "white")
 m3 = tm_shape(road_network_min, bbox = bbox) +
   tm_lines(col = "darkgreen") +
+  # tm_shape(zones) +
+  # tm_borders() +
+  tm_shape(od_top3_road) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
-  tm_layout(title = "C) Randomised points sampled from transport network", title.bg.color =  "white")
-
-m4 = tm_shape(od_top3_disaggregated, bbox = bbox) +
-  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(0, 50, 60, 70, 80)) +
-  tm_shape(zones) +
-  tm_borders()  +
-  tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white")
+  tm_layout(title = "C) Randomised points sampled from transport network", title.bg.color =  "white", legend.position = c("right", "bottom"))
+m4 = tm_shape(road_network_min, bbox = bbox) +
+  tm_lines(col = "darkgreen") +
+  tm_shape(od_top3_disaggregated, bbox = bbox) +
+  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(0, 60, 70, 80)) +
+  # tm_shape(zones) +
+  # tm_borders()  +
+  tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"))
 # todo: add a 4th figure showing sampling on the network
 # m3
 tmap_arrange(m1, m2, m3, m4, nrow = 2)
