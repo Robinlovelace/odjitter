@@ -113,9 +113,44 @@ small input dataset.](README_files/figure-gfm/jitters-1.png)
 
 ## 2.1 Random sampling of origin and destination points
 
+The simplest approach to jittering is simple random spatial sampling, as
+illustrated in Figure <a href="#fig:jitters">2.1</a> (B). This involves
+generating random coordinate pairs using a random number generator,
+testing to check if the point is contained withing the boundary of each
+zone from which points are required, and repeating the process until
+enough randomly located points have been created. This approach has the
+advantages of simplicity, requiring no additional datasets. A
+disadvantage of simple random sampling in areas where trip origins and
+trip attractors are concentrated within certain parts of geographic
+zones, such as in rural areas, is that it may lead to unrealistic
+results, e.g. with trips being simulated to start in rivers and in
+uninhabited wilderness areas.
+
 ## 2.2 Sampling origin and destination points from the transport network
 
+To overcome the limitations of the simple random sampling approach, the
+universe of possible coordinates from which trips can originate and end
+can be reduced by providing another geographic input dataset. This
+dataset could contain known trip attractors such as city centres and
+work places, as well as tightly defined residential ‘subzones’. For
+highly disaggregated flows in cases where accurate building datasets are
+available, building footprints could also be used.
+
+Perhaps the most useful type of subsampling, however, is on the road
+network, as illustrated in Figure <a href="#fig:jitters">2.1</a> (C):
+transport network datasets are readily available in most places and
+ensure that all trips happen on the network, an advantage when using
+some routing services.
+
 ## 2.3 Disaggregation
+
+Both of the jittering techniques outlined above generate more diffuse
+route networks. However, a problem with OD datasets is that they are
+often highly variable: one OD pair could represent 1 trip, while another
+could represent 1000 trips. To overcome this problem a process of
+disaggregation can be used, resulting in additional OD pairs within each
+pair of zones. This process is illustrated in Figure
+<a href="#fig:jitters">2.1</a> (D).
 
 ## 2.4 Jittering
 
@@ -132,10 +167,24 @@ lines’ can be undertaken in a variety of ways, including simple random
 sampling, sampling nodes on transport networks and simulating origin and
 destination points in polygons representing building. Building on the
 established practice of jittering in data visualisation \[ref\], we
-label this group of techniques ‘origin-destination jittering’.
+label this group of techniques ‘origin-destination jittering’, which
+includes the vital ‘disaggregation’ step to ensure a diffuse network.
 
-We found that OD jittering led to substantially more dense and realistic
-route networks.
+The results of applying each of these jittering techniques to an OD
+dataset representing travel to work in Edinburgh are illustrated in
+Figure <a href="#fig:rneted">3.1</a>. The results demonstrate that OD
+jittering led to substantially more dense and presumably more realistic
+route networks. In future work we aim to evaluate the extent to which
+route networks that are derived from jittered datasets are better, with
+reference to comparisons between observed travel behavior on transport
+networks including from manual and automatic counters at point locations
+and other sources of data.
+
+![Figure 3.1: Route network results derived from non-jittered OD data
+(left) and OD data that had been jittered, with pre-processing steps
+including disaggregation of large flows and randomisation of origin and
+destionation points on the transport network
+(right).](figures/rneted.png)
 
 <!-- # Discussion -->
 
