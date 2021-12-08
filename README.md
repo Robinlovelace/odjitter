@@ -149,8 +149,34 @@ route networks. However, a problem with OD datasets is that they are
 often highly variable: one OD pair could represent 1 trip, while another
 could represent 1000 trips. To overcome this problem a process of
 disaggregation can be used, resulting in additional OD pairs within each
-pair of zones. This process is illustrated in Figure
-<a href="#fig:jitters">2.1</a> (D).
+pair of zones. The results of disaggregation are illustrated
+geographically in Figure <a href="#fig:jitters">2.1</a> (D) and in terms
+of changes to attributes, in Tables
+<a href="#tab:dis1"><strong>??</strong></a> and
+<a href="#tab:dis2">2.2</a>. As shown in those tables, updated
+attributes can be calculated by dividing previous trip counts by the
+number of OD pairs in the disaggregated representation of the data, 3 in
+this case. To determine how many disaggregated OD pairs each original OD
+pair is split into, a maximum threshold was set: an OD pairs with a
+total trip count exceeding this threshold (set at 150 in this case) is
+split into the minimum number of disaggregated OD pairs that reduce the
+total number of trips below the threshold.
+
+| representation | geo_code1 | geo_code2 | all | foot |
+|:---------------|:----------|:----------|----:|-----:|
+| original       | S02001647 | S02001622 | 443 |  314 |
+
+Table 2.1: Attribute data associated with an OD pair before
+disaggregation.
+
+| representation | geo_code1 | geo_code2 |      all |     foot |
+|:---------------|:----------|:----------|---------:|---------:|
+| disaggregated  | S02001647 | S02001622 | 147.6667 | 104.6667 |
+| disaggregated  | S02001647 | S02001622 | 147.6667 | 104.6667 |
+| disaggregated  | S02001647 | S02001622 | 147.6667 | 104.6667 |
+
+Table 2.2: Attribute data associated with an OD pair after
+disaggregation.
 
 ## 2.4 Jittering
 

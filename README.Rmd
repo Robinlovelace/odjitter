@@ -290,7 +290,30 @@ Perhaps the most useful type of subsampling, however, is on the road network, as
 Both of the jittering techniques outlined above generate more diffuse route networks.
 However, a problem with OD datasets is that they are often highly variable: one OD pair could represent 1 trip, while another could represent 1000 trips.
 To overcome this problem a process of disaggregation can be used, resulting in additional OD pairs within each pair of zones. 
-This process is illustrated in Figure \@ref(fig:jitters) (D).
+The results of disaggregation are illustrated geographically in Figure \@ref(fig:jitters) (D) and in terms of changes to attributes, in Tables \@ref(tab:dis1) and \@ref(tab:dis2).
+As shown in those tables, updated attributes can be calculated by dividing previous trip counts by the number of OD pairs in the disaggregated representation of the data, 3 in this case.
+To determine how many disaggregated OD pairs each original OD pair is split into, a maximum threshold was set: an OD pairs with a total trip count exceeding this threshold (set at 150 in this case) is split into the minimum number of disaggregated OD pairs that reduce the total number of trips below the threshold.
+
+```{r}
+od_to_disag = odsf_top3 %>%
+  sf::st_drop_geometry() %>% 
+  slice(1) %>%
+  transmute(representation = "original", geo_code1, geo_code2, all, foot)
+od_disaggregated = od_top3_disaggregated %>%
+  sf::st_drop_geometry() %>% 
+  filter(o_agg == od_to_disag$geo_code1) %>% 
+  filter(d_agg == od_to_disag$geo_code2) %>% 
+  transmute(representation = "disaggregated", geo_code1 = o_agg, geo_code2 = d_agg, all, foot)
+```
+
+```{r dis}
+knitr::kable(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.")
+```
+
+```{r dis2}
+knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.")
+```
+
 
 ## Jittering
 
