@@ -224,7 +224,8 @@ The remainder of this section describes the methods illustrated in each of the f
 set.seed(2021)
 od_top3_jittered = od::od_jitter(odsf_top3, z = zones)
 od_top3_road = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 1000)
-od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 150)
+od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 200)
+# od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
 m1 = tm_shape(odsf_top3, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
   tm_shape(zones) +
@@ -245,7 +246,7 @@ m3 = tm_shape(road_network_min, bbox = bbox) +
 m4 = tm_shape(road_network_min, bbox = bbox) +
   tm_lines(col = "darkgreen") +
   tm_shape(od_top3_disaggregated, bbox = bbox) +
-  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(50, 75, 100, 150)) +
+  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(75, 100, 125, 150)) +
   # tm_shape(zones) +
   # tm_borders()  +
   tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"))
@@ -269,21 +270,21 @@ tmap_arrange(m1, m2, m3, m4, nrow = 2)
 # plot(desire_lines_jittered$geometry)
 ```
 
-## Random sampling of origin and destination points
+## Sampling origin and destination points
 
-The simplest approach to jittering is simple random spatial sampling, as illustrated in Figure \@ref(fig:jitters) (B).
-This involves generating random coordinate pairs using a random number generator, testing to check if the point is contained withing the boundary of each zone from which points are required, and repeating the process until enough randomly located points have been created.
-This approach has the advantages of simplicity, requiring no additional datasets.
-A disadvantage of simple random sampling in areas where trip origins and trip attractors are concentrated within certain parts of geographic zones, such as in rural areas, is that it may lead to unrealistic results, e.g. with trips being simulated to start in rivers and in uninhabited wilderness areas.
+<!-- ## Random sampling of origin and destination points -->
+Key to jittering is ensuring that each trip starts and ends in a different place.
+To do this, there must be 'sub-points' within each zone, one for each trip originating and departing.
 
-## Sampling origin and destination points from the transport network
+The simplest approach is simple random spatial sampling, as illustrated in Figure \@ref(fig:jitters) (B).
+This involves generating random coordinate pairs, testing to check if the point is contained withing the boundary of each zone from which points are required, and repeating the process until enough randomly located points have been created.
+This approach has the advantages of simplicity, requiring no additional datasets, but has the disadvantage of that it may lead to unrealistic start and end points, e.g. with trips being simulated to start in rivers and in uninhabited wilderness areas.
 
+<!-- ## Sampling origin and destination points from the transport network -->
 To overcome the limitations of the simple random sampling approach, the universe of possible coordinates from which trips can originate and end can be reduced by providing another geographic input dataset.
-This dataset could contain known trip attractors such as city centres and work places, as well as tightly defined residential 'subzones'.
+This dataset could contain known trip attractors such as city centers and work places, as well as tightly defined residential 'subzones'.
 For highly disaggregated flows in cases where accurate building datasets are available, building footprints could also be used.
-
-Perhaps the most useful type of subsampling, however, is on the road network, as illustrated in Figure \@ref(fig:jitters) (C): transport network datasets are readily available in most places and ensure that all trips happen on the network, an advantage when using some routing services.
-
+Perhaps the most useful input for subsampling, however, is a transport road network, as illustrated in Figure \@ref(fig:jitters) (C): transport network datasets are readily available in most places and ensure that all trips happen on the network, an advantage when using some routing services.
 
 ## Disaggregation
 
@@ -313,9 +314,6 @@ knitr::kable(od_to_disag, caption = "Attribute data associated with an OD pair b
 ```{r dis2}
 knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.")
 ```
-
-
-## Jittering
 
 We refer to the combined process of sampling origin and destination points --- either using simple random geographic sampling, sampling from the transport network, or other sampling technique --- and disagreggation as jittering. 
 
