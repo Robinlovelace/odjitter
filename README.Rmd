@@ -157,18 +157,21 @@ road_network_min = sf::read_sf("https://github.com/ITSLeeds/od/releases/download
 
 ```{r read-region}
 # lads_uk = ukboundaries::lad2018
-# # names(lads_uk)
-# lads_scotland = lads_uk %>% 
+# # # names(lads_uk)
+# lads_scotland = lads_uk %>%
 #   filter(str_detect(lau118cd, "S"))
-# saveRDS(lads_scotland, "lads_scotland.Rds")
-# library(dplyr)
-# lads_scotland = readRDS("lads_scotland.Rds")
-# piggyback::pb_upload("lads_scotland.Rds")
-
+# # saveRDS(lads_scotland, "lads_scotland.Rds")
+# # library(dplyr)
+# # lads_scotland = readRDS("lads_scotland.Rds")
+# # piggyback::pb_upload("lads_scotland.Rds")
+# 
 # edinburgh_region = lads_scotland %>%
 #   dplyr::filter(lau118nm == "Edinburgh, City of")
-# saveRDS(edinburgh_region, "edinburgh_region.Rds")
-edinburgh_region = readRDS("edinburgh_region.Rds")
+# # saveRDS(edinburgh_region, "edinburgh_region.Rds")
+# sf::write_sf(edinburgh_region, "edinburgh_region.geojson")
+# piggyback::pb_upload("edinburgh_region.geojson", repo = "itsleeds/od")
+edinburgh_region = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/edinburgh_region.geojson")
+
 # sum(zones$TotPop2011) # 476626
 m1 = tm_shape(zones) + tm_polygons("TotPop2011", title = "Population", palette = "viridis") +
   tm_scale_bar() +
