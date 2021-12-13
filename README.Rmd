@@ -172,6 +172,7 @@ road_network_min = sf::read_sf("https://github.com/ITSLeeds/od/releases/download
 # piggyback::pb_upload("edinburgh_region.geojson", repo = "itsleeds/od")
 edinburgh_region = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/edinburgh_region.geojson")
 
+
 # sum(zones$TotPop2011) # 476626
 m1 = tm_shape(zones) + tm_polygons("TotPop2011", title = "Population", palette = "viridis") +
   tm_scale_bar() +
@@ -244,29 +245,29 @@ od_top3_jittered = od::od_jitter(odsf_top3, z = zones)
 od_top3_road = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 1000)
 od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 200)
 # od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
-m1 = tm_shape(odsf_top3, bbox = bbox) +
+m1 =  tm_shape(zones, bbox = bbox) +
+  tm_borders(col = "grey") +
+  tm_shape(odsf_top3, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
-  tm_shape(zones) +
-  tm_borders() +
   tm_layout(title = "A) Single origin and destination point per zone", title.bg.color =  "white")
-m2 = tm_shape(od_top3_jittered, bbox = bbox) +
+m2 =  tm_shape(zones, bbox = bbox) +
+  tm_borders(col = "grey") +
+  tm_shape(od_top3_jittered, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
-  tm_shape(zones) +
-  tm_borders() +
   tm_layout(title = "B) Randomised origin and destination points", title.bg.color =  "white")
-m3 = tm_shape(road_network_min, bbox = bbox) +
+m3 =  tm_shape(zones, bbox = bbox) +
+  tm_borders(col = "grey") +
+  tm_shape(road_network_min, bbox = bbox) +
   tm_lines(col = "darkgreen") +
-  # tm_shape(zones) +
-  # tm_borders() +
   tm_shape(od_top3_road) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
   tm_layout(title = "C) Randomised points sampled from transport network", title.bg.color =  "white", legend.position = c("right", "bottom"))
-m4 = tm_shape(road_network_min, bbox = bbox) +
+m4 = tm_shape(zones, bbox = bbox) +
+  tm_borders(col = "grey") +
+  tm_shape(road_network_min, bbox = bbox) +
   tm_lines(col = "darkgreen") +
   tm_shape(od_top3_disaggregated, bbox = bbox) +
   tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(75, 100, 125, 150)) +
-  # tm_shape(zones) +
-  # tm_borders()  +
   tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"))
 # todo: add a 4th figure showing sampling on the network
 # m3
