@@ -125,24 +125,34 @@ piggyback::pb_download_url("road_network_min.Rds", repo = "itsleeds/od")
 # piggyback::pb_upload("od_iz_ed.csv", repo = "itsleeds/od")
 # piggyback::pb_download_url("od_iz_ed.csv", repo = "itsleeds/od")
 od = readr::read_csv("https://github.com/ITSLeeds/od/releases/download/v0.3.1/od_iz_ed.csv")
-
 # head(od)
 
-u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_zones11_ed.Rds"
-f = basename(u)
-if(!file.exists(f)) download.file(u, f)
-zones = readRDS("iz_zones11_ed.Rds")
+# u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_zones11_ed.Rds"
+# f = basename(u)
+# if(!file.exists(f)) download.file(u, f)
+# zones = readRDS("iz_zones11_ed.Rds")
+# sf::write_sf(zones, "iz_zones11_ed.geojson")
+# piggyback::pb_upload("iz_zones11_ed.geojson", repo = "itsleeds/od")
+zones = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/iz_zones11_ed.geojson")
+
 # head(zones)
 
-u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_cents11_ed.Rds"
-f = basename(u)
-if(!file.exists(f)) download.file(u, f)
-centroids = readRDS(f)
+# u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_cents11_ed.Rds"
+# f = basename(u)
+# if(!file.exists(f)) download.file(u, f)
+# centroids = readRDS(f)
+# sf::write_sf(centroids, "iz_centroids11_ed.geojson")
+# piggyback::pb_upload("iz_centroids11_ed.geojson", repo = "itsleeds/od")
+centroids = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/iz_centroids11_ed.geojson")
 
-u = "https://github.com/ITSLeeds/od/releases/download/v0.3.1/road_network_min.Rds"
-f = basename(u)
-if(!file.exists(f)) download.file(u, f)
-road_network_min = readRDS(f)
+
+# u = "https://github.com/ITSLeeds/od/releases/download/v0.3.1/road_network_min.Rds"
+# f = basename(u)
+# if(!file.exists(f)) download.file(u, f)
+# road_network_min = readRDS(f)
+# sf::write_sf(road_network_min, "road_network_min.geojson")
+# piggyback::pb_upload("road_network_min.geojson", repo = "itsleeds/od")
+road_network_min = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/road_network_min.geojson")
 ```
 
 ```{r read-region}
