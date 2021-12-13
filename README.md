@@ -350,6 +350,13 @@ destionation points on the transport network (right).
 
 </div>
 
+This paper presents the concept and the general approach of OD
+jittering. There are many ways of achieving jittered OD pairs, and the
+one introduced here can be further refined using, for instance,
+different weights for zones activities or building categories, of for
+road hierarchy. Fixed destinations with randomized origins (such for
+school trip problems) can also be refined.
+
 <!-- # Discussion -->
 
 # 4 References
