@@ -117,10 +117,15 @@ piggyback::pb_download_url("road_network_min.Rds", repo = "itsleeds/od")
 
 
 ```{r read-inputs}
-u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/od_iz_ed.Rds"
-f = basename(u)
-if(!file.exists(f)) download.file(u, f)
-od = readRDS("od_iz_ed.Rds")
+# u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/od_iz_ed.Rds"
+# f = basename(u)
+# if(!file.exists(f)) download.file(u, f)
+# od = readRDS("od_iz_ed.Rds")
+# readr::write_csv(od, "od_iz_ed.csv")
+# piggyback::pb_upload("od_iz_ed.csv", repo = "itsleeds/od")
+# piggyback::pb_download_url("od_iz_ed.csv", repo = "itsleeds/od")
+od = readr::read_csv("https://github.com/ITSLeeds/od/releases/download/v0.3.1/od_iz_ed.csv")
+
 # head(od)
 
 u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_zones11_ed.Rds"

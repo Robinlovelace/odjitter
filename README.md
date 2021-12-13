@@ -3,6 +3,7 @@ route networks from origin-destination data
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
@@ -16,7 +17,7 @@ travel behavior worldwide. Despite emerging ‘big data’ sources such as
 massive GPS datasets, OD data continues to play an established — if not
 central — role in transport research in the 21<sup>st</sup> century.
 Recent applications range from analysis of the evolution of urban
-activity and shared mobility services over time (e.g. Shi et al. 2019;
+activity and shared mobility services over time (e.g. Shi et al. 2019;
 Li et al. 2019) to inference of congestion and mode split (Bachir et al.
 2019; Gao et al. 2021).
 
@@ -31,20 +32,35 @@ using reproducible analysis and open access data, a process we refer to
 as ‘jittering’.
 
 <!-- In this paper we outline such methods and their uses, demonstrating how jittering can be used to create more diffuse and accurate estimates of movement at the level of segments ('flows') on transport network, with minimal computational overheads compared with the computationally intensive process of route calculation ('routing') or processing large GPS datasets. -->
+
 <!-- Long version of paper: -->
+
 <!-- We do this by defining OD datasets, their uses, and other terms in relation to jittering, in Section <a href="#od"><strong>??</strong></a>; describing a real world case study, input datasets, and methods, in Section <a href="#methods">2</a>; presenting the results of different jittering techniques in Section <a href="#findings">3</a>; and discussing the potential uses of and next steps for the development of methods to add value to OD datasets for sustainable transport planning in section <a href="#discussion"><strong>??</strong></a>. -->
+
 <!-- Short version of paper: -->
+
 <!-- We do this by defining OD datasets, their uses, and other terms in relation to jittering, in this introduction; outlining the research question with reference to a real world case study of modelling cycling networks in Edinburgh, in Section <a href="#q"><strong>??</strong></a>; describing the results in Section <a href="#methods">2</a>; and presenting the results of different jittering techniques in Section <a href="#findings">3</a>. -->
+
 <!-- # Origin-destination data {#od} -->
+
 <!-- First, a description of the utility of OD data in contemporary policy contexts, and definitions, are in order. -->
+
 <!-- An example of the utility of OD data, and the utility of open access (anonymised and aggregtated) OD data in particular, is Propensity to Cycle Tool (PCT), first launched nationally across England in 2017 [@lovelace_propensity_2017]. -->
+
 <!-- The PCT provides a strong and consistent evidence-base that local authorities across England and Wales are using to inform strategic Local Cycling and Walking Plans. -->
+
 <!-- Based on OD data --- initially for commuting trips only but subsequently also based on travel to school data [@goodman_scenarios_2019] --- the tool visualises cycling potential at zone, desire line, route and route network levels, and is being used by government, consultancy and public/advocacy stakeholders nationwide [@lovelace_open_2020]. -->
+
 <!-- The PCT makes open OD data 'come to life' by converting a 'haystack' of data into meaningful insights into currently cycling levels and future potential, highlighting the need to invest in cohesive networks of cycling interventions, as illustrated in Figure <a href="#fig:haystack"><strong>??</strong></a>. -->
+
 <!-- The PCT is available for use by local authorities, consultancies, cycling advocacy groups, academic researchers and members of the public. -->
+
 <!-- Subsequent work building on the tool has been used to prioritise investment in active transport in the wake of the coronavirus pandemic [@lovelace_methods_2020]. -->
+
 <!-- Comparable tools have yet to be developed and deployed publicly in most other countries. -->
+
 <!-- With the exception of regionally specific models using software such as sDNA [@cooper_using_2017] (the results of which are usually not in the public domain) and bespoke city-specific models [@larsen_build_2013; @zhang_prioritizing_2014], there are few large scale tools using OD data that are free for public use that we are aware of. -->
+
 <!-- In this context, this paper outlines methods to add further value to OD data through processes of disaggregating OD data and 'jittering' to increase the density of route networks arising from the conversion of OD data into route network outputs of the kind illustrated in Figure <a href="#fig:haystack"><strong>??</strong></a>. -->
 
 The following question motivated the development of the jittering
@@ -62,13 +78,13 @@ definitions are in order:
 
 <!-- , it is worth briefly defining OD data: datasets that consist of: -->
 
--   **Origins**: information the departure for trips, in this context
+  - **Origins**: information the departure for trips, in this context
     IDs associated with zones of departure
--   **Destinations**: IDs representing the destination of trips
--   **Attributes**: typically the number of trips made between each ‘OD
+  - **Destinations**: IDs representing the destination of trips
+  - **Attributes**: typically the number of trips made between each ‘OD
     pair’, sometimes by mode and with additional attributes such as the
     Euclidean and route distance between the each OD pair
--   **Jittering**: The combined process of ‘splitting’ OD pairs
+  - **Jittering**: The combined process of ‘splitting’ OD pairs
     representing many trips into multiple ‘sub OD’ pairs
     (disaggregation) and assigning origins and destinations to multiple
     unique points within each zone
@@ -76,8 +92,11 @@ definitions are in order:
 # 2 Methods
 
 <!-- The methods described in this paper were developed to support a project to support Edinburgh City Council with their strategic cycle network planning activity. -->
+
 <!-- To understand the method and results it makes sense to start by introducing the case study area. -->
+
 <!-- ## A synthetic example: synthetic zones -->
+
 <!-- ## Real world example: Edinburgh -->
 
 The study area is the City of Edinburgh, a local authority with a
@@ -164,18 +183,18 @@ total trip count exceeding this threshold (set at 150 in this case) is
 split into the minimum number of disaggregated OD pairs that reduce the
 total number of trips below the threshold.
 
-| representation | geo_code1 | geo_code2 | all | foot |
-|:---------------|:----------|:----------|----:|-----:|
-| original       | S02001647 | S02001622 | 443 |  314 |
+| representation | geo\_code1 | geo\_code2 | all | foot |
+| :------------- | :--------- | :--------- | --: | ---: |
+| original       | S02001647  | S02001622  | 443 |  314 |
 
 Table 2.1: Attribute data associated with an OD pair before
 disaggregation.
 
-| representation | geo_code1 | geo_code2 |      all |     foot |
-|:---------------|:----------|:----------|---------:|---------:|
-| disaggregated  | S02001647 | S02001622 | 147.6667 | 104.6667 |
-| disaggregated  | S02001647 | S02001622 | 147.6667 | 104.6667 |
-| disaggregated  | S02001647 | S02001622 | 147.6667 | 104.6667 |
+| representation | geo\_code1 | geo\_code2 |      all |     foot |
+| :------------- | :--------- | :--------- | -------: | -------: |
+| disaggregated  | S02001647  | S02001622  | 147.6667 | 104.6667 |
+| disaggregated  | S02001647  | S02001622  | 147.6667 | 104.6667 |
+| disaggregated  | S02001647  | S02001622  | 147.6667 | 104.6667 |
 
 Table 2.2: Attribute data associated with an OD pair after
 disaggregation.
@@ -216,9 +235,9 @@ destionation points on the transport network
 
 # 4 References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references hanging-indent">
 
-<div id="ref-alexander_validation_2015" class="csl-entry">
+<div id="ref-alexander_validation_2015">
 
 Alexander, Lauren, Shan Jiang, Mikel Murga, and Marta C Gonz. 2015.
 “Validation of Origin-Destination Trips by Purpose and Time of Day
@@ -227,7 +246,7 @@ Methodological*, 1–20. <https://doi.org/10.1016/j.trc.2015.02.018>.
 
 </div>
 
-<div id="ref-bachir_inferring_2019" class="csl-entry">
+<div id="ref-bachir_inferring_2019">
 
 Bachir, Danya, Ghazaleh Khodabandelou, Vincent Gauthier, Mounim El
 Yacoubi, and Jakob Puchinger. 2019. “Inferring Dynamic
@@ -236,7 +255,7 @@ Origin-Destination Flows by Transport Mode Using Mobile Phone Data.”
 
 </div>
 
-<div id="ref-gao_method_2021" class="csl-entry">
+<div id="ref-gao_method_2021">
 
 Gao, Hong, Zhenjun Yan, Xu Hu, Zhaoyuan Yu, Wen Luo, Linwang Yuan, and
 Jiyi Zhang. 2021. “A Method for Exploring and Analyzing Spatiotemporal
@@ -246,7 +265,7 @@ Geo-Information* 10 (5): 288.
 
 </div>
 
-<div id="ref-he_simple_2018" class="csl-entry">
+<div id="ref-he_simple_2018">
 
 He, Biao, Yan Zhang, Yu Chen, and Zhihui Gu. 2018. “A Simple Line
 Clustering Method for Spatial Analysis with Origin-Destination Data and
@@ -256,17 +275,17 @@ Journal of Geo-Information* 7 (6): 203.
 
 </div>
 
-<div id="ref-katranji_mobility_2016" class="csl-entry">
+<div id="ref-katranji_mobility_2016">
 
 Katranji, Mehdi, Etienne Thuillier, Sami Kraiem, Laurent Moalic, and
 Fouad Hadj Selem. 2016. “Mobility Data Disaggregation: A Transfer
 Learning Approach.” In *2016 IEEE 19th International Conference on
-Intelligent Transportation Systems (ITSC)*, 1672–77.
+Intelligent Transportation Systems (ITSC)*, 1672–7.
 <https://doi.org/10.1109/ITSC.2016.7795783>.
 
 </div>
 
-<div id="ref-li_effects_2019" class="csl-entry">
+<div id="ref-li_effects_2019">
 
 Li, Haojie, Yingheng Zhang, Hongliang Ding, and Gang Ren. 2019. “Effects
 of Dockless Bike-Sharing Systems on the Usage of the London Cycle Hire.”
@@ -275,7 +294,7 @@ of Dockless Bike-Sharing Systems on the Usage of the London Cycle Hire.”
 
 </div>
 
-<div id="ref-liu_snn_2021" class="csl-entry">
+<div id="ref-liu_snn_2021">
 
 Liu, Qiliang, Jie Yang, Min Deng, Ci Song, and Wenkai Liu. 2021.
 “SNN\_flow: A Shared Nearest-Neighbor-Based Clustering Method for
@@ -284,7 +303,7 @@ Geographical Information Science*, 1–27.
 
 </div>
 
-<div id="ref-shi_exploring_2019" class="csl-entry">
+<div id="ref-shi_exploring_2019">
 
 Shi, Xiaoying, Fanshun Lv, Dewen Seng, Baixi Xing, and Jing Chen. 2019.
 “Exploring the Evolutionary Patterns of Urban Activity Areas Based on
