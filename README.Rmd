@@ -236,8 +236,7 @@ knitr::include_graphics(c(
 ))
 ```
 
-The techniques outlined in the following sub-sections are perhaps best understood visually, as illustrated in Figure \@ref(fig:jitters).
-The remainder of this section describes the methods illustrated in each of the facetted maps in Figure \@ref(fig:jitters).
+The techniques outlined in the following sub-sections are perhaps best understood visually, as illustrated in each of the facetted maps in Figure \@ref(fig:jitters).
 
 ```{r jitters, fig.cap="Illustration of jittering and disaggregation of OD data on small input dataset."}
 set.seed(2021)
@@ -326,7 +325,7 @@ od_disaggregated = od_top3_disaggregated %>%
   transmute(representation = "disaggregated", geo_code1 = o_agg, geo_code2 = d_agg, all, foot)
 ```
 
-```{r dis}
+```{r dis1}
 knitr::kable(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.")
 ```
 

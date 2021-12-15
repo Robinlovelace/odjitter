@@ -121,10 +121,8 @@ cells in the ‘foot’ column are represented geographically on the map.
 </div>
 
 The techniques outlined in the following sub-sections are perhaps best
-understood visually, as illustrated in Figure
-<a href="#fig:jitters">2.3</a>. The remainder of this section describes
-the methods illustrated in each of the facetted maps in Figure
-<a href="#fig:jitters">2.3</a>.
+understood visually, as illustrated in each of the facetted maps in
+Figure <a href="#fig:jitters">2.3</a>.
 
 <div class="figure">
 
@@ -178,8 +176,7 @@ could represent 1000 trips. To overcome this problem a process of
 disaggregation can be used, resulting in additional OD pairs within each
 pair of zones. The results of disaggregation are illustrated
 geographically in Figure <a href="#fig:jitters">2.3</a> (D) and in terms
-of changes to attributes, in Tables
-<a href="#tab:dis1"><strong>??</strong></a> and
+of changes to attributes, in Tables <a href="#tab:dis1">2.1</a> and
 <a href="#tab:dis2">2.2</a>. As shown in those tables, updated
 attributes can be calculated by dividing previous trip counts by the
 number of OD pairs in the disaggregated representation of the data, 3 in
@@ -189,50 +186,13 @@ total trip count exceeding this threshold (set at 150 in this case) is
 split into the minimum number of disaggregated OD pairs that reduce the
 total number of trips below the threshold.
 
-<table>
-<caption>
+| representation | geo\_code1 | geo\_code2 | all | foot |
+|:---------------|:-----------|:-----------|----:|-----:|
+| original       | S02001647  | S02001622  | 443 |  314 |
+
 Table 2.1: Attribute data associated with an OD pair before
 disaggregation.
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-representation
-</th>
-<th style="text-align:left;">
-geo\_code1
-</th>
-<th style="text-align:left;">
-geo\_code2
-</th>
-<th style="text-align:right;">
-all
-</th>
-<th style="text-align:right;">
-foot
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-original
-</td>
-<td style="text-align:left;">
-S02001647
-</td>
-<td style="text-align:left;">
-S02001622
-</td>
-<td style="text-align:right;">
-443
-</td>
-<td style="text-align:right;">
-314
-</td>
-</tr>
-</tbody>
-</table>
+
 <table>
 <caption>
 Table 2.2: Attribute data associated with an OD pair after
