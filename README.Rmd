@@ -1,7 +1,7 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-output: bookdown::github_document2
-# output: bookdown::html_document2
+# output: bookdown::github_document2
+output: bookdown::html_document2
 # output: bookdown::word_document2
 bibliography: references.bib
 ---
@@ -39,13 +39,13 @@ bbt_update_bib("README.Rmd", "references.bib")
 
 # Questions
 
-Origin-destination (OD) datasets are ubiquitous, used by statistical and transport planning organisations to efficiently represent aggregate travel behavior worldwide.
+Origin-destination (OD) datasets are ubiquitous in transport planning to efficiently represent aggregate travel behavior.
 Despite emerging 'big data' sources such as massive GPS datasets, OD data continues to play an established --- if not central --- role in transport research in the 21^st^ century.
 Recent applications range from analysis of the evolution of urban activity and shared mobility services over time [e.g. @shi_exploring_2019; @li_effects_2019] to inference of congestion and mode split [@bachir_inferring_2019; @gao_method_2021].
 
 <!-- Perhaps in part because they are so well established, comparatively few recent research papers have explored new methods for processing OD datasets. -->
-Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021] and disaggregation [@katranji_mobility_2016].
-To the best of our knowledge, this is the first paper to describe and test methods for randomising origin and destination points and disaggregation on a real world example using reproducible analysis and open access data, a process we refer to as 'jittering'.
+Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021], disaggregation [@katranji_mobility_2016] and location of 'connectors' joining zone centroids with the surrounding network [@jafari_investigation_2015].
+In this paper we present a new approach to pre-processing OD datasets before route network generation that we refer to as 'jittering'.
 
 <!-- In this paper we outline such methods and their uses, demonstrating how jittering can be used to create more diffuse and accurate estimates of movement at the level of segments ('flows') on transport network, with minimal computational overheads compared with the computationally intensive process of route calculation ('routing') or processing large GPS datasets. -->
 <!-- Long version of paper: -->
