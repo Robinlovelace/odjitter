@@ -1,9 +1,11 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-output: bookdown::github_document2
+# output: bookdown::github_document2
 # output: bookdown::html_document2
 # output: bookdown::word_document2
+output: bookdown::pdf_document2
 bibliography: references.bib
+# authors: Robin Lovelace and Rosa Félix
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -23,6 +25,7 @@ library(tidyverse)
 ```
 
 ```{r, eval=FALSE}
+file.copy("README.html", "jittering-paper.html")
 # Generate citations (requires Zotero)
 library(rbbt)
 # old way:
@@ -34,7 +37,7 @@ bbt_update_bib("README.Rmd", "references.bib")
 ```
 
 <!-- badges: start -->
-[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
+<!-- [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml) -->
 <!-- badges: end -->
 
 # Abstract {-}
@@ -334,12 +337,14 @@ od_disaggregated = od_top3_disaggregated %>%
 
 ```{r dis1}
 # kableExtra::kable(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.")
-gt::gt(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.")
+# gt::gt(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.")
+knitr::kable(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.", booktabs = TRUE)
 ```
 
 ```{r dis2}
 # knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.")
-gt::gt(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.")
+# gt::gt(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.")
+knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.", booktabs = TRUE)
 ```
 
 # Findings
@@ -349,8 +354,8 @@ Simple random sampling and sampling nodes on transport networks methods have bee
 The results of applying the approach to a large OD datasest, representing travel to work in Edinburgh, with sampling on the transport network, are illustrated in Figure \@ref(fig:rneted) (right).
 The 'jittered network' is substantially more dense and presumably more realistic than the 'unjittered network', a gain in network fidelity that comes at low computational cost.
 
-```{r rneted, fig.cap="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right)."}
-knitr::include_graphics("figures/rneted.png")
+```{r rneted, fig.cap="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right).", out.width="100%"}
+knitr::include_graphics("figures/rneted-updated.png")
 ```
 
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
