@@ -37,6 +37,13 @@ bbt_update_bib("README.Rmd", "references.bib")
 [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
 <!-- badges: end -->
 
+# Abstract {-}
+
+Origin-destination (OD) data is a vital source of information on travel patterns but its utility is limited by reliance on zone centroids.
+This paper presents a reproducible and open two-stage 'jittering' approach to tackling this problem, which (1) uses random points to represent unique start and end points (sampling), and (2) splits OD pairs representing many trips into many 'sub-OD' pairs.
+We find that route networks generated from jittered OD data are more diffuse and potentially realistic based on an example from Edinburgh.
+Further work is needed to validate the approach and to find optimal parameters for sampling and disaggregation.
+
 # Questions
 
 Origin-destination (OD) datasets are ubiquitous in transport planning to efficiently represent aggregate travel behavior.
