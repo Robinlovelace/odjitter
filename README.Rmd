@@ -26,6 +26,8 @@ library(tidyverse)
 
 ```{r, eval=FALSE}
 file.copy("README.html", "jittering-paper.html")
+file.copy("README.pdf", "jittering-paper.pdf")
+piggyback::pb_upload("jittering-paper.pdf")
 # Generate citations (requires Zotero)
 library(rbbt)
 # old way:
