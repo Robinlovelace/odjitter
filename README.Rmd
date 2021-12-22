@@ -1,7 +1,7 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-output: bookdown::github_document2
-# output: bookdown::html_document2
+# output: bookdown::github_document2
+output: bookdown::html_document2
 # output: bookdown::word_document2
 bibliography: references.bib
 ---
@@ -30,7 +30,7 @@ library(rbbt)
 # new way:
 bbt_update_bib("README.Rmd", "references.bib")
 # trackdown::upload_file(file = "README.Rmd", path_output = "README.docx")
-trackdown::update_file(file = "README.Rmd", path_output = "README.docx")
+# trackdown::update_file(file = "README.Rmd", path_output = "README.docx")
 ```
 
 <!-- badges: start -->
@@ -326,15 +326,14 @@ od_disaggregated = od_top3_disaggregated %>%
 ```
 
 ```{r dis1}
-knitr::kable(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.")
+# kableExtra::kable(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.")
+gt::gt(od_to_disag, caption = "Attribute data associated with an OD pair before disaggregation.")
 ```
 
 ```{r dis2}
-knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.")
+# knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.")
+gt::gt(od_disaggregated, caption = "Attribute data associated with an OD pair after disaggregation.")
 ```
-
-We refer to the combined process of sampling origin and destination points --- either using simple random geographic sampling, sampling from the transport network, or other sampling technique --- and disagreggation as jittering. 
-
 
 # Findings
 
@@ -349,11 +348,11 @@ In future work we aim to evaluate the extent to which route networks that are de
 knitr::include_graphics("figures/rneted.png")
 ```
 
+This is not the first time that such methods of "centroid connector placement" have been developed [@jafari_investigation_2015].
+It is, to the best of our knowledge, the first time that the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- has been documented and implemented with open, reproducible code (see the code that accompanies this paper).
 
-This paper presents the concept and the general approach of OD jittering. There are many ways of achieving jittered OD pairs, and the one introduced here can be further refined using, for instance, different weights for zones activities or building categories, of for road hierarchy. Fixed destinations with randomized origins (such for school trip problems) can also be refined.
+There are many ways of achieving jittered OD pairs, and the one introduced here can be further refined using, for instance, different weights for zones activities or building categories, of for road hierarchy. Fixed destinations with randomized origins (such for school trip problems) can also be refined.
 
 <!-- # Discussion -->
 
-
 # References
-
