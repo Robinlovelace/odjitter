@@ -348,7 +348,7 @@ knitr::include_graphics("figures/rneted.png")
 
 This is not the first time that such methods of "centroid connector placement" have been developed [@jafari_investigation_2015].
 It is, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implmentation based on open source software (see accompanying code).
-The results raise many questions avenues for future research: 
+The results raise many questions and avenues for future research: 
 
 - Are the jittered results measurably better when compared with counter datasets on the network?
 - Which jittering settings (including sampling strategies and levels of disaggregation) represent the best 'boom for buck' in terms of network accuracy divided by computational requirements?

@@ -921,7 +921,7 @@ jittering described in this paper — sampling origin and destination
 points (with simple random sampling or by sampling from the nodes on the
 network) and disagreggation — supported with a reproducible
 implmentation based on open source software (see accompanying code). The
-results raise many questions avenues for future research:
+results raise many questions and avenues for future research:
 
 -   Are the jittered results measurably better when compared with
     counter datasets on the network?
