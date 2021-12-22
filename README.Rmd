@@ -45,7 +45,7 @@ Recent applications range from analysis of the evolution of urban activity and s
 
 <!-- Perhaps in part because they are so well established, comparatively few recent research papers have explored new methods for processing OD datasets. -->
 Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021], disaggregation [@katranji_mobility_2016] and location of 'connectors' joining zone centroids with the surrounding network [@jafari_investigation_2015].
-In this paper we present a new approach to pre-processing OD datasets before route network generation that we refer to as 'jittering'.
+In this paper we present a new approach to pre-processing OD datasets before route network generation that we refer to as 'jittering', following the use of the term to describe a similar process of adding "random noise to the data" for data visualization [@wickham_2016_ggplot2].
 
 <!-- In this paper we outline such methods and their uses, demonstrating how jittering can be used to create more diffuse and accurate estimates of movement at the level of segments ('flows') on transport network, with minimal computational overheads compared with the computationally intensive process of route calculation ('routing') or processing large GPS datasets. -->
 <!-- Long version of paper: -->
@@ -79,13 +79,13 @@ The following question motivated the development of the jittering approach prese
 
 > How can OD data representing trips between large geographic zones be used more effectively, to generate results at the level of segments representing route networks of current or potential flow to inform local interventions?
 
-Our hypothesis was that pre-processing OD data using methods described in this paper would lead to more effective use of OD data in transport planning.
+Our hypothesis is that jittering leads to more effective use of OD data in transport planning.
 Before describing the approach to answer this question, some definitions are in order:
 
 <!-- , it is worth briefly defining OD data: datasets that consist of: -->
-- **Origins**: information the departure for trips, in this context IDs associated with zones of departure
-- **Destinations**: IDs representing the destination of trips
-- **Attributes**: typically the number of trips made between each 'OD pair', sometimes by mode and with additional attributes such as the Euclidean and route distance between the each OD pair
+- **Origins**: locations of trip departure, typically stored as ID codes linking to zones
+- **Destinations**: trip destinations, also stored as ID codes linking to zones
+- **Attributes**: the number of trips made between each 'OD pair' and additional attributes such as route distance between each OD pair
 - **Jittering**: The combined process of 'splitting' OD pairs representing many trips into multiple 'sub OD' pairs (disaggregation) and assigning origins and destinations to multiple unique points within each zone
 
 # Methods {#methods}
@@ -228,7 +228,7 @@ m1 = tm_shape(odsf_top3, bbox = bbox) +
 ```
 
 
-```{r od, fig.cap="Illustration of input data in tabular (bottom right, inset) and geographic form (in the map). Note how the ID codes in the first to columns of the table correspond with IDs in the zone data and how the cells in the 'foot' column are represented geographically on the map.", fig.show='hold', out.width="100%"}
+```{r od, fig.cap="Illustration of input data in tabular (bottom right, inset) and geographic form (in the map). Note how the ID codes in the first two columns of the table correspond with IDs in the zone data and how the cells in the 'foot' column are represented geographically on the map.", fig.show='hold', out.width="100%"}
 knitr::include_graphics(c(
   "figures/od-top-3-zones-metafigure.png"
   # "figures/od-top-3-table.png",
@@ -294,9 +294,9 @@ tmap_arrange(m1, m2, m3, m4, nrow = 2)
 Key to jittering is ensuring that each trip starts and ends in a different place.
 To do this, there must be 'sub-points' within each zone, one for each trip originating and departing.
 
-The simplest approach is simple random spatial sampling, as illustrated in Figure \@ref(fig:jitters) (B).
-This involves generating random coordinate pairs, testing to check if the point is contained withing the boundary of each zone from which points are required, and repeating the process until enough randomly located points have been created.
-This approach has the advantages of simplicity, requiring no additional datasets, but has the disadvantage of that it may lead to unrealistic start and end points, e.g. with trips being simulated to start in rivers and in uninhabited wilderness areas.
+The simplest approach is simple random spatial sampling, as illustrated in Figure \@ref(fig:jitters) (B), which involves generating random coordinate pairs.
+<!-- testing to check if the point is contained withing the boundary of each zone from which points are required, and repeating the process until enough randomly located points have been created. -->
+This approach has the advantages of simplicity, requiring no additional datasets, but has the disadvantage that it may lead to unrealistic start and end points, e.g. with trips being simulated to start in rivers and in uninhabited wilderness areas.
 
 <!-- ## Sampling origin and destination points from the transport network -->
 To overcome the limitations of the simple random sampling approach, the universe of possible coordinates from which trips can originate and end can be reduced by providing another geographic input dataset.
@@ -346,8 +346,8 @@ The 'jittered network' is substantially more dense and presumably more realistic
 knitr::include_graphics("figures/rneted.png")
 ```
 
-This is not the first time that such methods of "centroid connector placement" have been developed [@jafari_investigation_2015].
-It is, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implmentation based on open source software (see accompanying code).
+Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
+This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software (see accompanying code).
 The results raise many questions and avenues for future research: 
 
 - Are the jittered results measurably better when compared with counter datasets on the network?
