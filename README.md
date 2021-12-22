@@ -161,154 +161,752 @@ total trip count exceeding this threshold (set at 150 in this case) is
 split into the minimum number of disaggregated OD pairs that reduce the
 total number of trips below the threshold.
 
-<table>
-<caption>
-Table 2.1: Attribute data associated with an OD pair before
-disaggregation.
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-representation
-</th>
-<th style="text-align:left;">
-geo_code1
-</th>
-<th style="text-align:left;">
-geo_code2
-</th>
-<th style="text-align:right;">
-all
-</th>
-<th style="text-align:right;">
-foot
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-original
-</td>
-<td style="text-align:left;">
-S02001647
-</td>
-<td style="text-align:left;">
-S02001622
-</td>
-<td style="text-align:right;">
-443
-</td>
-<td style="text-align:right;">
-314
-</td>
-</tr>
-</tbody>
-</table>
-<table>
-<caption>
-Table 2.2: Attribute data associated with an OD pair after
-disaggregation.
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-representation
-</th>
-<th style="text-align:left;">
-geo_code1
-</th>
-<th style="text-align:left;">
-geo_code2
-</th>
-<th style="text-align:right;">
-all
-</th>
-<th style="text-align:right;">
-foot
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-disaggregated
-</td>
-<td style="text-align:left;">
-S02001647
-</td>
-<td style="text-align:left;">
-S02001622
-</td>
-<td style="text-align:right;">
-147.6667
-</td>
-<td style="text-align:right;">
-104.6667
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-disaggregated
-</td>
-<td style="text-align:left;">
-S02001647
-</td>
-<td style="text-align:left;">
-S02001622
-</td>
-<td style="text-align:right;">
-147.6667
-</td>
-<td style="text-align:right;">
-104.6667
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-disaggregated
-</td>
-<td style="text-align:left;">
-S02001647
-</td>
-<td style="text-align:left;">
-S02001622
-</td>
-<td style="text-align:right;">
-147.6667
-</td>
-<td style="text-align:right;">
-104.6667
-</td>
-</tr>
-</tbody>
-</table>
+<div id="mejinyxlwc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
 
-We refer to the combined process of sampling origin and destination
-points — either using simple random geographic sampling, sampling from
-the transport network, or other sampling technique — and disagreggation
-as jittering.
+#mejinyxlwc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mejinyxlwc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mejinyxlwc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mejinyxlwc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mejinyxlwc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mejinyxlwc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mejinyxlwc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mejinyxlwc .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mejinyxlwc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mejinyxlwc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mejinyxlwc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mejinyxlwc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mejinyxlwc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#mejinyxlwc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mejinyxlwc .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mejinyxlwc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mejinyxlwc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mejinyxlwc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mejinyxlwc .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mejinyxlwc .gt_left {
+  text-align: left;
+}
+
+#mejinyxlwc .gt_center {
+  text-align: center;
+}
+
+#mejinyxlwc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mejinyxlwc .gt_font_normal {
+  font-weight: normal;
+}
+
+#mejinyxlwc .gt_font_bold {
+  font-weight: bold;
+}
+
+#mejinyxlwc .gt_font_italic {
+  font-style: italic;
+}
+
+#mejinyxlwc .gt_super {
+  font-size: 65%;
+}
+
+#mejinyxlwc .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <caption>(#tab:dis1)Attribute data associated with an OD pair before disaggregation.</caption>
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">representation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">geo_code1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">geo_code2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">all</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">foot</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">original</td>
+<td class="gt_row gt_left">S02001647</td>
+<td class="gt_row gt_left">S02001622</td>
+<td class="gt_row gt_right">443</td>
+<td class="gt_row gt_right">314</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<div id="xpsnkvztxx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#xpsnkvztxx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#xpsnkvztxx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#xpsnkvztxx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#xpsnkvztxx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#xpsnkvztxx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#xpsnkvztxx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#xpsnkvztxx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#xpsnkvztxx .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xpsnkvztxx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#xpsnkvztxx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#xpsnkvztxx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#xpsnkvztxx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#xpsnkvztxx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#xpsnkvztxx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xpsnkvztxx .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xpsnkvztxx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#xpsnkvztxx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#xpsnkvztxx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#xpsnkvztxx .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#xpsnkvztxx .gt_left {
+  text-align: left;
+}
+
+#xpsnkvztxx .gt_center {
+  text-align: center;
+}
+
+#xpsnkvztxx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#xpsnkvztxx .gt_font_normal {
+  font-weight: normal;
+}
+
+#xpsnkvztxx .gt_font_bold {
+  font-weight: bold;
+}
+
+#xpsnkvztxx .gt_font_italic {
+  font-style: italic;
+}
+
+#xpsnkvztxx .gt_super {
+  font-size: 65%;
+}
+
+#xpsnkvztxx .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <caption>(#tab:dis2)Attribute data associated with an OD pair after disaggregation.</caption>
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">representation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">geo_code1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">geo_code2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">all</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">foot</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">disaggregated</td>
+<td class="gt_row gt_left">S02001647</td>
+<td class="gt_row gt_left">S02001622</td>
+<td class="gt_row gt_right">147.6667</td>
+<td class="gt_row gt_right">104.6667</td></tr>
+    <tr><td class="gt_row gt_left">disaggregated</td>
+<td class="gt_row gt_left">S02001647</td>
+<td class="gt_row gt_left">S02001622</td>
+<td class="gt_row gt_right">147.6667</td>
+<td class="gt_row gt_right">104.6667</td></tr>
+    <tr><td class="gt_row gt_left">disaggregated</td>
+<td class="gt_row gt_left">S02001647</td>
+<td class="gt_row gt_left">S02001622</td>
+<td class="gt_row gt_right">147.6667</td>
+<td class="gt_row gt_right">104.6667</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
 
 # 3 Findings
 
-We found that re-sampling origin and start points during the conversion
-of tabular OD datasets to their representation as geographic ‘desire
-lines’ can be undertaken in a variety of ways, including simple random
-sampling, sampling nodes on transport networks and simulating origin and
-destination points in polygons representing building. Building on the
-established practice of jittering in data visualisation \[ref\], we
-label this group of techniques ‘origin-destination jittering’, which
-includes the vital ‘disaggregation’ step to ensure a diffuse network.
-
-The results of applying each of these jittering techniques to an OD
-dataset representing travel to work in Edinburgh are illustrated in
-Figure <a href="#fig:rneted">3.1</a>. The results demonstrate that OD
-jittering led to substantially more dense and presumably more realistic
-route networks. In future work we aim to evaluate the extent to which
-route networks that are derived from jittered datasets are better, with
-reference to comparisons between observed travel behavior on transport
-networks including from manual and automatic counters at point locations
-and other sources of data.
+We found that the process of jittering can generate desire lines that
+have more widely distributed, and potentially realistic, start and end
+points. Simple random sampling and sampling nodes on transport networks
+methods have been demonstrated conceptually and with reference to a
+small dataset in the previous section. The results of applying the
+approach to a large OD datasest, representing travel to work in
+Edinburgh, with sampling on the transport network, are illustrated in
+Figure <a href="#fig:rneted">3.1</a> (right). The ‘jittered network’ is
+substantially more dense and presumably more realistic than the
+‘unjittered network’, a gain in network fidelity that comes at low
+computational cost.
 
 ![Figure 3.1: Route network results derived from non-jittered OD data
 (left) and OD data that had been jittered, with pre-processing steps
@@ -316,14 +914,30 @@ including disaggregation of large flows and randomisation of origin and
 destionation points on the transport network
 (right).](figures/rneted.png)
 
-This paper presents the concept and the general approach of OD
-jittering. There are many ways of achieving jittered OD pairs, and the
-one introduced here can be further refined using, for instance,
-different weights for zones activities or building categories, of for
-road hierarchy. Fixed destinations with randomized origins (such for
-school trip problems) can also be refined.
+This is not the first time that such methods of “centroid connector
+placement” have been developed (Jafari et al. 2015). It is, to the best
+of our knowledge, the first paper focussed on the two step process of
+jittering described in this paper — sampling origin and destination
+points (with simple random sampling or by sampling from the nodes on the
+network) and disagreggation — supported with a reproducible
+implmentation based on open source software (see accompanying code). The
+results raise many questions avenues for future research:
 
-<!-- # Discussion -->
+-   Are the jittered results measurably better when compared with
+    counter datasets on the network?
+-   Which jittering settings (including sampling strategies and levels
+    of disaggregation) represent the best ‘boom for buck’ in terms of
+    network accuracy divided by computational requirements?
+-   And can further refinements, for example sampling with weights to
+    increase the proportion of trips associated with large buildings or
+    certain road types, yield further benefits?
+
+Before further refining the approach, the priority should be validation
+to answer the first of these questions. To do so requires a place that
+has both good open OD data and good observed travel behavior data, for
+example from manual and automatic counters at point locations on the
+network (Lindsey et al. 2013) and other sources of data (Zheng et al.
+2016).
 
 # 4 References
 
@@ -367,6 +981,16 @@ Journal of Geo-Information* 7 (6): 203.
 
 </div>
 
+<div id="ref-jafari_investigation_2015" class="csl-entry">
+
+Jafari, Ehsan, Mason D. Gemar, Natalia Ruiz Juri, and Jennifer Duthie.
+2015. “Investigation of Centroid Connector Placement for Advanced
+Traffic Assignment Models with Added Network Detail.” *Transportation
+Research Record: Journal of the Transportation Research Board* 2498
+(June): 19–26. <https://doi.org/10.3141/2498-03>.
+
+</div>
+
 <div id="ref-katranji_mobility_2016" class="csl-entry">
 
 Katranji, Mehdi, Etienne Thuillier, Sami Kraiem, Laurent Moalic, and
@@ -386,6 +1010,15 @@ of Dockless Bike-Sharing Systems on the Usage of the London Cycle Hire.”
 
 </div>
 
+<div id="ref-lindsey_minnesota_2013" class="csl-entry">
+
+Lindsey, Greg, Steve Hankey, Xize Wang, and Junzhou Chen. 2013. “The
+Minnesota Bicycle and Pedestrian Counting Initiative: Methodologies for
+Non-Motorized Traffic Monitoring.” Minnesota Department of
+Transportation. <https://www.lrrb.org/media/reports/201324.pdf>.
+
+</div>
+
 <div id="ref-liu_snn_2021" class="csl-entry">
 
 Liu, Qiliang, Jie Yang, Min Deng, Ci Song, and Wenkai Liu. 2021.
@@ -400,6 +1033,16 @@ Geographical Information Science*, 1–27.
 Shi, Xiaoying, Fanshun Lv, Dewen Seng, Baixi Xing, and Jing Chen. 2019.
 “Exploring the Evolutionary Patterns of Urban Activity Areas Based on
 Origin-Destination Data.” *IEEE Access* 7: 20416–31.
+
+</div>
+
+<div id="ref-zheng_big_2016" class="csl-entry">
+
+Zheng, Xinhu, Wei Chen, Pu Wang, Dayong Shen, Songhang Chen, Xiao Wang,
+Qingpeng Zhang, and Liuqing Yang. 2016. “Big Data for Social
+Transportation.” *IEEE Transactions on Intelligent Transportation
+Systems* 17 (3): 620–30.
+<http://ieeexplore.ieee.org/abstract/document/7359138/>.
 
 </div>
 

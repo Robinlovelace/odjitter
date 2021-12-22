@@ -1,7 +1,7 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-# output: bookdown::github_document2
-output: bookdown::html_document2
+output: bookdown::github_document2
+# output: bookdown::html_document2
 # output: bookdown::word_document2
 bibliography: references.bib
 ---
@@ -337,22 +337,24 @@ gt::gt(od_disaggregated, caption = "Attribute data associated with an OD pair af
 
 # Findings
 
-We found that re-sampling origin and start points during the conversion of tabular OD datasets to their representation as geographic 'desire lines' can be undertaken in a variety of ways, including simple random sampling, sampling nodes on transport networks and simulating origin and destination points in polygons representing building.
-Building on the established practice of jittering in data visualisation [ref], we label this group of techniques 'origin-destination jittering', which includes the vital 'disaggregation' step to ensure a diffuse network.
-
-The results of applying each of these jittering techniques to an OD dataset representing travel to work in Edinburgh are illustrated in Figure \@ref(fig:rneted).
-The results demonstrate that OD jittering led to substantially more dense and presumably more realistic route networks.
-In future work we aim to evaluate the extent to which route networks that are derived from jittered datasets are better, with reference to comparisons between observed travel behavior on transport networks including from manual and automatic counters at point locations and other sources of data.
+We found that the process of jittering can generate desire lines that have more widely distributed, and potentially realistic, start and end points.
+Simple random sampling and sampling nodes on transport networks methods have been demonstrated conceptually and with reference to a small dataset in the previous section.
+The results of applying the approach to a large OD datasest, representing travel to work in Edinburgh, with sampling on the transport network, are illustrated in Figure \@ref(fig:rneted) (right).
+The 'jittered network' is substantially more dense and presumably more realistic than the 'unjittered network', a gain in network fidelity that comes at low computational cost.
 
 ```{r rneted, fig.cap="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right)."}
 knitr::include_graphics("figures/rneted.png")
 ```
 
 This is not the first time that such methods of "centroid connector placement" have been developed [@jafari_investigation_2015].
-It is, to the best of our knowledge, the first time that the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- has been documented and implemented with open, reproducible code (see the code that accompanies this paper).
+It is, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implmentation based on open source software (see accompanying code).
+The results raise many questions avenues for future research: 
 
-There are many ways of achieving jittered OD pairs, and the one introduced here can be further refined using, for instance, different weights for zones activities or building categories, of for road hierarchy. Fixed destinations with randomized origins (such for school trip problems) can also be refined.
+- Are the jittered results measurably better when compared with counter datasets on the network?
+- Which jittering settings (including sampling strategies and levels of disaggregation) represent the best 'boom for buck' in terms of network accuracy divided by computational requirements?
+- And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings or certain road types, yield further benefits? 
 
-<!-- # Discussion -->
+Before further refining the approach, the priority should be validation to answer the first of these questions.
+To do so requires a place that has both good open OD data and good observed travel behavior data, for example from manual and automatic counters at point locations on the network [@lindsey_minnesota_2013] and other sources of data [@zheng_big_2016].
 
 # References
