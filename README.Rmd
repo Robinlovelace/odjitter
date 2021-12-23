@@ -5,7 +5,6 @@ title: "Jittering: A computationally efficient method for generating realistic r
 # output: bookdown::word_document2
 output: bookdown::pdf_document2
 bibliography: references.bib
-# authors: Robin Lovelace and Rosa Félix
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -39,7 +38,6 @@ bbt_update_bib("README.Rmd", "references.bib")
 ```
 
 <!-- badges: start -->
-<!-- [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml) -->
 <!-- badges: end -->
 
 # Abstract {-}
