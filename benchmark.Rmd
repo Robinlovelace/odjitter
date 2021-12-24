@@ -1,0 +1,135 @@
+---
+output: github_document
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+
+This document provides details on the implementation of methods for jittering OD data, as set out in the paper "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data".
+
+# Setup
+
+To reproduce the code in this document you need R and Rust installed.
+You need to have installed and loaded the following packages:
+
+```{r, message=FALSE}
+library(od)
+library(dplyr)
+```
+
+
+# Input data
+
+The input files consist of a .csv file representing travel between zones and .geojson files representing zones and the transport network. 
+
+```{r, echo=FALSE, eval=FALSE}
+# upload minimal zone data
+road_segments_per_zone = road_network_min %>% 
+  sf::st_join(zones %>% select(InterZone), join = sf::st_within) %>% 
+  sf::st_drop_geometry() %>% 
+  group_by(InterZone) %>% 
+  summarise(n = n())
+summary(road_segments_per_zone$n)
+road_segments_per_zone_20plus = road_segments_per_zone %>% 
+  filter(n >= 20)
+
+# zones_min = zones[road_network_min, , op = sf::st_contains]
+zones_min = zones %>% 
+  filter(InterZone %in% road_segments_per_zone_20plus$InterZone)
+od_min = od %>% 
+  filter(geo_code1 %in% zones_min$InterZone & geo_code2 %in% zones_min$InterZone)
+plot(zones_min)
+readr::write_csv(od_min, "od_min.csv")
+piggyback::pb_upload("od_min.csv", repo = "itsleeds/od")
+file.remove("zones_min.geojson")
+sf::write_sf(zones_min, "zones_min.geojson")
+piggyback::pb_upload(file = "zones_min.geojson", repo = "itsleeds/od")
+```
+
+The .csv file can be read-in and printed as follows
+
+
+```{r}
+od = readr::read_csv("https://github.com/ITSLeeds/od/releases/download/v0.3.1/od_min.csv")
+head(od)
+```
+
+The GeoJSON files can be read-in and plotted in R as follows:
+
+```{r}
+zones = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/zones_min.geojson")
+road_net = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/road_network_min.geojson")
+plot(zones$geometry)
+plot(road_net, col = "red", add = TRUE)
+```
+
+The OD dataset can be converted to geographic desire lines as follows:
+
+```{r}
+desire_lines = od::od_to_sf(od, zones)
+plot(desire_lines %>% select(foot))
+```
+
+
+# Jittering in R
+
+The R implementation of jittering works as follows, with the unjittered representation of the data on the left and jittered representation of the data on the right:
+
+```{r}
+j1 = od::od_jitter(od = od, z = zones, subpoints = road_net, max_per_od = 50)
+plot(road_net$geometry, col = "grey")
+plot(j1 %>% select(foot), add = TRUE)
+```
+
+What happened?
+The input dataset consisting of `r nrow(od)` was disaggregated into an equivalent dataset with `r nrow(j1)` rows.
+Start and end points were sampled on the road network.
+However, the total amount of flow remained unchanged, as can be seen by looking at equivalent data for the first row in the `od` and `j1` datasets:
+
+```{r}
+od %>%
+  slice(1) %>% 
+  knitr::kable()
+```
+
+```{r}
+j1 %>% 
+  filter(paste0(o_agg, d_agg) == paste0(od$geo_code1[1], od$geo_code2[1])) %>% 
+  knitr::kable()
+```
+
+
+The column totals add up so both representations contain the same travel data, just more geographically distributed.
+You can increase the amount of geographic distribution but decreasing values passed to the `max_per_od` argument in the `od_jitter()` function.
+
+An issue with the function is that it is slow. 
+
+```{r, message=FALSE}
+bench::mark(
+  R = od::od_jitter(od = od, z = zones, subpoints = road_net, max_per_od = 50)
+)
+```
+
+The output above shows it took almost a second to jitter the 49 lines in the input dataset, and tests suggest that the function slows down substantially as the size of the input datasets increases.
+
+So maybe it's worth implementing a solution in another lanugage such as Rust.
+
+# Jittering in Rust
+
+```{r}
+library(rextendr)
+```
+
+
+```{extendr}
+rprintln!("Hello from Rust!");
+
+let x = 5;
+let y = 7;
+let z = x*y;
+
+z
+```
+
