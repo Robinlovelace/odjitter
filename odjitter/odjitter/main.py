@@ -42,16 +42,14 @@ def jitter(
         destination_zone = zones[row[destination_key]]
 
         # How many times will we jitter this one row?
-        this_row_n = float(row[all_key])
-        factor = this_row_n / max_per_od
+        repeat = ceil(float(row[all_key]) / max_per_od)
 
         for k, v in row.items():
-            # TODO Leave it alone if it's not numeric
             if(k == origin_key or k == destination_key):
                 continue
-            row[k] = float(v) / factor
+            row[k] = float(v) / float(repeat)
 
-        for _ in range(ceil(factor)):
+        for _ in range(ceil(repeat)):
             o = random_point_in_polygon(origin_zone)
             d = random_point_in_polygon(destination_zone)
             line = LineString([o, d])
@@ -111,4 +109,4 @@ if __name__ == '__main__':
     print(f'Writing {len(features)} jittered rows to output.geojson')
     fc = geojson.FeatureCollection(features)
     with open('output.geojson', 'w') as f:
-        f.write(geojson.dumps(fc))
+        f.write(geojson.dumps(fc, indent=2))
