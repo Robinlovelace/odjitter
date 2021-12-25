@@ -8,15 +8,17 @@ from shapely.geometry import shape, LineString, Point
 
 # TODO timer
 # TODO drop into a repl
+# TODO subsample from the other geojson file. just sample from all the raw vertices in the roads, not along the roads, curvy roads will be biased
 
 
 def jitter(
-        zones,
-        csv_path,
-        max_per_od=1,
-        origin_key='geo_code1',
-        destination_key='geo_code2',
-        all_key='all'):
+    zones,
+    csv_path,
+    max_per_od=1,
+    origin_key="geo_code1",
+    destination_key="geo_code2",
+    all_key="all",
+):
     """
     Jitter origin/destination pairs between zones to specific points.
 
@@ -45,7 +47,7 @@ def jitter(
         repeat = ceil(float(row[all_key]) / max_per_od)
 
         for k, v in row.items():
-            if(k == origin_key or k == destination_key):
+            if k == origin_key or k == destination_key:
                 continue
             row[k] = float(v) / float(repeat)
 
@@ -58,13 +60,13 @@ def jitter(
     return output
 
 
-def load_zones_from_geojson(path, name_key='InterZone'):
+def load_zones_from_geojson(path, name_key="InterZone"):
     """ Build a dictionary from zone codes to polygons """
     zones = {}
     gj = geojson.load(open(path))
-    for feature in gj['features']:
-        name = feature['properties'][name_key]
-        polygon = shape(feature['geometry'])
+    for feature in gj["features"]:
+        name = feature["properties"][name_key]
+        polygon = shape(feature["geometry"])
         zones[name] = polygon
     return zones
 
@@ -91,22 +93,22 @@ def sum_per_mode(rows):
     return sums
 
 
-if __name__ == '__main__':
-    zones = load_zones_from_geojson('../data/zones_min.geojson')
-    results = jitter(zones, '../data/od_min.csv', max_per_od=10)
+if __name__ == "__main__":
+    zones = load_zones_from_geojson("../data/zones_min.geojson")
+    results = jitter(zones, "../data/od_min.csv", max_per_od=10)
 
     sums_before = sum_per_mode(
-        [row for row in csv.DictReader(open('../data/od_min.csv'))])
+        [row for row in csv.DictReader(open("../data/od_min.csv"))]
+    )
     sums_after = sum_per_mode([props for props, ls in results])
-    for key in ['all', 'car_driver', 'bicycle']:
-        print(f'Sums for {key}: {sums_before[key]} vs {sums_after[key]}')
+    for key in ["all", "car_driver", "bicycle"]:
+        print(f"Sums for {key}: {sums_before[key]} vs {sums_after[key]}")
 
     # Write the results as GeoJSON
     features = []
     for properties, line_string in results:
-        features.append(geojson.Feature(
-            geometry=line_string, properties=properties))
-    print(f'Writing {len(features)} jittered rows to output.geojson')
+        features.append(geojson.Feature(geometry=line_string, properties=properties))
+    print(f"Writing {len(features)} jittered rows to output.geojson")
     fc = geojson.FeatureCollection(features)
-    with open('output.geojson', 'w') as f:
+    with open("output.geojson", "w") as f:
         f.write(geojson.dumps(fc, indent=2))
