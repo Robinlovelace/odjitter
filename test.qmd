@@ -81,3 +81,36 @@ od_out
 
 ```
 
+
+
+```{r}
+tictoc::tic()
+```
+
+```bash
+poetry run python main.py
+```
+
+```{r}
+library(reticulate)
+source_python("main.py")
+```
+
+```{python}
+zones = load_zones_from_geojson("data/zones_min.geojson")
+results = jitter(zones, "data/od_min.csv", max_per_od=10)
+features = []
+for properties, line_string in results:
+    features.append(geojson.Feature(geometry=line_string, properties=properties))
+print(f"Writing {len(features)} jittered rows to output.geojson")
+fc = geojson.FeatureCollection(features)
+with open("output3.geojson", "w") as f:
+    f.write(geojson.dumps(fc, indent=2))
+
+```
+
+```{r, eval=FALSE}
+o = geojsonsf::geojson_sf("output2.geojson")
+mapview::mapview(o)
+```
+
