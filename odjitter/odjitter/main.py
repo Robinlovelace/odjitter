@@ -43,21 +43,6 @@ def jitter(max_per_od):
     return output
 
 
-
-# 100 rows, max = 200 -> 1 output
-# 100 rows, max = 1 -> 100 output
-
-# 100 rows, max = 2 -> 50 output
-    # bike = 1
-    # car = 99 
-    
-
-# all, car, bike, drive, jog
-# max_per_od = 5
-
-
-
-
 def random_point_in_polygon(poly):
     min_x, min_y, max_x, max_y = poly.bounds
     while True:
@@ -71,7 +56,8 @@ if __name__ == '__main__':
     features = []
     # Transform to geojson
     for properties, line_string in jittered:
-        features.append(geojson.Feature(geometry=line_string, properties=properties))
+        features.append(geojson.Feature(
+            geometry=line_string, properties=properties))
     fc = geojson.FeatureCollection(features)
     with open('output.geojson', 'w') as f:
         f.write(geojson.dumps(fc))
