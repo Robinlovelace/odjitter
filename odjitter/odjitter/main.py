@@ -21,7 +21,7 @@ def jitter(max_per_od):
 
     for row in csv.DictReader(open("../data/od_min.csv")):
         origin_zone = zones[row['geo_code1']]
-        destination_zone = zones[row['geo_code1']]
+        destination_zone = zones[row['geo_code2']]
 
         # How many times will we jitter this one row?
         this_row_n = float(row['all'])
