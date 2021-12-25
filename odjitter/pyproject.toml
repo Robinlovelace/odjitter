@@ -6,6 +6,8 @@ authors = ["Dustin Carlino <dabreegster@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+geojson = "^2.5.0"
+Shapely = "^1.8.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
