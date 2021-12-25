@@ -48,13 +48,12 @@ def jitter(
         orig_total += this_row_n
         factor = this_row_n / max_per_od
 
-        # Scale all of the properties
-        del row[origin_key]
-        del row[destination_key]
-
         for k, v in row.items():
             # TODO Leave it alone if it's not numeric
+            if(k == origin_key or k == destination_key):
+                continue
             row[k] = float(v) / factor
+
 
         for _ in range(ceil(factor)):
             o = random_point_in_polygon(origin_zone)
@@ -102,4 +101,4 @@ if __name__ == '__main__':
     print(f'Writing {len(features)} jittered rows to output.geojson')
     fc = geojson.FeatureCollection(features)
     with open('output.geojson', 'w') as f:
-        f.write(geojson.dumps(fc, pretty))
+        f.write(geojson.dumps(fc))
