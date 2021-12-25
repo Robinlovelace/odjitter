@@ -37,15 +37,12 @@ def jitter(
 
     output = []
 
-    orig_total = 0.0
-
     for row in csv.DictReader(open(csv_path)):
         origin_zone = zones[row[origin_key]]
         destination_zone = zones[row[destination_key]]
 
         # How many times will we jitter this one row?
         this_row_n = float(row[all_key])
-        orig_total += this_row_n
         factor = this_row_n / max_per_od
 
         for k, v in row.items():
@@ -54,18 +51,11 @@ def jitter(
                 continue
             row[k] = float(v) / factor
 
-
         for _ in range(ceil(factor)):
             o = random_point_in_polygon(origin_zone)
             d = random_point_in_polygon(destination_zone)
             line = LineString([o, d])
             output.append((row, line))
-
-    print(f'originally total is {orig_total}')
-    new_total = 0.0
-    for row, _ in output:
-        new_total += row['all']
-    print(f'new total is {new_total}')
 
     return output
 
@@ -89,9 +79,29 @@ def random_point_in_polygon(poly):
             return pt
 
 
+def sum_per_mode(rows):
+    sums = {}
+    for key in rows[0].keys():
+        sums[key] = 0.0
+    for row in rows:
+        for key, value in row.items():
+            try:
+                sums[key] += float(value)
+            except:
+                # Ignore string values
+                pass
+    return sums
+
+
 if __name__ == '__main__':
     zones = load_zones_from_geojson('../data/zones_min.geojson')
-    results = jitter(zones, '../data/od_min.csv', max_per_od=1)
+    results = jitter(zones, '../data/od_min.csv', max_per_od=10)
+
+    sums_before = sum_per_mode(
+        [row for row in csv.DictReader(open('../data/od_min.csv'))])
+    sums_after = sum_per_mode([props for props, ls in results])
+    for key in ['all', 'car_driver', 'bicycle']:
+        print(f'Sums for {key}: {sums_before[key]} vs {sums_after[key]}')
 
     # Write the results as GeoJSON
     features = []
