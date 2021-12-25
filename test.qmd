@@ -1,0 +1,83 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+tictoc::tic()
+```
+
+```{bash}
+cd odjitter
+poetry run python odjitter/main.py
+cd ..
+```
+
+You can add options to executable code like this
+
+```{r}
+tictoc::toc()
+```
+
+R implementation is around 1.3 s.
+
+```{r}
+# tictoc::tic()
+# zones = geojsonsf::geojson_sf("data/zones_min.geojson")
+# od = readr::read_csv("data/od_min.csv")
+# od_jittered = od::od_jitter(od = od, z = zones, max_per_od = 1)
+# # sf::write_sf(od_jittered, "od_jittered.geojson")
+# tictoc::toc()
+```
+
+We can check the outputs as follow:
+
+```{r, eval=FALSE}
+od_out = sf::read_sf("odjitter/output.geojson")
+dim(od_out)
+[1] 679  10
+sum(od_out$all)
+od_out
+# Simple feature collection with 679 features and 9 fields
+# Geometry type: LINESTRING
+# Dimension:     XY
+# Bounding box:  xmin: -3.235073 ymin: 55.92577 xmax: -3.14906 ymax: 55.95828
+# Geodetic CRS:  WGS 84
+# # A tibble: 679 × 10
+#      all from_home train   bus car_driver car_passenger bicycle  foot other                                 geometry
+#    <dbl>     <dbl> <dbl> <dbl>      <dbl>         <dbl>   <dbl> <dbl> <dbl>                         <LINESTRING [°]>
+#  1  672.         0     0  24.6       49.2           0      16.4  582.   0   (-3.213885 55.93153, -3.216229 55.92611)
+#  2  672.         0     0  24.6       49.2           0      16.4  582.   0    (-3.21691 55.93271, -3.204772 55.93176)
+#  3  672.         0     0  24.6       49.2           0      16.4  582.   0   (-3.217438 55.92786, -3.219253 55.92577)
+od_in = read.csv("od_min.csv")
+sum(od_in$all)
+sum(od_in$bicycle)
+od_out = sf::read_sf("od_jittered.geojson")
+dim(od_out)
+# [1] 679  14
+sum(od_out$all)
+sum(od_out$bicycle)
+od_out
+# Simple feature collection with 679 features and 13 fields
+# Geometry type: LINESTRING
+# Dimension:     XY
+# Bounding box:  xmin: -3.235118 ymin: 55.92541 xmax: -3.150333 ymax: 55.95837
+# Geodetic CRS:  WGS 84
+# # A tibble: 679 × 14
+#    o     d       all from_home train   bus car_driver car_passenger bicycle  foot  other o_agg     d_agg                                     geometry
+#    <chr> <chr> <dbl>     <dbl> <dbl> <dbl>      <dbl>         <dbl>   <dbl> <dbl>  <dbl> <chr>     <chr>                             <LINESTRING [°]>
+#  1 28    31     9.11         0     0 0.333      0.667         0       0.222  7.89 0      S02001616 S02001616 (-3.223787 55.92984, -3.225691 55.92751)
+#  2 97    51     9.11         0     0 0.333      0.667         0       0.222  7.89 0      S02001616 S02001616 (-3.207138 55.93446, -3.207089 55.93707)
+#  3 18    100    9.11         0     0 0.333      0.667         0       0.222  7.89 0      S02001616 S02001616 (-3.215083 55.93042, -3.223914 55.92658)
+
+```
+
