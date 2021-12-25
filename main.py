@@ -94,11 +94,11 @@ def sum_per_mode(rows):
 
 
 if __name__ == "__main__":
-    zones = load_zones_from_geojson("../data/zones_min.geojson")
-    results = jitter(zones, "../data/od_min.csv", max_per_od=10)
+    zones = load_zones_from_geojson("data/zones_min.geojson")
+    results = jitter(zones, "data/od_min.csv", max_per_od=10)
 
     sums_before = sum_per_mode(
-        [row for row in csv.DictReader(open("../data/od_min.csv"))]
+        [row for row in csv.DictReader(open("data/od_min.csv"))]
     )
     sums_after = sum_per_mode([props for props, ls in results])
     for key in ["all", "car_driver", "bicycle"]:
