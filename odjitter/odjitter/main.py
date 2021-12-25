@@ -6,6 +6,9 @@ import random
 import shapely
 from shapely.geometry import shape, LineString, Point
 
+# TODO timer
+# TODO drop into a repl
+
 
 def jitter(
         zones,
@@ -34,12 +37,15 @@ def jitter(
 
     output = []
 
+    orig_total = 0.0
+
     for row in csv.DictReader(open(csv_path)):
         origin_zone = zones[row[origin_key]]
         destination_zone = zones[row[destination_key]]
 
         # How many times will we jitter this one row?
         this_row_n = float(row[all_key])
+        orig_total += this_row_n
         factor = this_row_n / max_per_od
 
         # Scale all of the properties
@@ -48,13 +54,19 @@ def jitter(
 
         for k, v in row.items():
             # TODO Leave it alone if it's not numeric
-            row[k] = float(v) * factor
+            row[k] = float(v) / factor
 
         for _ in range(ceil(factor)):
             o = random_point_in_polygon(origin_zone)
             d = random_point_in_polygon(destination_zone)
             line = LineString([o, d])
             output.append((row, line))
+
+    print(f'originally total is {orig_total}')
+    new_total = 0.0
+    for row, _ in output:
+        new_total += row['all']
+    print(f'new total is {new_total}')
 
     return output
 
@@ -80,7 +92,7 @@ def random_point_in_polygon(poly):
 
 if __name__ == '__main__':
     zones = load_zones_from_geojson('../data/zones_min.geojson')
-    results = jitter(zones, '../data/od_min.csv', max_per_od=10)
+    results = jitter(zones, '../data/od_min.csv', max_per_od=1)
 
     # Write the results as GeoJSON
     features = []
@@ -90,4 +102,4 @@ if __name__ == '__main__':
     print(f'Writing {len(features)} jittered rows to output.geojson')
     fc = geojson.FeatureCollection(features)
     with open('output.geojson', 'w') as f:
-        f.write(geojson.dumps(fc))
+        f.write(geojson.dumps(fc, pretty))
