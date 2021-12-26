@@ -40,7 +40,13 @@ fn main() -> Result<()> {
     for (feature, (_, key_value)) in feature_collection.features.iter_mut().zip(output) {
         let mut properties = serde_json::Map::new();
         for (k, v) in key_value {
-            properties.insert(k, v.into());
+            if let Ok(numeric) = v.parse::<f64>() {
+                // If it's numeric, express it that way in JSON
+                properties.insert(k, numeric.into());
+            } else {
+                // It's a string, let it be one in JSON
+                properties.insert(k, v.into());
+            }
         }
         feature.properties = Some(properties);
     }
