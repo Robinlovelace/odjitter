@@ -28,13 +28,13 @@ fn main() -> Result<()> {
         &mut StdRng::seed_from_u64(42),
     )?;
 
-    // Transform to geojson
+    // Transform to geojson (could be separate function write_geojson)
     let geom_collection: geo::GeometryCollection<f64> =
         output.iter().map(|(geom, _)| geom.clone()).collect();
     let mut feature_collection = geojson::FeatureCollection::from(&geom_collection);
-    for (feature, (_, kv)) in feature_collection.features.iter_mut().zip(output) {
+    for (feature, (_, key_value)) in feature_collection.features.iter_mut().zip(output) {
         let mut properties = serde_json::Map::new();
-        for (k, v) in kv {
+        for (k, v) in key_value {
             properties.insert(k, v.into());
         }
         feature.properties = Some(properties);
@@ -75,27 +75,41 @@ fn jitter(
     csv_path: &str,
     max_per_od: usize,
     rng: &mut StdRng,
+    subpoints: Option<Vec<Point<f64>>>,
 ) -> Result<Vec<(LineString<f64>, HashMap<String, String>)>> {
     let mut output = Vec::new();
+
+    // Clasify points if they exist for future reference
+    if let Some(point) = subpoints {
+        // Clasify the points. Output
+        
+    }
+
     for rec in csv::Reader::from_reader(File::open(csv_path)?).deserialize() {
-        let mut kv: HashMap<String, String> = rec?;
-        let origin = &zones[&kv["geo_code1"]];
-        let destination = &zones[&kv["geo_code2"]];
+        let mut key_value: HashMap<String, String> = rec?;
+        let origin = &zones[&key_value["geo_code1"]];
+        let destination = &zones[&key_value["geo_code2"]];
 
         // How many times will we jitter this one row?
-        let repeat = (kv["all"].parse::<f64>()? / (max_per_od as f64)).ceil();
+        let repeat = (key_value["all"].parse::<f64>()? / (max_per_od as f64)).ceil();
 
         // Scale all of the numeric values
-        for value in kv.values_mut() {
+        for value in key_value.values_mut() {
             if let Ok(x) = value.parse::<f64>() {
                 *value = (x / repeat).to_string();
             }
         }
 
-        for _ in 0..repeat as usize {
-            let o = random_pt(rng, origin);
-            let d = random_pt(rng, destination);
-            output.push((vec![o, d].into(), kv.clone()));
+        if let Some(points) = subpoints {
+            
+
+
+        } else {
+            for _ in 0..repeat as usize {
+                let o = random_pt(rng, origin);
+                let d = random_pt(rng, destination);
+                output.push((vec![o, d].into(), key_value.clone()));
+            }
         }
     }
     Ok(output)
