@@ -8,6 +8,5 @@ data-raw/
 *cache*
 *html*
 *docx*
-data/
 target/
 *.swp
