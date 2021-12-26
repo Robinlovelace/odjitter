@@ -10,29 +10,15 @@ use geojson::GeoJson;
 use rand::rngs::StdRng;
 use rand::{Rng, SeedableRng};
 
+// TODO Subsample from the roads
 // TODO As a library... weight the subsamples, building importance
 
 fn main() -> Result<()> {
-    let geojson_input = std::fs::read_to_string("../data/zones_min.geojson")?;
-    let geojson = geojson_input.parse::<GeoJson>()?;
-
-    let mut zones: HashMap<String, MultiPolygon<f64>> = HashMap::new();
-    if let geojson::GeoJson::FeatureCollection(collection) = geojson {
-        for feature in collection.features {
-            let zone_name = feature
-                .property("InterZone")
-                .unwrap()
-                .as_str()
-                .unwrap()
-                .to_string();
-            let gj_geom: geojson::Geometry = feature.geometry.unwrap();
-            let geo_geometry: geo_types::Geometry<f64> = gj_geom.try_into().unwrap();
-            if let geo_types::Geometry::MultiPolygon(mp) = geo_geometry {
-                zones.insert(zone_name, mp);
-            }
-        }
-    }
+    let zones = load_zones("../data/zones_min.geojson", "InterZone")?;
     println!("Scraped {} zones", zones.len());
+
+    let all_subpoints = scrape_points("../data/road_network_min.geojson")?;
+    println!("Scraped {} subpoints", all_subpoints.len());
 
     let max_per_od = 10;
     let output = jitter(
@@ -56,8 +42,32 @@ fn main() -> Result<()> {
     let gj = GeoJson::from(feature_collection);
     let mut file = File::create("output.geojson")?;
     write!(file, "{}", serde_json::to_string_pretty(&gj)?)?;
+    println!("Wrote output.geojson");
 
     Ok(())
+}
+
+fn load_zones(geojson_path: &str, name_key: &str) -> Result<HashMap<String, MultiPolygon<f64>>> {
+    let geojson_input = std::fs::read_to_string(geojson_path)?;
+    let geojson = geojson_input.parse::<GeoJson>()?;
+
+    let mut zones: HashMap<String, MultiPolygon<f64>> = HashMap::new();
+    if let geojson::GeoJson::FeatureCollection(collection) = geojson {
+        for feature in collection.features {
+            let zone_name = feature
+                .property(name_key)
+                .unwrap()
+                .as_str()
+                .unwrap()
+                .to_string();
+            let gj_geom: geojson::Geometry = feature.geometry.unwrap();
+            let geo_geometry: geo_types::Geometry<f64> = gj_geom.try_into().unwrap();
+            if let geo_types::Geometry::MultiPolygon(mp) = geo_geometry {
+                zones.insert(zone_name, mp);
+            }
+        }
+    }
+    Ok(zones)
 }
 
 fn jitter(
@@ -102,4 +112,22 @@ fn random_pt(rng: &mut StdRng, poly: &MultiPolygon<f64>) -> Point<f64> {
             return pt;
         }
     }
+}
+
+fn scrape_points(path: &str) -> Result<Vec<Point<f64>>> {
+    let geojson_input = std::fs::read_to_string(path)?;
+    let geojson = geojson_input.parse::<GeoJson>()?;
+    let mut points = Vec::new();
+    if let geojson::GeoJson::FeatureCollection(collection) = geojson {
+        for feature in collection.features {
+            if let Some(geom) = feature.geometry {
+                let geo_geometry: geo_types::Geometry<f64> = geom.try_into().unwrap();
+                // TODO Scrape points from all types
+                if let geo_types::Geometry::LineString(ls) = geo_geometry {
+                    points.extend(ls.into_points());
+                }
+            }
+        }
+    }
+    Ok(points)
 }
