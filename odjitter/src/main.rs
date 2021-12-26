@@ -1,10 +1,14 @@
+use rand::prelude::SliceRandom;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Write;
+use std::process::Output;
+use std::slice::SliceIndex;
 
 use anyhow::Result;
 use geo::algorithm::bounding_rect::BoundingRect;
 use geo::algorithm::contains::Contains;
+use geo::dimensions::HasDimensions;
 use geo_types::{LineString, MultiPolygon, Point};
 use geojson::GeoJson;
 use rand::rngs::StdRng;
@@ -26,6 +30,7 @@ fn main() -> Result<()> {
         "../data/od_min.csv",
         max_per_od,
         &mut StdRng::seed_from_u64(42),
+        Some(all_subpoints),
     )?;
 
     // Transform to geojson (could be separate function write_geojson)
@@ -80,15 +85,19 @@ fn jitter(
     let mut output = Vec::new();
 
     // Clasify points if they exist for future reference
-    if let Some(point) = subpoints {
-        // Clasify the points. Output
-        
-    }
+    // points_in_zones becomes either none or a <HashMap<String, Points>>
+    let points_in_zones = if let Some(points) = subpoints {
+        Some(points_to_zones(points, zones))
+    } else {
+        None
+    };
 
     for rec in csv::Reader::from_reader(File::open(csv_path)?).deserialize() {
         let mut key_value: HashMap<String, String> = rec?;
-        let origin = &zones[&key_value["geo_code1"]];
-        let destination = &zones[&key_value["geo_code2"]];
+        let origin_id = key_value["geo_code1"].clone();
+        let origin = &zones[&origin_id];
+        let destination_id = key_value["geo_code2"].clone();
+        let destination = &zones[&destination_id];
 
         // How many times will we jitter this one row?
         let repeat = (key_value["all"].parse::<f64>()? / (max_per_od as f64)).ceil();
@@ -100,10 +109,14 @@ fn jitter(
             }
         }
 
-        if let Some(points) = subpoints {
-            
-
-
+        if let Some(ref points) = points_in_zones {
+            for _ in 0..repeat as usize {
+                let points_in_o = &points[&origin_id];
+                let o = *points_in_o.choose(rng).unwrap();
+                let points_in_d = &points[&destination_id];
+                let d = *points_in_d.choose(rng).unwrap();
+                output.push((vec![o, d].into(), key_value.clone()));
+            }
         } else {
             for _ in 0..repeat as usize {
                 let o = random_pt(rng, origin);
@@ -144,4 +157,23 @@ fn scrape_points(path: &str) -> Result<Vec<Point<f64>>> {
         }
     }
     Ok(points)
+}
+
+fn points_to_zones(
+    points: Vec<Point<f64>>,
+    zones: &HashMap<String, MultiPolygon<f64>>,
+) -> HashMap<String, Vec<Point<f64>>> {
+    let mut output = HashMap::new();
+    for (name, _) in zones {
+        output.insert(name.clone(), Vec::<Point<f64>>::new());
+    }
+    for point in points {
+        for (name, polygon) in zones {
+            if polygon.contains(&point) {
+                let point_list = output.get_mut(name).unwrap();
+                point_list.push(point);
+            }
+        }
+    }
+    return output;
 }
