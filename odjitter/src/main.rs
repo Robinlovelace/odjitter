@@ -2,20 +2,18 @@ use rand::prelude::SliceRandom;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Write;
-use std::process::Output;
-use std::slice::SliceIndex;
 
 use anyhow::Result;
 use geo::algorithm::bounding_rect::BoundingRect;
 use geo::algorithm::contains::Contains;
-use geo::dimensions::HasDimensions;
 use geo_types::{LineString, MultiPolygon, Point};
 use geojson::GeoJson;
 use rand::rngs::StdRng;
 use rand::{Rng, SeedableRng};
 
-// TODO Subsample from the roads
-// TODO As a library... weight the subsamples, building importance
+// TODO Weighted subpoints
+// TODO Grab subpoints from OSM road network
+// TODO Grab subpoints from OSM buildings, weighted
 
 fn main() -> Result<()> {
     let zones = load_zones("../data/zones_min.geojson", "InterZone")?;
@@ -33,24 +31,7 @@ fn main() -> Result<()> {
         Some(all_subpoints),
     )?;
 
-    // Transform to geojson (could be separate function write_geojson)
-    let geom_collection: geo::GeometryCollection<f64> =
-        output.iter().map(|(geom, _)| geom.clone()).collect();
-    let mut feature_collection = geojson::FeatureCollection::from(&geom_collection);
-    for (feature, (_, key_value)) in feature_collection.features.iter_mut().zip(output) {
-        let mut properties = serde_json::Map::new();
-        for (k, v) in key_value {
-            if let Ok(numeric) = v.parse::<f64>() {
-                // If it's numeric, express it that way in JSON
-                properties.insert(k, numeric.into());
-            } else {
-                // It's a string, let it be one in JSON
-                properties.insert(k, v.into());
-            }
-        }
-        feature.properties = Some(properties);
-    }
-    let gj = GeoJson::from(feature_collection);
+    let gj = convert_to_geojson(output);
     let mut file = File::create("output.geojson")?;
     write!(file, "{}", serde_json::to_string_pretty(&gj)?)?;
     println!("Wrote output.geojson");
@@ -90,20 +71,12 @@ fn jitter(
 ) -> Result<Vec<(LineString<f64>, HashMap<String, String>)>> {
     let mut output = Vec::new();
 
-    // Clasify points if they exist for future reference
-    // points_in_zones becomes either none or a <HashMap<String, Points>>
-    let points_in_zones = if let Some(points) = subpoints {
-        Some(points_to_zones(points, zones))
-    } else {
-        None
-    };
+    let points_in_zones = subpoints.map(|points| points_to_zones(points, zones));
 
     for rec in csv::Reader::from_reader(File::open(csv_path)?).deserialize() {
         let mut key_value: HashMap<String, String> = rec?;
         let origin_id = key_value["geo_code1"].clone();
-        let origin = &zones[&origin_id];
         let destination_id = key_value["geo_code2"].clone();
-        let destination = &zones[&destination_id];
 
         // How many times will we jitter this one row?
         let repeat = (key_value["all"].parse::<f64>()? / (max_per_od as f64)).ceil();
@@ -116,17 +89,22 @@ fn jitter(
         }
 
         if let Some(ref points) = points_in_zones {
+            let points_in_o = &points[&origin_id];
+            let points_in_d = &points[&destination_id];
             for _ in 0..repeat as usize {
-                let points_in_o = &points[&origin_id];
+                // TODO If a zone has no subpoints, fail -- bad input. Be clear about that.
+                // TODO Sample with replacement or not?
+                // TODO Make sure o != d
                 let o = *points_in_o.choose(rng).unwrap();
-                let points_in_d = &points[&destination_id];
                 let d = *points_in_d.choose(rng).unwrap();
                 output.push((vec![o, d].into(), key_value.clone()));
             }
         } else {
+            let origin_polygon = &zones[&origin_id];
+            let destination_polygon = &zones[&destination_id];
             for _ in 0..repeat as usize {
-                let o = random_pt(rng, origin);
-                let d = random_pt(rng, destination);
+                let o = random_pt(rng, origin_polygon);
+                let d = random_pt(rng, destination_polygon);
                 output.push((vec![o, d].into(), key_value.clone()));
             }
         }
@@ -135,7 +113,6 @@ fn jitter(
 }
 
 fn random_pt(rng: &mut StdRng, poly: &MultiPolygon<f64>) -> Point<f64> {
-    // TODO If bounding_rect is slow, also cache per zone
     let bounds = poly.bounding_rect().unwrap();
     loop {
         let x = rng.gen_range(bounds.min().x..=bounds.max().x);
@@ -182,4 +159,26 @@ fn points_to_zones(
         }
     }
     return output;
+}
+
+fn convert_to_geojson(input: Vec<(LineString<f64>, HashMap<String, String>)>) -> GeoJson {
+    let geom_collection: geo::GeometryCollection<f64> =
+        input.iter().map(|(geom, _)| geom.clone()).collect();
+    let mut feature_collection = geojson::FeatureCollection::from(&geom_collection);
+    for (feature, (_, key_value)) in feature_collection.features.iter_mut().zip(input) {
+        let mut properties = serde_json::Map::new();
+        // TODO Preserve csv order
+        for (k, v) in key_value {
+            if let Ok(numeric) = v.parse::<f64>() {
+                // TODO Skip geocode1 and the special fields
+                // If it's numeric, express it that way in JSON
+                properties.insert(k, numeric.into());
+            } else {
+                // It's a string, let it be one in JSON
+                properties.insert(k, v.into());
+            }
+        }
+        feature.properties = Some(properties);
+    }
+    GeoJson::from(feature_collection)
 }
