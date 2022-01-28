@@ -1,10 +1,11 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-output: bookdown::github_document2
-# output: bookdown::html_document2
+# output: bookdown::github_document2
+output: bookdown::html_document2
 # output: bookdown::word_document2
 # output: bookdown::pdf_document2
 bibliography: references.bib
+author: Robin Lovelace, Rosa Félix, Dustin Carlino
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -25,7 +26,7 @@ library(tidyverse)
 
 ```{r, eval=FALSE}
 file.copy("README.html", "jittering-paper.html")
-file.copy("README.pdf", "jittering-paper.pdf")
+file.copy("README.pdf", "jittering-paper.pdf", TRUE)
 piggyback::pb_upload("jittering-paper.pdf")
 # Generate citations (requires Zotero)
 library(rbbt)
@@ -90,13 +91,13 @@ The following question motivated the development of the jittering approach prese
 > How can OD data representing trips between large geographic zones be used more effectively, to generate results at the level of segments representing route networks of current or potential flow to inform local interventions?
 
 Our hypothesis is that jittering leads to more effective use of OD data in transport planning.
-Before describing the approach to answer this question, some definitions are in order:
+<!-- Before describing the approach to answer this question, some definitions are in order: -->
 
 <!-- , it is worth briefly defining OD data: datasets that consist of: -->
-- **Origins**: locations of trip departure, typically stored as ID codes linking to zones
-- **Destinations**: trip destinations, also stored as ID codes linking to zones
-- **Attributes**: the number of trips made between each 'OD pair' and additional attributes such as route distance between each OD pair
-- **Jittering**: The combined process of 'splitting' OD pairs representing many trips into multiple 'sub OD' pairs (disaggregation) and assigning origins and destinations to multiple unique points within each zone
+<!-- - **Origins**: locations of trip departure, typically stored as ID codes linking to zones -->
+<!-- - **Destinations**: trip destinations, also stored as ID codes linking to zones -->
+<!-- - **Attributes**: the number of trips made between each 'OD pair' and additional attributes such as route distance between each OD pair -->
+<!-- - **Jittering**: The combined process of 'splitting' OD pairs representing many trips into multiple 'sub OD' pairs (disaggregation) and assigning origins and destinations to multiple unique points within each zone -->
 
 # Methods {#methods}
 
