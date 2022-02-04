@@ -23,6 +23,7 @@ devtools::install_github("itsleeds/od")
 library(sf)
 library(tmap)
 library(tidyverse)
+library(stplanr)
 ```
 
 ```{r, eval=FALSE}
@@ -280,26 +281,26 @@ od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, ma
 m1 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(odsf_top3, bbox = bbox) +
-  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
+  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6, title.col = "Walking trips per day") +
   tm_layout(title = "A) Single origin and destination point per zone", title.bg.color =  "white")
 m2 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(od_top3_jittered, bbox = bbox) +
-  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
+  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6, title.col = "Walking trips per day") +
   tm_layout(title = "B) Randomised origin and destination points", title.bg.color =  "white")
 m3 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(road_network_min, bbox = bbox) +
   tm_lines(col = "darkgreen") +
   tm_shape(od_top3_road) +
-  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
+  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6, title.col = "Walking trips per day") +
   tm_layout(title = "C) Randomised points sampled from transport network", title.bg.color =  "white", legend.position = c("right", "bottom"))
 m4 = tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(road_network_min, bbox = bbox) +
   tm_lines(col = "darkgreen") +
   tm_shape(od_top3_disaggregated, bbox = bbox) +
-  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(75, 100, 125, 150)) +
+  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(75, 100, 125, 150), title.col = "Walking trips per day") +
   tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"))
 # todo: add a 4th figure showing sampling on the network
 # m3
@@ -372,7 +373,7 @@ knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD p
 
 # Findings
 
-We found that the process of jittering can generate desire lines that have more widely distributed, and potentially realistic, start and end points.
+We found that jittering generates desire lines and routes that are more diverse and potentially realistic than the common default of using zone centroids to represent start and end points.
 Simple random sampling and sampling nodes on transport networks methods have been demonstrated conceptually and with reference to a small dataset in the previous section.
 The results of applying the approach to a large OD datasest, representing travel to work in Edinburgh, with sampling on the transport network, are illustrated in Figure \@ref(fig:rneted) (right).
 The 'jittered network' is substantially more dense and presumably more realistic than the 'unjittered network', a gain in network fidelity that comes at low computational cost.
@@ -391,45 +392,88 @@ od_sf_100 = od_sf_central %>%
 #   tm_lines() 
 bbox = tmaptools::bb(od_sf_100, ext = 1.2)
 
-od_top3_jittered = od::od_jitter(od_sf_100, z = zones)
-od_top3_road = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 1000)
-od_top3_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 200)
-# od_top3_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
+od_sf_jittered = od::od_jitter(od_sf_100, z = zones)
+od_sf_road = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 1000)
+od_sf_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 200)
+# od_sf_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
 m1 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(od_sf_100, bbox = bbox) +
-  tm_lines(lwd = "foot", scale = 3) +
+  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day") +
   tm_layout(title = "A) Single origin and destination point per zone", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
 m2 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
-  tm_shape(od_top3_jittered, bbox = bbox) +
-  tm_lines(lwd = "foot", scale = 3) +
+  tm_shape(od_sf_jittered, bbox = bbox) +
+  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day") +
   tm_layout(title = "B) Randomised origin and destination points", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
 m3 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(road_network_buffer, bbox = bbox) +
   tm_lines(col = "darkgreen", lwd = 0.1) +
-  tm_shape(od_top3_road) +
-  tm_lines(lwd = "foot", scale = 3) +
+  tm_shape(od_sf_road) +
+  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day") +
   tm_layout(title = "C) Randomised points sampled from transport network", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
 m4 = tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(road_network_buffer, bbox = bbox) +
   tm_lines(col = "darkgreen", lwd = 0.1) +
-  tm_shape(od_top3_disaggregated, bbox = bbox) +
-  tm_lines(lwd = "foot", scale = 3) +
+  tm_shape(od_sf_disaggregated, bbox = bbox) +
+  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day") +
   tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.color = "white", legend.bg.alpha = 0.3)
 # todo: add a 4th figure showing sampling on the network
 # m3
 tmap_arrange(m1, m2, m3, m4, nrow = 2)
+```
 
-
-
+```{r, eval=FALSE}
+routes_od = route(l = od_sf_100, route_fun = route_osrm, osrm.profile = "foot")
+sf::write_sf(routes_od, "routes_od.geojson")
+routes_jittered = route(l = od_sf_jittered, route_fun = route_osrm, osrm.profile = "foot")
+sf::write_sf(routes_jittered, "routes_jittered.geojson")
+routes_road = route(l = od_sf_road, route_fun = route_osrm, osrm.profile = "foot")
+sf::write_sf(routes_road, "routes_road.geojson")
+routes_disaggregated = route(l = od_sf_disaggregated, route_fun = route_osrm, osrm.profile = "foot", wait = 0.01)
+sf::write_sf(routes_disaggregated, "routes_disaggregated.geojson")
+f = list.files(pattern = "geojson")
+piggyback::pb_upload(f)
+piggyback::pb_download_url(f)
 ```
 
 
 ```{r rneted, fig.cap="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right).", out.width="100%"}
-knitr::include_graphics("figures/rneted-updated.png")
+# manual approach
+# routes_od = sf::read_sf("https://github.com/Robinlovelace/odjitter/releases/download/1/routes_od.geojson")
+# routes_jittered = sf::read_sf("https://github.com/Robinlovelace/odjitter/releases/download/1/routes_jittered.geojson")
+# routes_road = sf::read_sf("https://github.com/Robinlovelace/odjitter/releases/download/1/routes_road.geojson")
+# routes_disaggregated = sf::read_sf("https://github.com/Robinlovelace/odjitter/releases/download/1/routes_disaggregated.geojson")
+f = c(
+  "routes_od",
+  "routes_jittered",
+  "routes_road",
+  "routes_disaggregated"
+)
+fn = c(
+  "Centroid origins and destinations",
+  "Jittered origins and destinations (simple random sampling)",
+  "Jittered origins and destinations (sampling on transport network)",
+  "Jittered origins and destinations (on network with disaggregation)"
+)
+i = 1
+rnets = purrr::map_dfr(seq(length(f)), function(i) {
+  fi = f[i]
+  u = paste0("https://github.com/Robinlovelace/odjitter/releases/download/1/", fi, ".geojson")
+  routes = sf::read_sf(u)
+  rnet = overline(routes, attrib = "foot")
+  rnet$type = fn[i]
+  rnet
+})
+rnets$foot[rnets$foot < 10] = 10
+tm_shape(rnets, bbox = tmaptools::bb(rnets, 0.5)) +
+  tm_lines(lwd = "foot", scale = 15, lwd.legend = c(500, 5000), title.lwd = "Walking trips per day") +
+  tm_facets("type", free.scales.line.lwd = FALSE) +
+  tm_layout(legend.outside.position = "bottom")
+# knitr::include_graphics("figures/rneted-updated.png")
+
 ```
 
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
