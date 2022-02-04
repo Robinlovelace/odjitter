@@ -1,9 +1,9 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
 # output: bookdown::github_document2
-output: bookdown::html_document2
+# output: bookdown::html_document2
 # output: bookdown::word_document2
-# output: bookdown::pdf_document2
+output: bookdown::pdf_document2
 bibliography: references.bib
 author: Robin Lovelace, Rosa Félix, Dustin Carlino
 ---
@@ -45,9 +45,9 @@ bbt_update_bib("README.Rmd", "references.bib")
 
 # Abstract {-}
 
-Origin-destination (OD) data is a vital source of information on travel patterns but its utility is limited by reliance on zone centroids.
-This paper presents a reproducible and open two-stage 'jittering' approach to tackling this problem, which (1) uses random points to represent unique start and end points (sampling), and (2) splits OD pairs representing many trips into many 'sub-OD' pairs.
-We find that route networks generated from jittered OD data are more diffuse and potentially realistic based on an example from Edinburgh.
+Origin-destination (OD) datasets are often represented as trips between zone centroids, resulting in concentration of flows to few unique points.
+This paper presents a 'jittering' approach to tackling this problem by (1) sampling unique points for each OD pair, and (2) splitting 'large' OD pairs representing many trips into 'sub-OD' pairs.
+We find that route networks generated from jittered OD data are more diffuse, based on an example dataset representing walking trips, with potential benefits for transport planners relying on model results.
 Further work is needed to validate the approach and to find optimal parameters for sampling and disaggregation.
 
 # Questions
@@ -229,7 +229,6 @@ The OD data can be represented as both tabular and, when start and end points ar
 
 ```{r odsf}
 # head(centroids)
-
 odsf = od::od_to_sf(od, centroids)
 odsf_top3 = odsf %>%
   filter(geo_code1 != geo_code2) %>% 
@@ -274,9 +273,15 @@ The techniques outlined in the following sub-sections are perhaps best understoo
 
 ```{r jitters, fig.cap="Illustration of jittering and disaggregation of OD data on small input dataset."}
 set.seed(2021)
+fn = c(
+  "A) Centroid based desire lines",
+  "B) Jittered desire lines (random point sampling)",
+  "C) Jittered desire lines (sample from network)",
+  "D) Jittered desire lines (with disaggregation)"
+)
 od_top3_jittered = od::od_jitter(odsf_top3, z = zones)
 od_top3_road = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 1000)
-od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 200)
+od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 100)
 # od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
 m1 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
@@ -300,11 +305,19 @@ m4 = tm_shape(zones, bbox = bbox) +
   tm_shape(road_network_min, bbox = bbox) +
   tm_lines(col = "darkgreen") +
   tm_shape(od_top3_disaggregated, bbox = bbox) +
-  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(75, 100, 125, 150), title.col = "Walking trips per day") +
+  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(50, 60, 70, 80), title.col = "Walking trips per day") +
   tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"))
 # todo: add a 4th figure showing sampling on the network
 # m3
 tmap_arrange(m1, m2, m3, m4, nrow = 2)
+
+od_combined = rbind(
+  odsf_top3 %>% transmute(foot, type = fn[1]),
+  od_top3_jittered %>% transmute(foot, type = fn[2]),
+  od_top3_road %>% transmute(foot, type = fn[3]),
+  od_top3_disaggregated %>% transmute(foot, type = fn[4])
+)
+
 ```
 
 ```{r desire}
@@ -394,7 +407,7 @@ bbox = tmaptools::bb(od_sf_100, ext = 1.2)
 
 od_sf_jittered = od::od_jitter(od_sf_100, z = zones)
 od_sf_road = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 1000)
-od_sf_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 200)
+od_sf_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 100)
 # od_sf_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
 m1 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
@@ -452,12 +465,6 @@ f = c(
   "routes_road",
   "routes_disaggregated"
 )
-fn = c(
-  "Centroid origins and destinations",
-  "Jittered origins and destinations (simple random sampling)",
-  "Jittered origins and destinations (sampling on transport network)",
-  "Jittered origins and destinations (on network with disaggregation)"
-)
 i = 1
 rnets = purrr::map_dfr(seq(length(f)), function(i) {
   fi = f[i]
@@ -467,13 +474,25 @@ rnets = purrr::map_dfr(seq(length(f)), function(i) {
   rnet$type = fn[i]
   rnet
 })
-rnets$foot[rnets$foot < 10] = 10
-tm_shape(rnets, bbox = tmaptools::bb(rnets, 0.5)) +
-  tm_lines(lwd = "foot", scale = 15, lwd.legend = c(500, 5000), title.lwd = "Walking trips per day") +
+# summary(rnets$foot)
+tm_shape(rnets %>% mutate(foot = case_when(foot < 50 ~ 50, TRUE ~ foot)), bbox = tmaptools::bb(rnets, 0.5)) +
+  tm_lines(lwd = "foot", scale = 15, lwd.legend = c(100, 500, 1000, 2000), title.lwd = "Walking trips per day") +
   tm_facets("type", free.scales.line.lwd = FALSE) +
-  tm_layout(legend.outside.position = "bottom")
+  tm_layout(legend.outside.position = "top", legend.outside.size = 0.2)
 # knitr::include_graphics("figures/rneted-updated.png")
 
+rnets$length_km = as.numeric(sf::st_length(rnets)) / 1000
+
+rnets_summary = rnets %>%
+  sf::st_drop_geometry() %>% 
+  group_by(type) %>% 
+  mutate(type = str_sub(type, 1, 3)) %>% 
+  summarise(
+    `Network length (km)` = sum(length_km),
+    `Average flow per segment` = mean(foot),
+    `Standard deviation` = sd(foot)
+  )
+rnets_summary %>% knitr::kable(booktabs = TRUE, digits = 0)
 ```
 
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
