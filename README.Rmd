@@ -16,7 +16,8 @@ knitr::opts_chunk$set(
   comment = "#>",
   echo = FALSE,
   message = FALSE,
-  cache = TRUE
+  cache = TRUE,
+  warning = FALSE
 )
 devtools::install_github("itsleeds/od")
 library(sf)
@@ -154,7 +155,8 @@ od = readr::read_csv("https://github.com/ITSLeeds/od/releases/download/v0.3.1/od
 # zones = readRDS("iz_zones11_ed.Rds")
 # sf::write_sf(zones, "iz_zones11_ed.geojson")
 # piggyback::pb_upload("iz_zones11_ed.geojson", repo = "itsleeds/od")
-zones = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/iz_zones11_ed.geojson")
+# zones = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/iz_zones11_ed.geojson")
+zones = sf::read_sf("https://github.com/Robinlovelace/odjitter/releases/download/1/zones.geojson")
 
 # head(zones)
 
@@ -174,6 +176,7 @@ centroids = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1
 # sf::write_sf(road_network_min, "road_network_min.geojson")
 # piggyback::pb_upload("road_network_min.geojson", repo = "itsleeds/od")
 road_network_min = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/road_network_min.geojson")
+road_network_buffer = sf::read_sf("https://github.com/Robinlovelace/odjitter/releases/download/1/road_network_buffer.geojson")
 ```
 
 ```{r read-region}
@@ -191,19 +194,28 @@ road_network_min = sf::read_sf("https://github.com/ITSLeeds/od/releases/download
 # # saveRDS(edinburgh_region, "edinburgh_region.Rds")
 # sf::write_sf(edinburgh_region, "edinburgh_region.geojson")
 # piggyback::pb_upload("edinburgh_region.geojson", repo = "itsleeds/od")
+central_edinburgh = tmaptools::geocode_OSM(q = "edinburgh", as.sf = TRUE)
+central_edinburgh_5km = sf::st_buffer(central_edinburgh, dist = 5000)
 edinburgh_region = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/edinburgh_region.geojson")
-
+zones_centroids = sf::st_centroid(zones)
+zones_centroids_5km = zones_centroids[central_edinburgh_5km, ]
+# zones = zones %>% 
+#   filter(InterZone %in% zones_centroids_5km$InterZone)
+# road_network_buffer = road_network_touching[zones, ]
+# saveRDS(road_network_buffer, "road_network_buffer.Rds")
+# sf::write_sf(road_network_buffer, "road_network_buffer.geojson")
+# piggyback::pb_upload("road_network_buffer.geojson")
 
 # sum(zones$TotPop2011) # 476626
 m1 = tm_shape(zones) + tm_polygons("TotPop2011", title = "Population", palette = "viridis") +
   tm_scale_bar() +
-  tm_minimap(zoomLevelOffset = -6)
+  tm_minimap(zoomLevelOffset = -7)
 # tmap_leaflet(m1)
 ```
 
 ```{r izs, fig.cap="Overview of the study region with the population from the 2011 Census at the level of Intermediate Zones corresponding to fill colour.", out.width="90%"}
 # See interactive map online at https://rpubs.com/RobinLovelace/843442
-knitr::include_graphics("figures/overview-minimap.png")
+knitr::include_graphics("figures/overview-zones-central.png")
 ```
 
 Beyond the zone data illustrated in Figure \@ref(fig:izs), the input dataset consisted of open access OD data from the 2011 census.
@@ -364,6 +376,57 @@ We found that the process of jittering can generate desire lines that have more 
 Simple random sampling and sampling nodes on transport networks methods have been demonstrated conceptually and with reference to a small dataset in the previous section.
 The results of applying the approach to a large OD datasest, representing travel to work in Edinburgh, with sampling on the transport network, are illustrated in Figure \@ref(fig:rneted) (right).
 The 'jittered network' is substantially more dense and presumably more realistic than the 'unjittered network', a gain in network fidelity that comes at low computational cost.
+
+```{r}
+od_sf_central = odsf %>% 
+  filter(geo_code1 %in% zones$InterZone) %>% 
+  filter(geo_code2 %in% zones$InterZone) 
+od_sf_100 = od_sf_central %>%
+  top_n(n = 500, wt = foot)
+
+  # filter(foot > 50) 
+# sum(od_sf_100$foot) / sum(od_sf_central$foot) # 80%
+# qtm(zones) +
+# tm_shape(od_sf_100) +
+#   tm_lines() 
+bbox = tmaptools::bb(od_sf_100, ext = 1.2)
+
+od_top3_jittered = od::od_jitter(od_sf_100, z = zones)
+od_top3_road = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 1000)
+od_top3_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 200)
+# od_top3_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
+m1 =  tm_shape(zones, bbox = bbox) +
+  tm_borders(col = "grey") +
+  tm_shape(od_sf_100, bbox = bbox) +
+  tm_lines(lwd = "foot", scale = 3) +
+  tm_layout(title = "A) Single origin and destination point per zone", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
+m2 =  tm_shape(zones, bbox = bbox) +
+  tm_borders(col = "grey") +
+  tm_shape(od_top3_jittered, bbox = bbox) +
+  tm_lines(lwd = "foot", scale = 3) +
+  tm_layout(title = "B) Randomised origin and destination points", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
+m3 =  tm_shape(zones, bbox = bbox) +
+  tm_borders(col = "grey") +
+  tm_shape(road_network_buffer, bbox = bbox) +
+  tm_lines(col = "darkgreen", lwd = 0.1) +
+  tm_shape(od_top3_road) +
+  tm_lines(lwd = "foot", scale = 3) +
+  tm_layout(title = "C) Randomised points sampled from transport network", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
+m4 = tm_shape(zones, bbox = bbox) +
+  tm_borders(col = "grey") +
+  tm_shape(road_network_buffer, bbox = bbox) +
+  tm_lines(col = "darkgreen", lwd = 0.1) +
+  tm_shape(od_top3_disaggregated, bbox = bbox) +
+  tm_lines(lwd = "foot", scale = 3) +
+  tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.color = "white", legend.bg.alpha = 0.3)
+# todo: add a 4th figure showing sampling on the network
+# m3
+tmap_arrange(m1, m2, m3, m4, nrow = 2)
+
+
+
+```
+
 
 ```{r rneted, fig.cap="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right).", out.width="100%"}
 knitr::include_graphics("figures/rneted-updated.png")
