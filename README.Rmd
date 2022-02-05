@@ -29,8 +29,8 @@ library(stplanr)
 
 ```{r, eval=FALSE}
 file.copy("README.html", "jittering-paper.html")
-file.copy("README.pdf", "jittering-paper.pdf", TRUE)
-piggyback::pb_upload("jittering-paper.pdf")
+file.copy("README.pdf", "jittering-paper-resubmission.pdf", TRUE)
+piggyback::pb_upload("jittering-paper-resubmission.pdf")
 # Generate citations (requires Zotero)
 library(rbbt)
 # old way:
@@ -58,6 +58,7 @@ Despite emerging 'big data' sources such as massive GPS datasets, OD data contin
 Recent applications range from analysis of the evolution of urban activity and shared mobility services over time [e.g. @shi_exploring_2019; @li_effects_2019] to inference of congestion and mode split [@bachir_inferring_2019; @gao_method_2021].
 
 <!-- Perhaps in part because they are so well established, comparatively few recent research papers have explored new methods for processing OD datasets. -->
+There has been much written on optimal zoning systems for representing and modelling OD data [e.g. @openshaw_optimal_1977].
 Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021], disaggregation [@katranji_mobility_2016] and location of 'connectors' joining zone centroids with the surrounding network [@jafari_investigation_2015].
 Broadly, there are three approaches to converting OD data into geographic representations for transport modelling:
 
