@@ -1,6 +1,6 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-output: github_document2
+output: github_document
 # output: bookdown::html_document2
 # output: bookdown::word_document2
 # output: bookdown::pdf_document2
