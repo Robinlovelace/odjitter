@@ -17,7 +17,8 @@ knitr::opts_chunk$set(
   echo = FALSE,
   message = FALSE,
   cache = TRUE,
-  warning = FALSE
+  warning = FALSE,
+  fig.align = "center"
 )
 devtools::install_github("itsleeds/od")
 library(sf)
@@ -60,16 +61,19 @@ Recent applications range from analysis of the evolution of urban activity and s
 Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021], disaggregation [@katranji_mobility_2016] and location of 'connectors' joining zone centroids with the surrounding network [@jafari_investigation_2015].
 Broadly, there are three approaches to converting OD data into geographic representations for transport modelling:
 
-1. Centroid to centroid representations, involving the simplifying assumption that all trip destinations and origins can be represented by zone centroids [@leurent_stochastic_2011]
+1. Centroid to centroid representations, a common approach involving the simplifying assumption that all trip destinations and origins can be represented by (sometimes population weighted or aggregated) zone centroids [@guo_origindestination_2014; @martin_origindestination_2018]
 2. Subdividing zones at which data is available to subzones [@opie_commodityspecific_2009]
-3. Creation of 'centroid connectors', also referred to as links "between trip ends and zonal anchors" [@leurent_stochastic_2011]
+3. Creation of 'centroid connectors', also referred to as links "between trip ends and zonal anchors" using randomised or deterministic approaches [@leurent_stochastic_2011]
 
 In this paper we present a new approach to processing OD datasets which combines OD data disggregation *and* randomisation of start and end locations into a single technique.
 The 'jittering' framework we present is flexible, enabling the user to adjust the level of disaggregation required for their applications and start and end points from which disaggregate OD pairs are sampled.
  <!-- appropriate start points and trip attractors, and weights highlighting the relative importance of different origin and destination points. -->
 
-Unlike afforementioned papers, jittering can be understood as a pre-processing stage that can add value to OD datasets when representing the diffuse nature of travel networks is important, something that is particularly important when designing for active travel [@buehler_bikeway_2016].
-Jittering results in desire lines which can then be sent to the network assignment stage of transport modelling workflows (routing).
+Unlike aforementioned papers, jittering can be understood as a simple, transparent and flexible pre-processing stage that can add value to OD datasets by representing the diffuse nature of travel networks.
+This is particularly important when designing for active travel [@buehler_bikeway_2016], explaining the choice of input data to illustrate the technique in this paper: it was developed to support active travel planning in an applied setting funded by Edinburgh City Council.
+We developed the approach to support strategic investment in walking and cycling infrastructure networks based on our observation that route networks resulting from OD pairs from and to single centroids per zone were too sparse.
+The approach can 'slot into' existing transport modelling workflows that use desire lines which can be used as the basis of route network assignment, uptake modelling, and route network generation modelling workflows [@morgan_travel_2020].
+<!-- todo: add flow diagram -->
 We refer to the approach as jittering, noting the use term to describe a similar process of adding "random noise to the data" for data visualization [wickham_2016a_ggplot2].
 
 <!-- In this paper we outline such methods and their uses, demonstrating how jittering can be used to create more diffuse and accurate estimates of movement at the level of segments ('flows') on transport network, with minimal computational overheads compared with the computationally intensive process of route calculation ('routing') or processing large GPS datasets. -->
@@ -100,11 +104,11 @@ We refer to the approach as jittering, noting the use term to describe a similar
 
 <!-- In this context, this paper outlines methods to add further value to OD data through processes of disaggregating OD data and 'jittering' to increase the density of route networks arising from the conversion of OD data into route network outputs of the kind illustrated in Figure \@ref(fig:haystack). -->
 
-The following question motivated the development of the jittering approach presented in this paper:
+The jittering approach presented in this paper was motivated by the following question:
 
-> How can OD data representing trips between large geographic zones be used more effectively, to generate results at the level of segments representing route networks of current or potential flow to inform local interventions?
+> How can OD data representing trips between large geographic zones be used more effectively, to generate diffuse route networks of current or potential flow to inform local interventions?
 
-Our hypothesis is that jittering leads to more effective use of OD data in transport planning.
+<!-- Our hypothesis is that jittering leads to more effective use of OD data in transport planning. -->
 <!-- Before describing the approach to answer this question, some definitions are in order: -->
 
 <!-- , it is worth briefly defining OD data: datasets that consist of: -->
@@ -120,7 +124,10 @@ Our hypothesis is that jittering leads to more effective use of OD data in trans
 <!-- ## A synthetic example: synthetic zones -->
 <!-- ## Real world example: Edinburgh -->
 
-The study area is the City of Edinburgh, a local authority with a population of just over half a million  [people](https://www.nrscotland.gov.uk/files/statistics/council-area-data-sheets/city-of-edinburgh-council-profile.html) (see Figure \@ref(fig:izs)).
+The approach was developed to support public sector transport planning in Edinburgh.
+As illustrated in Figure \@ref(fig:izs), the original study area was Edinburgh City Council, a major economic hub with ambitious [plans](https://www.edinburgh.gov.uk/downloads/file/30073/active-travel-investment-programme-update-october-2021) for investment in active travel, making evidence to support investment where it will be most beneficial key.
+For the purposes of this study we focus on a comparatively small area around central Edinburgh.
+We focus in this paper on walking trips in this central area because much research into route networks has focused on cycling and, because walking trips tend to be short, they create a need to convert aggregated OD datasets into diffuse route network representations of travel.
 
 ```{r get-osm-data, eval=FALSE}
 road_network_area = osmextract::oe_get_network(place = "Scotland", mode = "cycling")
@@ -149,7 +156,8 @@ piggyback::pb_download_url("road_network_min.Rds", repo = "itsleeds/od")
 # readr::write_csv(od, "od_iz_ed.csv")
 # piggyback::pb_upload("od_iz_ed.csv", repo = "itsleeds/od")
 # piggyback::pb_download_url("od_iz_ed.csv", repo = "itsleeds/od")
-od = readr::read_csv("https://github.com/ITSLeeds/od/releases/download/v0.3.1/od_iz_ed.csv")
+# od = readr::read_csv("https://github.com/ITSLeeds/od/releases/download/v0.3.1/od_iz_ed.csv")
+od = readr::read_csv("https://github.com/Robinlovelace/odjitter/releases/download/1/od_central.csv")
 # head(od)
 
 # u = "https://github.com/ITSLeeds/od/releases/download/0.2.1/iz_zones11_ed.Rds"
@@ -169,8 +177,12 @@ zones = sf::read_sf("https://github.com/Robinlovelace/odjitter/releases/download
 # centroids = readRDS(f)
 # sf::write_sf(centroids, "iz_centroids11_ed.geojson")
 # piggyback::pb_upload("iz_centroids11_ed.geojson", repo = "itsleeds/od")
-centroids = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/iz_centroids11_ed.geojson")
-
+# centroids = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/iz_centroids11_ed.geojson")
+# centroids = centroids[zones, ]
+# nrow(centroids) # 71
+# sf::write_sf(centroids, "centroids.geojson")
+# piggyback::pb_upload("centroids.geojson")
+centroids = sf::read_sf("https://github.com/Robinlovelace/odjitter/releases/download/1/centroids.geojson")
 
 # u = "https://github.com/ITSLeeds/od/releases/download/v0.3.1/road_network_min.Rds"
 # f = basename(u)
@@ -216,7 +228,7 @@ m1 = tm_shape(zones) + tm_polygons("TotPop2011", title = "Population", palette =
 # tmap_leaflet(m1)
 ```
 
-```{r izs, fig.cap="Overview of the study region with the population from the 2011 Census at the level of Intermediate Zones corresponding to fill colour.", out.width="90%"}
+```{r izs, fig.cap="Overview of the study region with the population from the 2011 Census at the level of Intermediate Zones corresponding to fill colour.", out.width="50%"}
 # See interactive map online at https://rpubs.com/RobinLovelace/843442
 knitr::include_graphics("figures/overview-zones-central.png")
 ```
@@ -231,26 +243,37 @@ The OD data can be represented as both tabular and, when start and end points ar
 
 ```{r odsf}
 # head(centroids)
-odsf = od::od_to_sf(od, centroids)
-odsf_top3 = odsf %>%
+od_sf = od::od_to_sf(od, centroids)
+# od_sf_central = od_sf %>% 
+#   filter(geo_code1 %in% zones$InterZone) %>% 
+#   filter(geo_code2 %in% zones$InterZone) 
+# od_sf = od_sf_central %>%
+#   top_n(n = 500, wt = foot)
+# od_central = od_sf %>% sf::st_drop_geometry()
+# nrow(od_central) # 514
+# write_csv(od_central, "od_central.csv")
+# piggyback::pb_upload("od_central.csv")
+
+
+od_sf_top3 = od_sf %>%
   filter(geo_code1 != geo_code2) %>% 
   top_n(n = 3, wt = all) %>%
   select(geo_code1, geo_code2, all, foot, bicycle, bus, car_driver) %>% 
   arrange(desc(all))
 centroids_top = centroids %>% 
-  filter(InterZone %in% c(odsf_top3$geo_code1, odsf_top3$geo_code2))
+  filter(InterZone %in% c(od_sf_top3$geo_code1, od_sf_top3$geo_code2))
 # tmap_mode("view")
 zones_in_top3 = zones %>% 
-  filter(InterZone %in% c(odsf_top3$geo_code1, odsf_top3$geo_code2))
+  filter(InterZone %in% c(od_sf_top3$geo_code1, od_sf_top3$geo_code2))
 
-k = odsf_top3 %>%
+k = od_sf_top3 %>%
   sf::st_drop_geometry() %>%
   kableExtra::kable()
 # k
 # zones_touching = zones[zones_in_top3, ]
 # saveRDS(zones_touching, "zones_touching.Rds")
 bbox = sf::st_bbox(zones_in_top3)
-m1 = tm_shape(odsf_top3, bbox = bbox) +
+m1 = tm_shape(od_sf_top3, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6) +
   tm_shape(zones) +
   tm_borders() +
@@ -263,7 +286,7 @@ m1 = tm_shape(odsf_top3, bbox = bbox) +
 ```
 
 
-```{r od, fig.cap="Illustration of input data in tabular (bottom right, inset) and geographic form (in the map). Note how the ID codes in the first two columns of the table correspond with IDs in the zone data and how the cells in the 'foot' column are represented geographically on the map.", fig.show='hold', out.width="100%"}
+```{r od, fig.cap="Illustration of input data in tabular (bottom right, inset) and geographic form (in the map). Note how the ID codes in the first two columns of the table correspond with IDs in the zone data and how the cells in the 'foot' column are represented geographically on the map.", fig.show='hold', out.width="80%"}
 knitr::include_graphics(c(
   "figures/od-top-3-zones-metafigure.png"
   # "figures/od-top-3-table.png",
@@ -273,7 +296,7 @@ knitr::include_graphics(c(
 
 The techniques outlined in the following sub-sections are perhaps best understood visually, as illustrated in each of the facetted maps in Figure \@ref(fig:jitters).
 
-```{r jitters, fig.cap="Illustration of jittering and disaggregation of OD data on small input dataset."}
+```{r jitters, fig.cap="Illustration of jittering and disaggregation of OD data with a minimal input dataset.", out.width="80%"}
 set.seed(2021)
 fn = c(
   "A) Centroid based desire lines",
@@ -281,13 +304,13 @@ fn = c(
   "C) Jittered desire lines (sample from network)",
   "D) Jittered desire lines (with disaggregation)"
 )
-od_top3_jittered = od::od_jitter(odsf_top3, z = zones)
-od_top3_road = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 1000)
-od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 100)
-# od_top3_disaggregated = od::od_jitter(odsf_top3, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
+od_top3_jittered = od::od_jitter(od_sf_top3, z = zones)
+od_top3_road = od::od_jitter(od_sf_top3, z = zones, road_network_min, max_per_od = 1000)
+od_top3_disaggregated = od::od_jitter(od_sf_top3, z = zones, road_network_min, max_per_od = 100)
+# od_top3_disaggregated = od::od_jitter(od_sf_top3, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
 m1 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
-  tm_shape(odsf_top3, bbox = bbox) +
+  tm_shape(od_sf_top3, bbox = bbox) +
   tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6, title.col = "Walking trips per day") +
   tm_layout(title = "A) Single origin and destination point per zone", title.bg.color =  "white")
 m2 =  tm_shape(zones, bbox = bbox) +
@@ -314,7 +337,7 @@ m4 = tm_shape(zones, bbox = bbox) +
 tmap_arrange(m1, m2, m3, m4, nrow = 2)
 
 od_combined = rbind(
-  odsf_top3 %>% transmute(foot, type = fn[1]),
+  od_sf_top3 %>% transmute(foot, type = fn[1]),
   od_top3_jittered %>% transmute(foot, type = fn[2]),
   od_top3_road %>% transmute(foot, type = fn[3]),
   od_top3_disaggregated %>% transmute(foot, type = fn[4])
@@ -363,7 +386,7 @@ As shown in those tables, updated attributes can be calculated by dividing previ
 To determine how many disaggregated OD pairs each original OD pair is split into, a maximum threshold was set: an OD pairs with a total trip count exceeding this threshold (set at 150 in this case) is split into the minimum number of disaggregated OD pairs that reduce the total number of trips below the threshold.
 
 ```{r}
-od_to_disag = odsf_top3 %>%
+od_to_disag = od_sf_top3 %>%
   sf::st_drop_geometry() %>% 
   slice(1) %>%
   transmute(representation = "original", geo_code1, geo_code2, all, foot)
@@ -388,52 +411,43 @@ knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD p
 
 # Findings
 
-We found that jittering generates desire lines and routes that are more diverse and potentially realistic than the common default of using zone centroids to represent start and end points.
+We found that jittering generates desire lines (shown in Figure \@ref(fig:jittered514)) and routes that are more diverse and potentially realistic than the common default of using zone centroids to represent start and end points.
 Simple random sampling and sampling nodes on transport networks methods have been demonstrated conceptually and with reference to a small dataset in the previous section.
-The results of applying the approach to a large OD datasest, representing travel to work in Edinburgh, with sampling on the transport network, are illustrated in Figure \@ref(fig:rneted) (right).
-The 'jittered network' is substantially more dense and presumably more realistic than the 'unjittered network', a gain in network fidelity that comes at low computational cost.
 
-```{r}
-od_sf_central = odsf %>% 
-  filter(geo_code1 %in% zones$InterZone) %>% 
-  filter(geo_code2 %in% zones$InterZone) 
-od_sf_100 = od_sf_central %>%
-  top_n(n = 500, wt = foot)
-
-  # filter(foot > 50) 
-# sum(od_sf_100$foot) / sum(od_sf_central$foot) # 80%
+```{r jittered514, fig.cap="Results showing the conversion of OD data to geographic desire lines using population weighted centroids for origins and destinations (A) and jittered results. The jittered results illustrate jittering with simple random sampling of origin and destination locations (B), sampling on the network (C), and sampling on the network plus disaggregation of OD pairs representing more than 100 trips (D)."}
+# sum(od_sf$foot) / sum(od_sf_central$foot) # 80%
 # qtm(zones) +
-# tm_shape(od_sf_100) +
+# tm_shape(od_sf) +
 #   tm_lines() 
-bbox = tmaptools::bb(od_sf_100, ext = 1.2)
+bbox = tmaptools::bb(od_sf, ext = 1.2)
 
-od_sf_jittered = od::od_jitter(od_sf_100, z = zones)
-od_sf_road = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 1000)
-od_sf_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_buffer, max_per_od = 100)
-# od_sf_disaggregated = od::od_jitter(od_sf_100, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
+od_sf_jittered = od::od_jitter(od_sf, z = zones)
+od_sf_road = od::od_jitter(od_sf, z = zones, road_network_buffer, max_per_od = 1000)
+od_sf_disaggregated = od::od_jitter(od_sf, z = zones, road_network_buffer, max_per_od = 100)
+# od_sf_disaggregated = od::od_jitter(od_sf, z = zones, road_network_min, max_per_od = 200, population_column = "foot")
 m1 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
-  tm_shape(od_sf_100, bbox = bbox) +
-  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day") +
+  tm_shape(od_sf, bbox = bbox) +
+  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day", legend.lwd.show = FALSE) +
   tm_layout(title = "A) Single origin and destination point per zone", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
 m2 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(od_sf_jittered, bbox = bbox) +
-  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day") +
+  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day", legend.lwd.show = FALSE) +
   tm_layout(title = "B) Randomised origin and destination points", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
 m3 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(road_network_buffer, bbox = bbox) +
   tm_lines(col = "darkgreen", lwd = 0.1) +
   tm_shape(od_sf_road) +
-  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day") +
+  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day", legend.lwd.show = FALSE) +
   tm_layout(title = "C) Randomised points sampled from transport network", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.alpha = 0.3)
 m4 = tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(road_network_buffer, bbox = bbox) +
   tm_lines(col = "darkgreen", lwd = 0.1) +
   tm_shape(od_sf_disaggregated, bbox = bbox) +
-  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day") +
+  tm_lines(lwd = "foot", scale = 3, title.lwd = "Walking trips per day", legend.lwd.show = FALSE) +
   tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"), legend.bg.color = "white", legend.bg.alpha = 0.3)
 # todo: add a 4th figure showing sampling on the network
 # m3
@@ -441,7 +455,7 @@ tmap_arrange(m1, m2, m3, m4, nrow = 2)
 ```
 
 ```{r, eval=FALSE}
-routes_od = route(l = od_sf_100, route_fun = route_osrm, osrm.profile = "foot")
+routes_od = route(l = od_sf, route_fun = route_osrm, osrm.profile = "foot")
 sf::write_sf(routes_od, "routes_od.geojson")
 routes_jittered = route(l = od_sf_jittered, route_fun = route_osrm, osrm.profile = "foot")
 sf::write_sf(routes_jittered, "routes_jittered.geojson")
@@ -454,6 +468,10 @@ piggyback::pb_upload(f)
 piggyback::pb_download_url(f)
 ```
 
+The results of converting the desire lines to routes and then route networks are illustrated in Figure \@ref(fig:rneted).
+The figure shows that the 'jittered networks' are substantially more dense and presumably more realistic than the 'unjittered network', a gain in network fidelity that comes at low computational cost.
+Disaggregation leads to more diffuse network, as shown in Figure \@ref(fig:rneted) (D).
+A summary of the results is presented in Table \@ref(tab:sumtable).
 
 ```{r rneted, fig.cap="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right).", out.width="100%"}
 # manual approach
@@ -483,6 +501,9 @@ tm_shape(rnets %>% mutate(foot = case_when(foot < 50 ~ 50, TRUE ~ foot)), bbox =
   tm_layout(legend.outside.position = "top", legend.outside.size = 0.2)
 # knitr::include_graphics("figures/rneted-updated.png")
 
+```
+
+```{r sumtable}
 rnets$length_km = as.numeric(sf::st_length(rnets)) / 1000
 
 rnets_summary = rnets %>%
@@ -494,8 +515,13 @@ rnets_summary = rnets %>%
     `Average flow per segment` = mean(foot),
     `Standard deviation` = sd(foot)
   )
-rnets_summary %>% knitr::kable(booktabs = TRUE, digits = 0)
+rnets_summary$`N. OD pairs` = c(rep(nrow(od_sf), 3), nrow(od_sf_disaggregated))
+
+rnets_summary %>%
+  select(type, `N. OD pairs`, everything()) %>% 
+  knitr::kable(booktabs = TRUE, digits = 0, caption = "Summary of desire line and route network level results.")
 ```
+
 
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
 This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software (see accompanying code).
