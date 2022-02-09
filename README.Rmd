@@ -347,6 +347,12 @@ od_combined = rbind(
 
 ```
 
+
+```{bash}
+odjitter ...
+```
+
+
 ```{r desire}
 # od_top_100 = od %>% 
 #   top_n(n = 100, wt = all)
