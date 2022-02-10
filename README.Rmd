@@ -3,9 +3,11 @@ title: "Jittering: A computationally efficient method for generating realistic r
 # output: github_document
 # output: bookdown::html_document2
 # output: bookdown::word_document2
-output: bookdown::pdf_document2
+output:
+  bookdown::pdf_document2:
+    keep_tex: true
 bibliography: references.bib
-author: Robin Lovelace, Rosa Félix, Dustin Carlino
+# author: Robin Lovelace, Rosa Félix, Dustin Carlino
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -32,6 +34,7 @@ file.copy("README.html", "jittering-paper.html")
 file.copy("README.pdf", "jittering-paper-resubmission.pdf", TRUE)
 piggyback::pb_upload("jittering-paper-resubmission.pdf")
 piggyback::pb_download_url("jittering-paper-resubmission.pdf")
+# https://github.com/Robinlovelace/odjitter/releases/download/1/jittering-paper-resubmission.pdf
 # Generate citations (requires Zotero)
 library(rbbt)
 # old way:
@@ -40,6 +43,13 @@ library(rbbt)
 bbt_update_bib("README.Rmd", "references.bib")
 # trackdown::upload_file(file = "README.Rmd", path_output = "README.docx")
 # trackdown::update_file(file = "README.Rmd", path_output = "README.docx")
+# create diff
+system("latexdiff ../odjitter-original-submission/README.tex README.tex > diff.tex")
+tinytex::pdflatex("diff.tex")
+browseURL("diff.pdf")
+piggyback::pb_upload("diff.pdf")
+zip("jittering-paper-code.zip", files = c("odjitter-paper.R", "odjitter-paper.sh"))
+piggyback::pb_upload("jittering-paper-code.zip")
 ```
 
 <!-- badges: start -->
