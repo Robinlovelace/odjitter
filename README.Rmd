@@ -130,6 +130,7 @@ The approach was developed to support public sector transport planning in Edinbu
 As illustrated in Figure \@ref(fig:izs), the original study area was Edinburgh City Council, a major economic hub with ambitious [plans](https://www.edinburgh.gov.uk/downloads/file/30073/active-travel-investment-programme-update-october-2021) for investment in active travel, making evidence to support investment where it will be most beneficial key.
 For the purposes of this study we focus on a comparatively small area around central Edinburgh.
 We focus in this paper on walking trips in this central area because much research into route networks has focused on cycling and, because walking trips tend to be short, they create a need to convert aggregated OD datasets into diffuse route network representations of travel.
+Small input datasets developed for this paper can be downloaded using reproducible code that accompany the paper.
 
 ```{r get-osm-data, eval=FALSE}
 road_network_area = osmextract::oe_get_network(place = "Scotland", mode = "cycling")
