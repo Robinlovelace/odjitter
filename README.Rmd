@@ -526,7 +526,7 @@ rnets_summary %>%
 
 
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
-This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software: the jittering methods presented in this paper are implemented in the Rust crate [odjitter](https://github.com/dabreegster/odjitter).
+This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software: the jittering methods presented in this paper are implemented in the R package [`od`](https://itsleeds.github.io/od/) and (for a more feature complete and high performance implementation created in parallel with this paper) the Rust crate [odjitter](https://github.com/dabreegster/odjitter).
 See code accompanying this paper which reproduces the results shown above in R and Rust.
 The results raise many questions and avenues for future research: 
 

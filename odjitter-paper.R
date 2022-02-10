@@ -1,13 +1,3 @@
-## ---- include=FALSE-------------------------------------------------------------------------------------------------------------------------
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  echo = FALSE,
-  message = FALSE,
-  cache = TRUE,
-  warning = FALSE,
-  fig.align = "center"
-)
 # devtools::install_github("itsleeds/od")
 library(sf)
 library(tmap)
@@ -108,7 +98,7 @@ road_network_buffer = sf::read_sf("https://github.com/Robinlovelace/odjitter/rel
 # # library(dplyr)
 # # lads_scotland = readRDS("lads_scotland.Rds")
 # # piggyback::pb_upload("lads_scotland.Rds")
-# 
+#
 # edinburgh_region = lads_scotland %>%
 #   dplyr::filter(lau118nm == "Edinburgh, City of")
 # # saveRDS(edinburgh_region, "edinburgh_region.Rds")
@@ -119,7 +109,7 @@ central_edinburgh_5km = sf::st_buffer(central_edinburgh, dist = 5000)
 edinburgh_region = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/edinburgh_region.geojson")
 zones_centroids = sf::st_centroid(zones)
 zones_centroids_5km = zones_centroids[central_edinburgh_5km, ]
-# zones = zones %>% 
+# zones = zones %>%
 #   filter(InterZone %in% zones_centroids_5km$InterZone)
 # road_network_buffer = road_network_touching[zones, ]
 # saveRDS(road_network_buffer, "road_network_buffer.Rds")
@@ -141,9 +131,9 @@ knitr::include_graphics("figures/overview-zones-central.png")
 ## ----odsf-----------------------------------------------------------------------------------------------------------------------------------
 # head(centroids)
 od_sf = od::od_to_sf(od, centroids)
-# od_sf_central = od_sf %>% 
-#   filter(geo_code1 %in% zones$InterZone) %>% 
-#   filter(geo_code2 %in% zones$InterZone) 
+# od_sf_central = od_sf %>%
+#   filter(geo_code1 %in% zones$InterZone) %>%
+#   filter(geo_code2 %in% zones$InterZone)
 # od_sf = od_sf_central %>%
 #   top_n(n = 500, wt = foot)
 # od_central = od_sf %>% sf::st_drop_geometry()
@@ -153,14 +143,14 @@ od_sf = od::od_to_sf(od, centroids)
 
 
 od_sf_top3 = od_sf %>%
-  filter(geo_code1 != geo_code2) %>% 
+  filter(geo_code1 != geo_code2) %>%
   top_n(n = 3, wt = all) %>%
-  select(geo_code1, geo_code2, all, foot, bicycle, bus, car_driver) %>% 
+  select(geo_code1, geo_code2, all, foot, bicycle, bus, car_driver) %>%
   arrange(desc(all))
-centroids_top = centroids %>% 
+centroids_top = centroids %>%
   filter(InterZone %in% c(od_sf_top3$geo_code1, od_sf_top3$geo_code2))
 # tmap_mode("view")
-zones_in_top3 = zones %>% 
+zones_in_top3 = zones %>%
   filter(InterZone %in% c(od_sf_top3$geo_code1, od_sf_top3$geo_code2))
 
 k = od_sf_top3 %>%
@@ -240,7 +230,7 @@ od_combined = rbind(
 
 
 ## ----desire---------------------------------------------------------------------------------------------------------------------------------
-# od_top_100 = od %>% 
+# od_top_100 = od %>%
 #   top_n(n = 100, wt = all)
 # desire_lines = od::od_to_sf(x = od_top_100, z = centroids)
 # nrow(desire_lines)
@@ -256,13 +246,13 @@ od_combined = rbind(
 
 ## -------------------------------------------------------------------------------------------------------------------------------------------
 od_to_disag = od_sf_top3 %>%
-  sf::st_drop_geometry() %>% 
+  sf::st_drop_geometry() %>%
   slice(1) %>%
   transmute(representation = "original", geo_code1, geo_code2, all, foot)
 od_disaggregated = od_top3_disaggregated %>%
-  sf::st_drop_geometry() %>% 
-  filter(o_agg == od_to_disag$geo_code1) %>% 
-  filter(d_agg == od_to_disag$geo_code2) %>% 
+  sf::st_drop_geometry() %>%
+  filter(o_agg == od_to_disag$geo_code1) %>%
+  filter(d_agg == od_to_disag$geo_code2) %>%
   transmute(representation = "disaggregated", geo_code1 = o_agg, geo_code2 = d_agg, all, foot)
 
 
@@ -282,7 +272,7 @@ knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD p
 # sum(od_sf$foot) / sum(od_sf_central$foot) # 80%
 # qtm(zones) +
 # tm_shape(od_sf) +
-#   tm_lines() 
+#   tm_lines()
 bbox = tmaptools::bb(od_sf, ext = 1.2)
 
 od_sf_jittered = od::od_jitter(od_sf, z = zones)
@@ -366,9 +356,9 @@ tm_shape(rnets %>% mutate(foot = case_when(foot < 50 ~ 50, TRUE ~ foot)), bbox =
 rnets$length_km = as.numeric(sf::st_length(rnets)) / 1000
 
 rnets_summary = rnets %>%
-  sf::st_drop_geometry() %>% 
-  group_by(type) %>% 
-  mutate(type = str_sub(type, 1, 3)) %>% 
+  sf::st_drop_geometry() %>%
+  group_by(type) %>%
+  mutate(type = str_sub(type, 1, 3)) %>%
   summarise(
     `Network length (km)` = sum(length_km),
     `Average flow per segment` = mean(foot),
@@ -377,6 +367,6 @@ rnets_summary = rnets %>%
 rnets_summary$`N. OD pairs` = c(rep(nrow(od_sf), 3), nrow(od_sf_disaggregated))
 
 rnets_summary %>%
-  select(type, `N. OD pairs`, everything()) %>% 
+  select(type, `N. OD pairs`, everything()) %>%
   knitr::kable(booktabs = TRUE, digits = 0, caption = "Summary of desire line and route network level results.")
 
