@@ -530,8 +530,8 @@ This is however, to the best of our knowledge, the first paper focussed on the t
 The results raise many questions and avenues for future research: 
 
 - Are the jittered results measurably better when compared with counter datasets on the network?
-- Which jittering settings (including sampling strategies and levels of disaggregation) represent the best 'boom for buck' in terms of network accuracy divided by computational requirements?
-- And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings or certain road types, yield further benefits? 
+- Which jittering settings (including sampling strategies and levels of disaggregation) represent the best 'boom for buck' in terms of network accuracy relative to computational requirements?
+- And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings, or modifying disaggregation threshold values depending on variables such as zone size, yield further benefits? 
 
 Before further refining the approach, the priority should be validation to answer the first of these questions.
 To do so requires a place that has both good open OD data and good observed travel behavior data, for example from manual and automatic counters at point locations on the network [@lindsey_minnesota_2013] and other sources of data [@zheng_big_2016].
