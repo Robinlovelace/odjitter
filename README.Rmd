@@ -1,9 +1,9 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-output: github_document
+# output: github_document
 # output: bookdown::html_document2
 # output: bookdown::word_document2
-# output: bookdown::pdf_document2
+output: bookdown::pdf_document2
 bibliography: references.bib
 author: Robin Lovelace, Rosa Félix, Dustin Carlino
 ---
@@ -76,7 +76,7 @@ This is particularly important when designing for active travel [@buehler_bikewa
 We developed the approach to support strategic investment in walking and cycling infrastructure networks based on our observation that route networks resulting from OD pairs from and to single centroids per zone were too sparse.
 The approach can 'slot into' existing transport modelling workflows that use desire lines which can be used as the basis of route network assignment, uptake modelling, and route network generation modelling workflows [@morgan_travel_2020].
 <!-- todo: add flow diagram -->
-We refer to the approach as jittering, noting the use term to describe a similar process of adding "random noise to the data" for data visualization [wickham_2016a_ggplot2].
+We refer to the approach as jittering, noting the use term to describe a similar process of adding "random noise to the data" for data visualization [@wickham_ggplot2_2016].
 
 <!-- In this paper we outline such methods and their uses, demonstrating how jittering can be used to create more diffuse and accurate estimates of movement at the level of segments ('flows') on transport network, with minimal computational overheads compared with the computationally intensive process of route calculation ('routing') or processing large GPS datasets. -->
 <!-- Long version of paper: -->
