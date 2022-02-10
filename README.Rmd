@@ -526,12 +526,13 @@ rnets_summary %>%
 
 
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
-This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software (see accompanying code).
+This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software: the jittering methods presented in this paper are implemented in the Rust crate [odjitter](https://github.com/dabreegster/odjitter).
+See code accompanying this paper which reproduces the results shown above in R and Rust.
 The results raise many questions and avenues for future research: 
 
 - Are the jittered results measurably better when compared with counter datasets on the network?
 - Which jittering settings (including sampling strategies and levels of disaggregation) represent the best 'boom for buck' in terms of network accuracy relative to computational requirements?
-- And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings, or modifying disaggregation threshold values depending on variables such as zone size, yield further benefits? 
+- And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings and commercial centers, or modifying disaggregation threshold values depending on variables such as zone size, improve results? 
 
 Before further refining the approach, the priority should be validation to answer the first of these questions.
 To do so requires a place that has both good open OD data and good observed travel behavior data, for example from manual and automatic counters at point locations on the network [@lindsey_minnesota_2013] and other sources of data [@zheng_big_2016].
