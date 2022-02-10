@@ -372,105 +372,10 @@ networks are illustrated in Figure @ref(fig:rneted). The figure shows
 that the ‘jittered networks’ are substantially more dense and presumably
 more realistic than the ‘unjittered network’, a gain in network fidelity
 that comes at low computational cost. Disaggregation leads to more
-diffuse network, as shown in Figure @ref(fig:rneted) (D). A summary of
-the results is presented in Table @ref(tab:sumtable).
+diffuse network, as shown in Figure @ref(fig:rneted) (D).
+<!-- A summary of the results is presented in Table \@ref(tab:sumtable). -->
 
 <img src="README_files/figure-gfm/rneted-1.png" title="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right)." alt="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right)." width="100%" style="display: block; margin: auto;" />
-
-<table>
-<caption>
-Summary of desire line and route network level results.
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-type
-</th>
-<th style="text-align:right;">
-N. OD pairs
-</th>
-<th style="text-align:right;">
-Network length (km)
-</th>
-<th style="text-align:right;">
-Average flow per segment
-</th>
-<th style="text-align:right;">
-Standard deviation
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-
-1)  </td>
-    <td style="text-align:right;">
-    514
-    </td>
-    <td style="text-align:right;">
-    229
-    </td>
-    <td style="text-align:right;">
-    309
-    </td>
-    <td style="text-align:right;">
-    412
-    </td>
-    </tr>
-    <tr>
-    <td style="text-align:left;">
-
-    2)  </td>
-        <td style="text-align:right;">
-        514
-        </td>
-        <td style="text-align:right;">
-        433
-        </td>
-        <td style="text-align:right;">
-        170
-        </td>
-        <td style="text-align:right;">
-        223
-        </td>
-        </tr>
-        <tr>
-        <td style="text-align:left;">
-
-        3)  </td>
-            <td style="text-align:right;">
-            514
-            </td>
-            <td style="text-align:right;">
-            405
-            </td>
-            <td style="text-align:right;">
-            372
-            </td>
-            <td style="text-align:right;">
-            500
-            </td>
-            </tr>
-            <tr>
-            <td style="text-align:left;">
-
-            4)  </td>
-                <td style="text-align:right;">
-                742
-                </td>
-                <td style="text-align:right;">
-                571
-                </td>
-                <td style="text-align:right;">
-                256
-                </td>
-                <td style="text-align:right;">
-                382
-                </td>
-                </tr>
-                </tbody>
-                </table>
 
 Related methods of “centroid connector placement” have been developed
 and tested (Jafari et al. 2015). This is however, to the best of our
@@ -478,17 +383,24 @@ knowledge, the first paper focussed on the two step process of jittering
 described in this paper — sampling origin and destination points (with
 simple random sampling or by sampling from the nodes on the network) and
 disagreggation — supported with a reproducible implementation based on
-open source software (see accompanying code). The results raise many
-questions and avenues for future research:
+open source software: the jittering methods presented in this paper are
+implemented in the R package [`od`](https://itsleeds.github.io/od/) and
+(for a more feature complete and high performance implementation created
+in parallel with this paper) the Rust crate
+[odjitter](https://github.com/dabreegster/odjitter). See code
+accompanying this paper which reproduces the results shown above in R
+and Rust. The results raise many questions and avenues for future
+research:
 
 -   Are the jittered results measurably better when compared with
     counter datasets on the network?
 -   Which jittering settings (including sampling strategies and levels
     of disaggregation) represent the best ‘boom for buck’ in terms of
-    network accuracy divided by computational requirements?
+    network accuracy relative to computational requirements?
 -   And can further refinements, for example sampling with weights to
-    increase the proportion of trips associated with large buildings or
-    certain road types, yield further benefits?
+    increase the proportion of trips associated with large buildings and
+    commercial centers, or modifying disaggregation threshold values
+    depending on variables such as zone size, improve results?
 
 Before further refining the approach, the priority should be validation
 to answer the first of these questions. To do so requires a place that

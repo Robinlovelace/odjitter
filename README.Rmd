@@ -473,7 +473,7 @@ piggyback::pb_download_url(f)
 The results of converting the desire lines to routes and then route networks are illustrated in Figure \@ref(fig:rneted).
 The figure shows that the 'jittered networks' are substantially more dense and presumably more realistic than the 'unjittered network', a gain in network fidelity that comes at low computational cost.
 Disaggregation leads to more diffuse network, as shown in Figure \@ref(fig:rneted) (D).
-A summary of the results is presented in Table \@ref(tab:sumtable).
+<!-- A summary of the results is presented in Table \@ref(tab:sumtable). -->
 
 ```{r rneted, fig.cap="Route network results derived from non-jittered OD data (left) and OD data that had been jittered, with pre-processing steps including disaggregation of large flows and randomisation of origin and destionation points on the transport network (right).", out.width="100%"}
 # manual approach
@@ -505,7 +505,7 @@ tm_shape(rnets %>% mutate(foot = case_when(foot < 50 ~ 50, TRUE ~ foot)), bbox =
 
 ```
 
-```{r sumtable}
+```{r sumtable, eval=FALSE}
 rnets$length_km = as.numeric(sf::st_length(rnets)) / 1000
 
 rnets_summary = rnets %>%
