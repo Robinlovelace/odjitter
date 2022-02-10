@@ -404,7 +404,7 @@ Standard deviation
 <tr>
 <td style="text-align:left;">
 
-1.  </td>
+1)  </td>
     <td style="text-align:right;">
     514
     </td>
@@ -421,7 +421,7 @@ Standard deviation
     <tr>
     <td style="text-align:left;">
 
-    2.  </td>
+    2)  </td>
         <td style="text-align:right;">
         514
         </td>
@@ -438,7 +438,7 @@ Standard deviation
         <tr>
         <td style="text-align:left;">
 
-        3.  </td>
+        3)  </td>
             <td style="text-align:right;">
             514
             </td>
@@ -455,7 +455,7 @@ Standard deviation
             <tr>
             <td style="text-align:left;">
 
-            4.  </td>
+            4)  </td>
                 <td style="text-align:right;">
                 742
                 </td>
