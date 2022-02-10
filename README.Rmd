@@ -68,7 +68,7 @@ Broadly, there are three approaches to converting OD data into geographic repres
 3. Creation of 'centroid connectors', also referred to as links "between trip ends and zonal anchors" using randomised or deterministic approaches [@leurent_stochastic_2011]
 
 In this paper we present a new approach to processing OD datasets which combines OD data disggregation *and* randomisation of start and end locations into a single technique.
-The 'jittering' framework we present is flexible, enabling the user to adjust the level of disaggregation required for their applications and start and end points from which disaggregate OD pairs are sampled.
+The 'jittering' approach we present is flexible, enabling the user to adjust the level of disaggregation required for their applications and start and end points from which disaggregate OD pairs are sampled.
  <!-- appropriate start points and trip attractors, and weights highlighting the relative importance of different origin and destination points. -->
 
 Unlike aforementioned papers, jittering can be understood as a simple, transparent and flexible pre-processing stage that can add value to OD datasets by representing the diffuse nature of travel networks.
