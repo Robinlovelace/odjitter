@@ -206,3 +206,24 @@ rnets_summary %>%
   select(type, `N. OD pairs`, everything()) %>%
   knitr::kable(booktabs = TRUE, digits = 0, caption = "Summary of desire line and route network level results.")
 
+# benchmark ---------------------------------------------------------------
+system.time({
+
+od = readr::read_csv("od_central.csv")
+zones = sf::read_sf("zones.geojson")
+centroids = sf::read_sf("centroids.geojson")
+road_network_buffer = sf::read_sf("road_network_buffer.geojson")
+od_sf_disaggregated = od::od_jitter(od_sf, z = zones, road_network_buffer, max_per_od = 100)
+sf::write_sf(od_sf_disaggregated, "od_sf_disaggregated_100.geojson")
+
+})
+
+# In Rust:
+# real    0m0.609s
+# user    0m0.552s
+# sys     0m0.056s
+
+# # In R:
+#    user  system elapsed
+#  17.198   0.048  17.216
+17.2 / 0.6
