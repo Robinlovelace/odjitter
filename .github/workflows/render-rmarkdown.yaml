@@ -1,14 +1,11 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    paths: ['**.Rmd']
-
-name: render-rmarkdown
+    paths:
+      - '**.Rmd'
 
 jobs:
-  render-rmarkdown:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -17,12 +14,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: r-lib/actions/setup-pandoc@v1
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v1
 
-      - uses: r-lib/actions/setup-r@v1
+      - name: Install pandoc
+        run: |
+          brew install pandoc
 
-      - uses: r-lib/actions/setup-renv@v1
-      
+      - name: Cache Renv packages
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.local/share/renv
+          key: r-${{ hashFiles('renv.lock') }}
+          restore-keys: r-
+
+      - name: Install packages
+        run: |
+          R -e 'install.packages("renv")'
+          R -e 'renv::restore()'
+          R -e 'install.packages("remotes")'
+          R -e 'remotes::install_cran("rmarkdown")'
+
       - name: Render Rmarkdown files
         run: |
           RMD_PATH=($(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '[.]Rmd$'))
@@ -32,5 +44,7 @@ jobs:
         run: |
           git config --local user.name "$GITHUB_ACTOR"
           git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git commit ${RMD_PATH[*]/.Rmd/.md} -m 'Re-build Rmarkdown files' || echo "No changes to commit"
+          git status
+          git add -A
+          git commit -am 'Re-build Rmarkdown files' || echo "No changes to commit"
           git push origin || echo "No changes to commit"
