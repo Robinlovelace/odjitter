@@ -1,11 +1,9 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-# output: github_document
-# output: bookdown::html_document2
-# output: bookdown::word_document2
-output:
-  bookdown::pdf_document2:
-    keep_tex: true
+output: github_document
+# output:
+#   bookdown::pdf_document2:
+#     keep_tex: true
 bibliography: references.bib
 # author: Robin Lovelace, Rosa Félix, Dustin Carlino
 ---
