@@ -1,7 +1,6 @@
 Jittering: A computationally efficient method for generating realistic
 route networks from origin-destination data
 ================
-Robin Lovelace, Rosa Félix, Dustin Carlino
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
@@ -54,7 +53,7 @@ transport modelling:
 
 In this paper we present a new approach to processing OD datasets which
 combines OD data disggregation *and* randomisation of start and end
-locations into a single technique. The ‘jittering’ framework we present
+locations into a single technique. The ‘jittering’ approach we present
 is flexible, enabling the user to adjust the level of disaggregation
 required for their applications and start and end points from which
 disaggregate OD pairs are sampled.
@@ -76,7 +75,7 @@ of route network assignment, uptake modelling, and route network
 generation modelling workflows (Morgan and Lovelace 2020).
 <!-- todo: add flow diagram --> We refer to the approach as jittering,
 noting the use term to describe a similar process of adding “random
-noise to the data” for data visualization \[wickham_2016a_ggplot2\].
+noise to the data” for data visualization (Wickham 2016).
 
 <!-- In this paper we outline such methods and their uses, demonstrating how jittering can be used to create more diffuse and accurate estimates of movement at the level of segments ('flows') on transport network, with minimal computational overheads compared with the computationally intensive process of route calculation ('routing') or processing large GPS datasets. -->
 <!-- Long version of paper: -->
@@ -127,7 +126,9 @@ focus on a comparatively small area around central Edinburgh. We focus
 in this paper on walking trips in this central area because much
 research into route networks has focused on cycling and, because walking
 trips tend to be short, they create a need to convert aggregated OD
-datasets into diffuse route network representations of travel.
+datasets into diffuse route network representations of travel. Small
+input datasets developed for this paper can be downloaded using
+reproducible code that accompanies the paper.
 
 <img src="figures/overview-zones-central.png" title="Overview of the study region with the population from the 2011 Census at the level of Intermediate Zones corresponding to fill colour." alt="Overview of the study region with the population from the 2011 Census at the level of Intermediate Zones corresponding to fill colour." width="50%" style="display: block; margin: auto;" />
 
@@ -567,6 +568,13 @@ Data to County Level in New Jersey.” *Transportation Research Record*
 Shi, Xiaoying, Fanshun Lv, Dewen Seng, Baixi Xing, and Jing Chen. 2019.
 “Exploring the Evolutionary Patterns of Urban Activity Areas Based on
 Origin-Destination Data.” *IEEE Access* 7: 20416–31.
+
+</div>
+
+<div id="ref-wickham_ggplot2_2016" class="csl-entry">
+
+Wickham, Hadley. 2016. *Ggplot2: Elegant Graphics for Data Analysis*.
+2nd ed. 2016 edition. New York, NY: Springer.
 
 </div>
 
