@@ -1,9 +1,9 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-output: github_document
-# output:
-#   bookdown::pdf_document2:
-#     keep_tex: true
+# output: github_document
+output:
+  bookdown::pdf_document2:
+    keep_tex: true
 bibliography: references.bib
 # author: Robin Lovelace, Rosa Félix, Dustin Carlino
 ---
@@ -42,10 +42,10 @@ bbt_update_bib("README.Rmd", "references.bib")
 # trackdown::upload_file(file = "README.Rmd", path_output = "README.docx")
 # trackdown::update_file(file = "README.Rmd", path_output = "README.docx")
 # create diff
-system("latexdiff ../odjitter-original-submission/README.tex README.tex > diff.tex")
-tinytex::pdflatex("diff.tex")
-browseURL("diff.pdf")
-piggyback::pb_upload("diff.pdf")
+system("latexdiff jittering-paper-resubmission.tex README.tex > diff-resubmission2.tex")
+tinytex::pdflatex("diff-resubmission2.tex")
+browseURL("diff-resubmission2.pdf")
+piggyback::pb_upload("diff-resubmission2.pdf")
 zip("jittering-paper-code.zip", files = c("odjitter-paper.R", "odjitter-paper.sh"))
 piggyback::pb_upload("jittering-paper-code.zip")
 ```
@@ -71,8 +71,8 @@ There has been much written on optimal zoning systems for representing and model
 Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021], disaggregation [@katranji_mobility_2016] and location of 'connectors' joining zone centroids with the surrounding network [@jafari_investigation_2015].
 Broadly, there are three approaches to converting OD data into geographic representations for transport modelling:
 
-1. Centroid to centroid representations, a common approach involving the simplifying assumption that all trip destinations and origins can be represented by (sometimes population weighted or aggregated) zone centroids [@guo_origindestination_2014; @martin_origindestination_2018]
-2. Subdividing zones at which data is available to subzones [@opie_commodityspecific_2009] or 'centroid connectors' or simply 'connectors' "between trip ends and zonal anchors" using randomised or deterministic approaches [@leurent_stochastic_2011]
+1. Centroid to centroid representations, a common approach involving the simplifying assumption that all trip destinations and origins can be represented by (sometimes population weighted or aggregated) zone centroids [@guo_origindestination_2014; @martin_origindestination_2018].
+2. Subdividing zones at which data is available to subzones centroids [@opie_commodityspecific_2009] or 'centroid connectors' or simply 'connectors' "between trip ends and zonal anchors" using randomised or deterministic approaches [@leurent_stochastic_2011; @friedrich_methods_2009].
 
 In this paper we present a new approach to processing OD datasets which combines OD data disggregation *and* randomisation of start and end locations into a single technique.
 The 'jittering' approach we present is flexible, enabling the user to adjust the level of disaggregation required for their applications and start and end points from which disaggregate OD pairs are sampled.
@@ -532,15 +532,15 @@ rnets_summary %>%
   knitr::kable(booktabs = TRUE, digits = 0, caption = "Summary of desire line and route network level results.")
 ```
 
-
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
 This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software: the jittering methods presented in this paper are implemented in the R package [`od`](https://itsleeds.github.io/od/) and (for a more feature complete and high performance implementation created in parallel with this paper) the Rust crate [odjitter](https://github.com/dabreegster/odjitter).
 See code accompanying this paper which reproduces the results shown above in R and Rust.
 The results raise many questions and avenues for future research: 
 
 - Are the jittered results measurably better when compared with counter datasets on the network?
+- What additional refinements to the jittering techniques outline in this paper could generate more realistic disaggregated OD pairs, e.g. as an input into agent based models (ABM)?
 - Which jittering settings (including sampling strategies and levels of disaggregation) represent the best 'boom for buck' in terms of network accuracy relative to computational requirements?
-- And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings and commercial centers, or modifying disaggregation threshold values depending on variables such as zone size, improve results? 
+- And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings and commercial centers, or modifying disaggregation threshold values depending on variables such as zone size, improve results?
 
 Before further refining the approach, the priority should be validation to answer the first of these questions.
 To do so requires a place that has both good open OD data and good observed travel behavior data, for example from manual and automatic counters at point locations on the network [@lindsey_minnesota_2013] and other sources of data [@zheng_big_2016].

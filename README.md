@@ -46,10 +46,9 @@ transport modelling:
     can be represented by (sometimes population weighted or aggregated)
     zone centroids (Guo and Zhu 2014; Martin et al. 2018)
 2.  Subdividing zones at which data is available to subzones (Opie,
-    Rowinski, and Spasovic 2009)
-3.  Creation of ‘centroid connectors’, also referred to as links
-    “between trip ends and zonal anchors” using randomised or
-    deterministic approaches (Leurent, Benezech, and Samadzad 2011)
+    Rowinski, and Spasovic 2009) or ‘centroid connectors’ or simply
+    ‘connectors’ “between trip ends and zonal anchors” using randomised
+    or deterministic approaches (Leurent, Benezech, and Samadzad 2011)
 
 In this paper we present a new approach to processing OD datasets which
 combines OD data disggregation *and* randomisation of start and end
