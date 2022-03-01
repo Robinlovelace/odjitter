@@ -68,14 +68,16 @@ Recent applications range from analysis of the evolution of urban activity and s
 
 <!-- Perhaps in part because they are so well established, comparatively few recent research papers have explored new methods for processing OD datasets. -->
 There has been much written on optimal zoning systems for representing and modelling OD data [e.g. @openshaw_optimal_1977].
-Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021], disaggregation [@katranji_mobility_2016] and location of 'connectors' joining zone centroids with the surrounding network [@jafari_investigation_2015].
+Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021], disaggregation [@katranji_mobility_2016] and location of 'connectors' joining zone center points (centroids) with the surrounding network [@jafari_investigation_2015].
 Broadly, there are three approaches to converting OD data into geographic representations for transport modelling:
 
 1. Centroid to centroid representations, a common approach involving the simplifying assumption that all trip destinations and origins can be represented by (sometimes population weighted or aggregated) zone centroids [@guo_origindestination_2014; @martin_origindestination_2018].
-2. Subdividing zones at which data is available to subzones centroids [@opie_commodityspecific_2009] or 'centroid connectors' or simply 'connectors' "between trip ends and zonal anchors" using randomised or deterministic approaches [@leurent_stochastic_2011; @friedrich_methods_2009].
+2. Subdividing zones at which data is available to subzones centroids [@opie_commodityspecific_2009] or 'centroid connectors' or simply 'connectors' "between trip ends and zonal anchors" using stochastic or deterministic approaches [@leurent_stochastic_2011; @friedrich_methods_2009].
 
-In this paper we present a new approach to processing OD datasets which combines OD data disggregation *and* randomisation of start and end locations into a single technique.
-The 'jittering' approach we present is flexible, enabling the user to adjust the level of disaggregation required for their applications and start and end points from which disaggregate OD pairs are sampled.
+In this paper we present a new approach to pre-processing OD datasets.
+The 'jittering' approach presented in this paper allows the user to adjust start and end locations based on variables such as transport network density, residential density or size of commercial buildings acting as trip attractors.
+The results, represented as 'jittered desire lines' are more spatially diffuse than desire lines that go from and to zone centroids.
+The approach is flexible, enabling the user to adjust the level of disaggregation, the location of start and end points from which disaggregate OD pairs are sampled, and weights representing the importance of different trip 'originators' and 'attractors'.
  <!-- appropriate start points and trip attractors, and weights highlighting the relative importance of different origin and destination points. -->
 
 Unlike aforementioned papers, jittering can be understood as a simple, transparent and flexible pre-processing stage that can add value to OD datasets by representing the diffuse nature of travel networks.
@@ -306,7 +308,7 @@ knitr::include_graphics(c(
 
 The techniques outlined in the following sub-sections are perhaps best understood visually, as illustrated in each of the facetted maps in Figure \@ref(fig:jitters).
 
-```{r jitters, fig.cap="Illustration of jittering and disaggregation of OD data with a minimal input dataset.", out.width="80%"}
+```{r jitters, fig.cap="Illustration of jittering and disaggregation of origin-destination (OD) data with a minimal input dataset. Subfigure A) shows the conventional way of representing OD data as desire lines between zone centroids. Subfigures B) and C) show the same desire lines but with jittered origin and start locations based on simple random sampling of points and sampling locations on the road network. Subfigure D) shows the combined impact of disaggregation and jittering.", out.width="80%"}
 set.seed(2021)
 fn = c(
   "A) Centroid based desire lines",
@@ -384,7 +386,10 @@ This approach has the advantages of simplicity, requiring no additional datasets
 To overcome the limitations of the simple random sampling approach, the universe of possible coordinates from which trips can originate and end can be reduced by providing another geographic input dataset.
 This dataset could contain known trip attractors such as city centers and work places, as well as tightly defined residential 'subzones'.
 For highly disaggregated flows in cases where accurate building datasets are available, building footprints could also be used.
-Perhaps the most useful input for subsampling, however, is a transport road network, as illustrated in Figure \@ref(fig:jitters) (C): transport network datasets are readily available in most places and ensure that all trips happen on the network, an advantage when using some routing services.
+A useful, and widely available [@barrington-leigh_world_2017], input for subsampling is a transport road network, as illustrated in Figure \@ref(fig:jitters) (C).
+Additional refinements to the stochastic selection of origin and destination based on weights relating to other datasets are possible, as discussed in the final section.
+
+The key elements of the jittering approach outlined in this paper are described below.
 
 ## Disaggregation
 
