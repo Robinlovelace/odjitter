@@ -135,7 +135,7 @@ The approach was developed to support public sector transport planning in Edinbu
 As illustrated in Figure \@ref(fig:izs), the original study area was Edinburgh City Council, a major economic hub with ambitious [plans](https://www.edinburgh.gov.uk/downloads/file/30073/active-travel-investment-programme-update-october-2021) for investment in active travel, making evidence to support investment where it will be most beneficial key.
 For the purposes of this study we focus on a comparatively small area around central Edinburgh.
 We focus in this paper on walking trips in this central area because much research into route networks has focused on cycling and, because walking trips tend to be short, they create a need to convert aggregated OD datasets into diffuse route network representations of travel.
-Small input datasets developed for this paper can be downloaded using reproducible code that accompanies the paper.
+Input datasets developed for this paper can be downloaded using reproducible code that accompanies the paper; see code at [url to be included on publication] to fully reproduce the findings.
 
 ```{r get-osm-data, eval=FALSE}
 road_network_area = osmextract::oe_get_network(place = "Scotland", mode = "cycling")
@@ -243,6 +243,7 @@ knitr::include_graphics("figures/overview-zones-central.png")
 
 Beyond the zone data illustrated in Figure \@ref(fig:izs), the input dataset consisted of open access OD data from the 2011 census.
 The OD data can be represented as both tabular and, when start and end points are assigned to centroids within each zone, as geographic entities, as illustrated in a sample of three OD pairs presented in Figure \@ref(fig:od).
+To generate the route networks presented in Figure \@ref(fig:rneted) we used the OpenStreetMap Routing Machine (OSRM) with the profile set to 'foot'.
 <!-- , which presents data at the zone and OD level for the top 3 OD pairs by number of interzonal travel between zones by all modes in Edinburgh in tabular and visual form. -->
 <!-- The zone boundaries are based on open boundary data provided by data.gov.uk at the Middle Super Output Area (MSOA) level. -->
 <!-- The population was 480,139 in the 2011 Census, 237,839 of whom were employed. -->
@@ -486,8 +487,8 @@ piggyback::pb_download_url(f)
 
 The results of converting the desire lines to routes and then route networks are illustrated in Figure \@ref(fig:rneted).
 The figure shows that the 'jittered networks' are more diffuse than the 'unjittered network'.
-Disaggregation leads to more diffuse network, as shown in Figure \@ref(fig:rneted) (D).
-These processes of jittering and disaggregation come at low computational cost.
+Disaggregation leads to more diffuse networks as shown in Figure \@ref(fig:rneted) (D).
+
 Advantages of this approach include simplicity, low computational cost and flexibility: the level of disaggregation can be adjusted depending on computational considerations.
 Full disaggregation (not demonstrated in this paper) would lead to one route being calculated for every trip; this would increase increase computational requirements but could generate outputs that could feed into agent based models.
 The approach has fewer data input requirements than established methods and could be used in setting where sub-zones are unavailable.
@@ -544,16 +545,18 @@ rnets_summary %>%
 ```
 
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
-This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software: the jittering methods presented in this paper are implemented in the R package [`od`](https://itsleeds.github.io/od/) and (for a more feature complete and high performance implementation created in parallel with this paper) the Rust crate [odjitter](https://github.com/dabreegster/odjitter).
-See code accompanying this paper which reproduces the results shown above in R and Rust.
-The results raise many questions and avenues for future research: 
+This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software: the jittering methods presented in this paper are implemented in the R package [`od`](https://itsleeds.github.io/od/).
+A more feature complete and high performance implementation created in parallel with this paper is the Rust crate [odjitter](https://github.com/dabreegster/odjitter).
+Code accompanying this paper which reproduces the results in each language.
+
+The results raise questions and avenues for future research, including: 
 
 - Are the jittered results measurably better when compared with counter datasets on the network?
 - What additional refinements to the jittering techniques outline in this paper could generate more realistic disaggregated OD pairs, e.g. as an input into agent based models (ABM)?
 - Which jittering settings (including sampling strategies and levels of disaggregation) represent the best 'boom for buck' in terms of network accuracy relative to computational requirements?
 - And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings and commercial centers, or modifying disaggregation threshold values depending on variables such as zone size, improve results?
 
-Before further refining the approach, the priority should be validation to answer the first of these questions.
+Before further refinements are made, the priority should be validation to answer the first of these questions.
 To do so requires a place that has both good open OD data and good observed travel behavior data, for example from manual and automatic counters at point locations on the network [@lindsey_minnesota_2013] and other sources of data [@zheng_big_2016].
 
 # References
