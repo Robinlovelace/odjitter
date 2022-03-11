@@ -424,8 +424,8 @@ knitr::kable(od_disaggregated, caption = "Attribute data associated with an OD p
 
 # Findings
 
-We found that jittering generates desire lines that are more geographically diffuse than desire lines resulting from the common method of using zone centroids to represent start and end points (Figure \@ref(fig:jittered514)).
-This demonstrates the use of simple random sampling and sampling nodes on transport networks with reference to a real world example.
+We found that jittering generates desire lines that are more geographically diffuse than desire lines resulting from the common method of using zone centroids to represent start and end points.
+This shown in Figure \@ref(fig:jittered514), which demonstrates the use of simple random sampling and sampling nodes on transport networks with reference to a real world example.
 
 ```{r jittered514, fig.cap="Results showing the conversion of OD data to geographic desire lines using population weighted centroids for origins and destinations (A) and jittered results. The jittered results illustrate jittering with simple random sampling of origin and destination locations (B), sampling on the network (C), and sampling on the network plus disaggregation of OD pairs representing more than 100 trips (D)."}
 # sum(od_sf$foot) / sum(od_sf_central$foot) # 80%
