@@ -52,8 +52,8 @@ piggyback::pb_upload("jittering-paper-code.zip")
 # Abstract {-}
 
 Origin-destination (OD) datasets are often represented as 'desire lines' between zone centroids
-This paper presents a 'jittering' approach to tackling this problem by (1) sampling unique origin and destination locations for each OD pair, and (2) splitting 'large' OD pairs representing many trips into 'sub-OD' pairs.
-We find that route networks generated from jittered OD data are more diffuse, based on an example dataset representing walking trips.
+This paper presents a 'jittering' approach to pre-processing and conversion of OD data into geographic desire lines that (1) samples unique origin and destination locations for each OD pair, and (2) splits 'large' OD pairs into 'sub-OD' pairs.
+We find that route networks generated from jittered desire lines are more geographically diffuse that route networks generated from 'unjittered' (centroid based) desire lines.
 The approach, implemented in the Rust crate odjitter, is a computationally efficient and flexible way to simulate diffuse travel patterns from OD data.
 Further work is needed to validate the approach and to find optimal parameters for sampling and disaggregation.
 
