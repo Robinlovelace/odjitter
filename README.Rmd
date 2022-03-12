@@ -57,7 +57,7 @@ piggyback::pb_upload("jittering-paper-code.zip")
 
 # Abstract {-}
 
-Origin-destination (OD) datasets are often represented as 'desire lines' between zone centroids
+Origin-destination (OD) datasets are often represented as 'desire lines' between zone centroids.
 This paper presents a 'jittering' approach to pre-processing and conversion of OD data into geographic desire lines that (1) samples unique origin and destination locations for each OD pair, and (2) splits 'large' OD pairs into 'sub-OD' pairs.
 We find that route networks generated from jittered desire lines are more geographically diffuse that route networks generated from 'unjittered' (centroid based) desire lines.
 The approach, implemented in the Rust crate odjitter, is a computationally efficient and flexible way to simulate diffuse travel patterns from OD data.
@@ -72,7 +72,7 @@ Recent applications range from analysis of the evolution of urban activity and s
 <!-- Perhaps in part because they are so well established, comparatively few recent research papers have explored new methods for processing OD datasets. -->
 There has been much written on optimal zoning systems for representing and modelling OD data [e.g. @openshaw_optimal_1977].
 Recent papers have presented new methods for OD dataset validation [@alexander_validation_2015], aggregation [@he_simple_2018; @liu_snn_2021], disaggregation [@katranji_mobility_2016] and location of 'connectors' joining zone center points (centroids) with the surrounding network [@jafari_investigation_2015].
-Broadly, there are three approaches to converting OD data into geographic representations for transport modelling:
+Broadly, there are two approaches to converting OD data into geographic representations for transport modelling:
 
 1. Centroid to centroid representations, a common approach involving the simplifying assumption that all trip destinations and origins can be represented by (sometimes population weighted or aggregated) zone centroids [@guo_origindestination_2014; @martin_origindestination_2018].
 2. Subdividing zones (also referred to as transport analysis zones, TAZ) at which data is available to subzones centroids [@opie_commodityspecific_2009] or 'centroid connectors' or simply 'connectors' "between trip ends and zonal anchors" using stochastic or deterministic approaches [@leurent_stochastic_2011; @friedrich_methods_2009].
@@ -85,7 +85,7 @@ The approach is flexible, enabling the user to adjust the level of disaggregatio
 
 Unlike aforementioned papers, jittering can be understood as a simple, transparent and flexible pre-processing stage that can add value to OD datasets by representing the diffuse nature of travel networks.
 This is particularly important when designing for active travel [@buehler_bikeway_2016], explaining the choice of input data to illustrate the technique in this paper: it was developed to support active travel planning in an applied setting funded by Edinburgh City Council.
-We developed the approach to support strategic investment in walking and cycling infrastructure networks based on our observation that route networks resulting from OD pairs from and to single centroids per zone were too sparse.
+We developed the approach to support strategic investment in walking and cycling infrastructure networks based on our observation that route networks resulting from OD pairs from and to single centroids per zone were too sparse, and not adequate for active travel representation.
 The approach can 'slot into' existing transport modelling workflows that use desire lines which can be used as the basis of route network assignment, uptake modelling, and route network generation modelling workflows [@morgan_travel_2020].
 <!-- todo: add flow diagram -->
 We refer to the approach as jittering, noting the use term to describe a similar process of adding "random noise to the data" for data visualization [@wickham_ggplot2_2016].
@@ -138,7 +138,7 @@ The jittering approach presented in this paper was motivated by the following qu
 <!-- ## A synthetic example: synthetic zones -->
 <!-- ## Real world example: Edinburgh -->
 
-The approach was developed to support public sector transport planning in Edinburgh.
+The approach was developed to support public sector transport planning in Edinburgh, UK.
 As illustrated in Figure \@ref(fig:izs), the original study area was Edinburgh City Council, a major economic hub with ambitious [plans](https://www.edinburgh.gov.uk/downloads/file/30073/active-travel-investment-programme-update-october-2021) for investment in active travel, making evidence to support investment where it will be most beneficial key.
 For the purposes of this study we focus on a comparatively small area around central Edinburgh.
 We focus in this paper on walking trips in this central area because much research into route networks has focused on cycling and, because walking trips tend to be short, they create a need to convert aggregated OD datasets into diffuse route network representations of travel.
@@ -314,7 +314,7 @@ The techniques outlined in the following sub-sections are perhaps best understoo
 The subfigures show the flexibility of approach, with C) and D) demonstrating the use of vertices on the road network as start and end points, building on the observation from spatial network analysis that the density of the transport network is a reasonable proxy for travel demand [@cooper_predictive_2018].
 Other refinements including weighted subpoints could be used when data sources (e.g. building footprint areas) are available.
 
-```{r jitters, fig.cap="Illustration of jittering and disaggregation of origin-destination (OD) data with a minimal input dataset. Subfigure A) shows the conventional way of representing OD data as desire lines between zone centroids. Subfigures B) and C) show the same desire lines but with jittered origin and start locations based on simple random sampling of points and sampling locations on the road network. Subfigure D) shows the combined impact of disaggregation and jittering.", out.width="80%"}
+```{r jitters, fig.cap="Illustration of jittering and disaggregation of origin-destination (OD) data with a minimal input dataset. Subfigure A) shows the conventional way of representing OD data as desire lines between zone centroids. Subfigures B) and C) show the same desire lines but with jittered origin and destination locations based on simple random sampling of points and sampling locations on the road network. Subfigure D) shows the combined impact of disaggregation and jittering. Zone limits are represented in grey, while road network is in green.", out.width="80%"}
 set.seed(2021)
 fn = c(
   "A) Centroid based desire lines",
@@ -348,7 +348,7 @@ m4 = tm_shape(zones, bbox = bbox) +
   tm_shape(road_network_min, bbox = bbox) +
   tm_lines(col = "darkgreen") +
   tm_shape(od_top3_disaggregated, bbox = bbox) +
-  tm_lines("foot", palette = "Set1", lwd = 6, breaks = c(50, 60, 70, 80), title.col = "Walking trips per day") +
+  tm_lines("foot", palette = "Set1", lwd = 4, breaks = c(50, 60, 70, 80), title.col = "Walking trips per day") +
   tm_layout(title = "D) Jittered result with disaggregation and points on network", title.bg.color =  "white", legend.position = c("right", "bottom"))
 # todo: add a 4th figure showing sampling on the network
 # m3
@@ -403,7 +403,7 @@ Both of the jittering techniques outlined above generate more diffuse route netw
 However, a problem with OD datasets is that they are often highly variable: one OD pair could represent 1 trip, while another could represent 1000 trips.
 To overcome this problem a process of disaggregation can be used, resulting in additional OD pairs within each pair of zones. 
 The results of disaggregation are illustrated geographically in Figure \@ref(fig:jitters) (D) and in terms of changes to attributes, in Tables \@ref(tab:dis1) and \@ref(tab:dis2).
-As shown in those tables, updated attributes can be calculated by dividing previous trip counts by the number of OD pairs in the disaggregated representation of the data, 3 in this case.
+As shown in those tables, updated attributes can be calculated by dividing previous trip counts by the number of OD pairs in the disaggregated representation of the data, 5 in this case.
 To determine how many disaggregated OD pairs each original OD pair is split into, a maximum threshold was set: an OD pairs with a total trip count exceeding this threshold (set at 150 in this case) is split into the minimum number of disaggregated OD pairs that reduce the total number of trips below the threshold.
 
 ```{r}
@@ -553,7 +553,7 @@ rnets_summary %>%
 
 Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015].
 This is however, to the best of our knowledge, the first paper focussed on the two step process of jittering described in this paper --- sampling origin and destination points (with simple random sampling or by sampling from the nodes on the network) and disagreggation --- supported with a reproducible implementation based on open source software: the jittering methods presented in this paper are implemented in the R package [`od`](https://itsleeds.github.io/od/).
-A more feature complete and high performance implementation created in parallel with this paper is the Rust crate [odjitter](https://github.com/dabreegster/odjitter).
+A more feature complete and high performance implementation created in parallel with this paper is the Rust crate [`odjitter`](https://github.com/dabreegster/odjitter).
 Code accompanying this paper which reproduces the results in each language.
 
 The results raise questions and avenues for future research, including: 
