@@ -139,7 +139,7 @@ The jittering approach presented in this paper was motivated by the following qu
 <!-- ## Real world example: Edinburgh -->
 
 The approach was developed to support public sector transport planning in Edinburgh, UK.
-As illustrated in Figure \@ref(fig:izs), the original study area was Edinburgh City Council, a major economic hub with ambitious [plans](https://www.edinburgh.gov.uk/downloads/file/30073/active-travel-investment-programme-update-october-2021) for investment in active travel, making evidence to support investment where it will be most beneficial key.
+The original study area was Edinburgh City Council, a major economic hub with ambitious [plans](https://www.edinburgh.gov.uk/downloads/file/30073/active-travel-investment-programme-update-october-2021) for investment in active travel, making evidence to support investment where it will be most beneficial key.
 For the purposes of this study we focus on a comparatively small area around central Edinburgh.
 We focus in this paper on walking trips in this central area because much research into route networks has focused on cycling and, because walking trips tend to be short, they create a need to convert aggregated OD datasets into diffuse route network representations of travel.
 Input datasets developed for this paper can be downloaded using reproducible code that accompanies the paper; see code at [url to be included on publication] to fully reproduce the findings.
@@ -243,12 +243,12 @@ m1 = tm_shape(zones) + tm_polygons("TotPop2011", title = "Population", palette =
 # tmap_leaflet(m1)
 ```
 
-```{r izs, fig.cap="Overview of the study region with the population from the 2011 Census at the level of Intermediate Zones corresponding to fill colour.", out.width="50%"}
+```{r izs, fig.cap="Overview of the study region with the population from the 2011 Census at the level of Intermediate Zones corresponding to fill colour.", out.width="50%", eval=FALSE}
 # See interactive map online at https://rpubs.com/RobinLovelace/843442
 knitr::include_graphics("figures/overview-zones-central.png")
 ```
 
-Beyond the zone data illustrated in Figure \@ref(fig:izs), the input dataset consisted of open access OD data from the 2011 census.
+Beyond the zone data illustrated in Figure \@ref(fig:od), the input dataset consisted of open access OD data from the 2011 census.
 The OD data can be represented as both tabular and, when start and end points are assigned to centroids within each zone, as geographic entities, as illustrated in a sample of three OD pairs presented in Figure \@ref(fig:od).
 To generate the route networks presented in Figure \@ref(fig:rneted) we used the OpenStreetMap Routing Machine (OSRM) with the profile set to 'foot'.
 <!-- , which presents data at the zone and OD level for the top 3 OD pairs by number of interzonal travel between zones by all modes in Edinburgh in tabular and visual form. -->
@@ -329,7 +329,9 @@ od_top3_disaggregated = od::od_jitter(od_sf_top3, z = zones, road_network_min, m
 m1 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
   tm_shape(od_sf_top3, bbox = bbox) +
-  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6, title.col = "Walking trips per day") +
+  tm_lines("foot", palette = "Set1", breaks = c(100, 200, 300, 400), lwd = 6, title.col = "Walking trips per day")  +
+  tm_shape(zones_in_top3) +
+  tm_text("InterZone", size = 0.4) +
   tm_layout(title = "A) Single origin and destination point per zone", title.bg.color =  "white")
 m2 =  tm_shape(zones, bbox = bbox) +
   tm_borders(col = "grey") +
@@ -404,7 +406,7 @@ However, a problem with OD datasets is that they are often highly variable: one 
 To overcome this problem a process of disaggregation can be used, resulting in additional OD pairs within each pair of zones. 
 The results of disaggregation are illustrated geographically in Figure \@ref(fig:jitters) (D) and in terms of changes to attributes, in Tables \@ref(tab:dis1) and \@ref(tab:dis2).
 As shown in those tables, updated attributes can be calculated by dividing previous trip counts by the number of OD pairs in the disaggregated representation of the data, 5 in this case.
-To determine how many disaggregated OD pairs each original OD pair is split into, a maximum threshold was set: an OD pairs with a total trip count exceeding this threshold (set at 150 in this case) is split into the minimum number of disaggregated OD pairs that reduce the total number of trips below the threshold.
+To determine how many disaggregated OD pairs each original OD pair is split into, a maximum threshold was set: an OD pairs with a total trip count exceeding this threshold (set at 100 in this case) is split into the minimum number of disaggregated OD pairs that reduce the total number of trips below the threshold.
 
 ```{r}
 od_to_disag = od_sf_top3 %>%
@@ -497,7 +499,7 @@ The figure shows that the 'jittered networks' are more diffuse than the 'unjitte
 Disaggregation leads to more diffuse networks as shown in Figure \@ref(fig:rneted) (D).
 
 Advantages of this approach include simplicity, low computational cost and flexibility: the level of disaggregation can be adjusted depending on computational considerations.
-Full disaggregation (not demonstrated in this paper) would lead to one route being calculated for every trip; this would increase increase computational requirements but could generate outputs that could feed into agent based models.
+Full disaggregation (not demonstrated in this paper) would lead to one route being calculated for every trip; this would increase increase computational requirements but could generate outputs that could feed into agent based models (ABM) such as A/B Street and MATSim [@abstreet_2022; @horni_multiagent_2016].
 The approach has fewer data input requirements than established methods and could be used in setting where sub-zones are unavailable.
 
 <!-- A summary of the results is presented in Table \@ref(tab:sumtable). -->
@@ -559,11 +561,11 @@ Code accompanying this paper which reproduces the results in each language.
 The results raise questions and avenues for future research, including: 
 
 - Are the jittered results measurably better when compared with counter datasets on the network?
-- What additional refinements to the jittering techniques outline in this paper could generate more realistic disaggregated OD pairs, e.g. as an input into agent based models (ABM)?
+- What additional refinements to the jittering techniques outline in this paper could generate more realistic disaggregated OD pairs, e.g. as an input into ABMs?
 - Which jittering settings (including sampling strategies and levels of disaggregation) represent the best 'boom for buck' in terms of network accuracy relative to computational requirements?
 - And can further refinements, for example sampling with weights to increase the proportion of trips associated with large buildings and commercial centers, or modifying disaggregation threshold values depending on variables such as zone size, improve results?
 
-Before further refinements are made, the priority should be validation to answer the first of these questions.
-To do so requires a place that has both good open OD data and good observed travel behavior data, for example from manual and automatic counters at point locations on the network [@lindsey_minnesota_2013] and other sources of data [@zheng_big_2016].
+Before further refinements are made, we advocate empirical research to validate the jittering approach outlined in this paper as a foundation for further work on OD data pre-processing and disaggregation.
+Such research requires case studies that have both good open OD data and good observed travel behavior data, for example from manual and automatic counters at point locations on the network [@lindsey_minnesota_2013] and other sources of data such as trajectory datasets from GPS devices [@zheng_big_2016].
 
 # References
