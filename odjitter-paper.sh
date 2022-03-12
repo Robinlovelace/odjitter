@@ -37,11 +37,11 @@ odjitter jitter --od-csv-path od_central.csv \
   --disaggregation-threshold 100 \
   --output-path output_threshold_100.geojson
 
-  Scraped 71 zones from zones.geojson
-Scraped 128906 subpoints from road_network_buffer.geojson
-Scraped 128906 subpoints from road_network_buffer.geojson
-Disaggregating OD data
-Wrote output_threshold_100.geojson
+#   Scraped 71 zones from zones.geojson
+# Scraped 128906 subpoints from road_network_buffer.geojson
+# Scraped 128906 subpoints from road_network_buffer.geojson
+# Disaggregating OD data
+# Wrote output_threshold_100.geojson
 
 # real    0m0.609s
 # user    0m0.552s
