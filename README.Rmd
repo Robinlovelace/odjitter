@@ -5,7 +5,7 @@ output: github_document
 #   bookdown::pdf_document2:
 #     keep_tex: true
 bibliography: references.bib
-# author: Robin Lovelace, Rosa Félix, Dustin Carlino
+author: Robin Lovelace, Rosa Félix, Dustin Carlino
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
