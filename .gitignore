@@ -9,3 +9,5 @@ data-raw/
 *html*
 *docx*
 *.geojson
+*.zip
+*.pdf
