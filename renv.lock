@@ -788,6 +788,21 @@
         "lattice"
       ]
     },
+    "od": {
+      "Package": "od",
+      "Version": "0.3.2",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "od",
+      "RemoteUsername": "itsleeds",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "2e9fd5369ebce78b98424b331e62640f88a760ed",
+      "Hash": "4911c5fc8675bf74867c7b26c0e50094",
+      "Requirements": [
+        "sfheaders"
+      ]
+    },
     "openssl": {
       "Package": "openssl",
       "Version": "2.0.0",
