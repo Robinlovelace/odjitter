@@ -10,6 +10,7 @@ author: Robin Lovelace, Rosa Félix, Dustin Carlino
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -23,13 +24,13 @@ knitr::opts_chunk$set(
 # devtools::install_github("itsleeds/od")
 library(sf)
 library(tmap)
-library(tidyverse)
+library(dplyr)
 library(stplanr)
 ```
 
 ```{r, eval=FALSE}
 file.copy("README.html", "jittering-paper.html")
-file.copy("README.pdf", "jittering-paper-resubmission2.pdf", TRUE)
+file.copy("README.pdf", "jittering-paper.pdf", TRUE)
 piggyback::pb_upload("jittering-paper-resubmission2.pdf")
 piggyback::pb_download_url("jittering-paper-resubmission2.pdf")
 # https://github.com/Robinlovelace/odjitter/releases/download/1/jittering-paper-resubmission2.pdf

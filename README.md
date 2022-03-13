@@ -1,6 +1,7 @@
 Jittering: A computationally efficient method for generating realistic
 route networks from origin-destination data
 ================
+Robin Lovelace, Rosa Félix, Dustin Carlino
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
