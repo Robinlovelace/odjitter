@@ -44,10 +44,6 @@ browseURL("diff-resubmission2.pdf")
 piggyback::pb_upload("diff-resubmission2.pdf")
 piggyback::pb_download_url("diff-resubmission2.pdf")
 
-file.copy("odjitter_responses/README.pdf", "responses2.pdf", TRUE)
-piggyback::pb_upload("responses2.pdf")
-piggyback::pb_download_url("responses2.pdf")
-
 zip("jittering-paper-code.zip", files = c("odjitter-paper.R", "odjitter-paper.sh"))
 piggyback::pb_upload("jittering-paper-code.zip")
 ```
