@@ -15,8 +15,12 @@ knitr::opts_chunk$set(
   message = FALSE,
   cache = TRUE,
   warning = FALSE,
-  fig.align = "center"
+  fig.align = "center",
+  eval = FALSE
 )
+```
+
+```{r, include=FALSE}
 # devtools::install_github("itsleeds/od")
 library(sf)
 library(tmap)
