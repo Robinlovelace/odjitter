@@ -1,9 +1,9 @@
 ---
 title: "Jittering: A computationally efficient method for generating realistic route networks from origin-destination data"
-output: github_document
-# output:
-#   bookdown::pdf_document2:
-#     keep_tex: true
+# output: github_document
+output:
+  bookdown::pdf_document2:
+    keep_tex: true
 bibliography: references.bib
 author: Robin Lovelace, Rosa Félix, Dustin Carlino
 ---
@@ -29,16 +29,17 @@ library(stplanr)
 
 ```{r, eval=FALSE}
 file.copy("README.html", "jittering-paper.html")
-file.copy("README.pdf", "jittering-paper.pdf", TRUE)
-piggyback::pb_upload("jittering-paper-resubmission2.pdf")
-piggyback::pb_download_url("jittering-paper-resubmission2.pdf")
+file.copy("README.pdf", "jittering-paper-resubmission3.pdf", TRUE)
+# file.copy("README.tex", "jittering-paper-resubmission2.tex")
+piggyback::pb_upload("jittering-paper-resubmission3.pdf")
+piggyback::pb_download_url("jittering-paper-resubmission3.pdf")
 # https://github.com/Robinlovelace/odjitter/releases/download/1/jittering-paper-resubmission2.pdf
 # Generate citations (requires Zotero)
 rbbt::bbt_update_bib("README.Rmd", "references.bib")
 # trackdown::upload_file(file = "README.Rmd", path_output = "README.docx")
 # trackdown::update_file(file = "README.Rmd", path_output = "README.docx")
 # create diff
-system("latexdiff jittering-paper-resubmission.tex README.tex > diff-resubmission2.tex")
+system("latexdiff jittering-paper-resubmission2.tex README.tex > diff-resubmission3.tex")
 tinytex::pdflatex("diff-resubmission2.tex")
 browseURL("diff-resubmission2.pdf")
 piggyback::pb_upload("diff-resubmission2.pdf")
@@ -49,7 +50,7 @@ piggyback::pb_upload("jittering-paper-code.zip")
 
 
 <!-- badges: start -->
-[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
+<!-- [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml) -->
 <!-- badges: end -->
 
 # Abstract {-}
@@ -496,7 +497,7 @@ The figure shows that the 'jittered networks' are more diffuse than the 'unjitte
 Disaggregation leads to more diffuse networks as shown in Figure \@ref(fig:rneted) (D).
 
 Advantages of this approach include simplicity, low computational cost and flexibility: the level of disaggregation can be adjusted depending on computational considerations.
-Full disaggregation (not demonstrated in this paper) would lead to one route being calculated for every trip; this would increase increase computational requirements but could generate outputs that could feed into agent based models (ABM) such as A/B Street and MATSim [@abstreet_2022; @horni_multiagent_2016].
+Full disaggregation (not demonstrated in this paper) would lead to one route being calculated for every trip; this would increase computational requirements but could generate outputs that could feed into agent based models (ABM) such as A/B Street and MATSim [@abstreet_2022; @horni_multiagent_2016].
 The approach has fewer data input requirements than established methods and could be used in setting where sub-zones are unavailable.
 
 <!-- A summary of the results is presented in Table \@ref(tab:sumtable). -->
