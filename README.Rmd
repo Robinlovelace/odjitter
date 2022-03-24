@@ -81,10 +81,10 @@ This 'jittering' approach is flexible, enabling the user to adjust the level of 
  <!-- appropriate start points and trip attractors, and weights highlighting the relative importance of different origin and destination points. -->
 
 OD data jittering can is a simple, transparent and flexible pre-processing stage that aims to represent the diffuse nature of travel patterns.
-This is particularly important when designing for active travel [@buehler_bikeway_2016], explaining the choice of input data to illustrate the technique in this paper: it was developed to support active travel planning in an applied setting funded by Edinburgh City Council in response to feedback that route networks generated from centroid-based methods were too sparse.
+This is particularly important when designing for active travel [@buehler_bikeway_2016], explaining the choice of input data to illustrate the technique in this paper: it was developed in response to feedback from Edinburgh City Council (who funded a project based on the research) that route networks based on the Propensity to Cycle Tool approach [@lovelace_propensity_2017] were too sparse.
 Jittered OD data can be used with existing transport modelling workflows developed around centroid-based methods, as the basis of route network assignment, uptake modelling, and route network generation workflows [@morgan_travel_2020].
 <!-- todo: add flow diagram -->
-We refer to the approach as jittering, which means "random noise to the data" for data visualization [@wickham_ggplot2_2016].
+We refer to the approach as jittering, which means adding random noise for data visualization [@wickham_ggplot2_2016].
 
 <!-- In this paper we outline such methods and their uses, demonstrating how jittering can be used to create more diffuse and accurate estimates of movement at the level of segments ('flows') on transport network, with minimal computational overheads compared with the computationally intensive process of route calculation ('routing') or processing large GPS datasets. -->
 <!-- Long version of paper: -->
