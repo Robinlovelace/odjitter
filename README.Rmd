@@ -494,6 +494,7 @@ The results of converting the desire lines to routes and then route networks are
 Greater disaggregation leads to more diffuse networks as shown in Figure \@ref(fig:rneted) (D).
 
 The advantages of this approach include simplicity, low computational cost and flexibility, with disaggregation (and network diffusion) levels adjusted depending on requirements.
+Disadvantages relate to the use of random number generators (RNG), which can reduce reproducibility (overcome this by setting a 'seed', which makes the findings reproducible) and influence findings (generate more than one set of results and undertake testing to mitigate this drawback).
 Jitting is particularly well suited to modelling walking and cycling, which require diffuse networks.
 Taking disaggregation further, the approach can generate one desire line per trip that could feed into agent based models (ABM) such as A/B Street and MATSim [@abstreet_2022; @horni_multiagent_2016].
 Jittering has few input data requirements, enabling its use in situations where sub-zones are unavailable.
