@@ -551,9 +551,10 @@ rnets_summary %>%
 
 <!-- Related methods of "centroid connector placement" have been developed and tested [@jafari_investigation_2015]. -->
 This is, to the best of our knowledge, the first time that stochastic spatial sampling and disagreggation of OD data has been described in a single approach.
-The approach is implemented open source software in the Rust crate [`odjitter`](https://github.com/dabreegster/odjitter), which has an R interface (in future work we hope to add a Python interface) enabling anyone to reproduces the findings.
+The approach is implemented in the open source Rust crate [`odjitter`](https://github.com/dabreegster/odjitter).
+Implementations in R packages [`od`](https://itsleeds.github.io/od/) and [`odjitter`](https://github.com/dabreegster/odjitter/tree/main/r), an interface to the Rust implementation, enable others to reproduces the findings, raising the possibility of interfaces to other languages.
 
-The results raise research questions including: 
+The results also raise research questions, including: 
 
 - Are the jittered results measurably better when compared with counter datasets on the network?
 - How would results from jittering OD data compare in other situations, e.g. to model motor traffic?
