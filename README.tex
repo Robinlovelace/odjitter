@@ -6,8 +6,8 @@
 ]{article}
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
-\usepackage{ifxetex,ifluatex}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+\usepackage{iftex}
+\ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
@@ -69,36 +69,22 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-\usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{float}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
-\ifluatex
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
 \newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
  {% don't indent paragraphs
   \setlength{\parindent}{0pt}
   % turn on hanging indent if param 1 is 1
-  \ifodd #1 \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces\fi
-  % set entry spacing
-  \ifnum #2 > 0
-  \setlength{\parskip}{#2\baselineskip}
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
   \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
  }%
  {}
 \usepackage{calc}
@@ -106,6 +92,9 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 
 \title{Jittering: A computationally efficient method for generating realistic route networks from origin-destination data}
 \author{Robin Lovelace, Rosa Félix, Dustin Carlino}
@@ -149,7 +138,7 @@ Broadly, there are two approaches to converting OD data into geographic represen
 \end{enumerate}
 
 In this paper we present a new approach which, unlike established approaches which convert centroid based desire lines to routes and then route networks (Morgan and Lovelace 2020), allows the user to adjust start and end locations based on variables such as transport network density, residential density or size of commercial buildings acting as trip attractors.
-This `jittering' approach is flexible, enabling the user to adjust the level of disaggregation, the location of start and end points from which disaggregate OD pairs are sampled, and weights representing the importance of different trip `originators' and `attractors.'
+This `jittering' approach is flexible, enabling the user to adjust the level of disaggregation, the location of start and end points from which disaggregate OD pairs are sampled, and weights representing the importance of different trip `originators' and `attractors'.
 
 OD data jittering can is a simple, transparent and flexible pre-processing stage that aims to represent the diffuse nature of travel patterns.
 This is particularly important when designing for active travel (Buehler and Dill 2016), explaining the choice of input data to illustrate the technique in this paper: it was developed in response to feedback from Edinburgh City Council (who funded a project based on the research) that route networks based on the Propensity to Cycle Tool approach (Lovelace et al. 2017) were too sparse.
@@ -173,7 +162,7 @@ Input datasets developed for this paper can be downloaded using reproducible cod
 
 Beyond the zone data illustrated in Figure \ref{fig:od}, the input dataset consisted of open access OD data from the 2011 census.
 The OD data can be represented as both tabular and, when start and end points are assigned to centroids within each zone, as geographic entities, as illustrated in a sample of three OD pairs presented in Figure \ref{fig:od}.
-To generate the route networks presented in Figure \ref{fig:rneted} we used the OpenStreetMap Routing Machine (OSRM) with the profile set to `foot.'
+To generate the route networks presented in Figure \ref{fig:rneted} we used the OpenStreetMap Routing Machine (OSRM) with the profile set to `foot'.
 
 \begin{figure}
 
@@ -207,7 +196,7 @@ The simplest approach is simple random spatial sampling, as illustrated in Figur
 This approach has the advantages of simplicity, requiring no additional datasets, but has the disadvantage that it may lead to unrealistic start and end points, e.g.~with trips being simulated to start in rivers and in uninhabited wilderness areas.
 
 To overcome the limitations of the simple random sampling approach, the universe of possible coordinates from which trips can originate and end can be reduced by providing another geographic input dataset.
-This dataset could contain known trip attractors such as city centers and work places, as well as tightly defined residential `subzones.'
+This dataset could contain known trip attractors such as city centers and work places, as well as tightly defined residential `subzones'.
 For highly disaggregated flows in cases where accurate building datasets are available, building footprints could also be used.
 A useful, and widely available (Barrington-Leigh and Millard-Ball 2017), input for subsampling is a transport road network, as illustrated in Figure \ref{fig:jitters} (C).
 Additional refinements to the stochastic selection of origin and destination based on weights relating to other datasets are possible, as discussed in the final section.
@@ -274,7 +263,7 @@ The results of converting the desire lines to routes and then route networks are
 Greater disaggregation leads to more diffuse networks as shown in Figure \ref{fig:rneted} (D).
 
 The advantages of this approach include simplicity, low computational cost and flexibility, with disaggregation (and network diffusion) levels adjusted depending on requirements.
-Disadvantages relate to the use of random number generators (RNG), which can reduce reproducibility (overcome this by setting a `seed,' which makes the findings reproducible) and influence findings (generate more than one set of results and undertake testing to mitigate this drawback).
+Disadvantages relate to the use of random number generators (RNG), which can reduce reproducibility (overcome this by setting a `seed', which makes the findings reproducible) and influence findings (generate more than one set of results and undertake testing to mitigate this drawback).
 Jitting is particularly well suited to modelling walking and cycling, which require diffuse networks.
 Taking disaggregation further, the approach can generate one desire line per trip that could feed into agent based models (ABM) such as A/B Street and MATSim (Carlino et al. 2022; Horni, Nagel, and Axhausen 2016).
 Jittering has few input data requirements, enabling its use in situations where sub-zones are unavailable.
@@ -315,82 +304,82 @@ Such research requires case studies that have both good open OD data and good ob
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
-\leavevmode\hypertarget{ref-alexander_validation_2015}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-alexander_validation_2015}{}}%
 Alexander, Lauren, Shan Jiang, Mikel Murga, and Marta C Gonz. 2015. {``Validation of Origin-Destination Trips by Purpose and Time of Day Inferred from Mobile Phone Data.''} \emph{Transportation Research Part B: Methodological}, 1--20. \url{https://doi.org/10.1016/j.trc.2015.02.018}.
 
-\leavevmode\hypertarget{ref-bachir_inferring_2019}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-bachir_inferring_2019}{}}%
 Bachir, Danya, Ghazaleh Khodabandelou, Vincent Gauthier, Mounim El Yacoubi, and Jakob Puchinger. 2019. {``Inferring Dynamic Origin-Destination Flows by Transport Mode Using Mobile Phone Data.''} \emph{Transportation Research Part C: Emerging Technologies} 101: 254--75.
 
-\leavevmode\hypertarget{ref-barrington-leigh_world_2017}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-barrington-leigh_world_2017}{}}%
 Barrington-Leigh, Christopher, and Adam Millard-Ball. 2017. {``The World's User-Generated Road Map Is More Than 80\% Complete.''} \emph{PLOS ONE} 12 (8): e0180698. \url{https://doi.org/10.1371/journal.pone.0180698}.
 
-\leavevmode\hypertarget{ref-boyce_forecasting_2015}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-boyce_forecasting_2015}{}}%
 Boyce, David E., and Huw C. W. L. Williams. 2015. \emph{Forecasting {Urban Travel}: {Past}, {Present} and {Future}}. {Edward Elgar Publishing}.
 
-\leavevmode\hypertarget{ref-buehler_bikeway_2016}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-buehler_bikeway_2016}{}}%
 Buehler, Ralph, and Jennifer Dill. 2016. {``Bikeway {Networks}: {A Review} of {Effects} on {Cycling}.''} \emph{Transport Reviews} 36 (1): 9--27. \url{https://doi.org/10.1080/01441647.2015.1069908}.
 
-\leavevmode\hypertarget{ref-abstreet_2022}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-abstreet_2022}{}}%
 Carlino, Dustin, Yuwen Li, Michael Kirk, Mateusz Konieczny, Gedalia Kott, Bruce, Javed Nissar, et al. 2022. \emph{A/{B Street}}. {Zenodo}. \url{https://doi.org/10.5281/zenodo.6331922}.
 
-\leavevmode\hypertarget{ref-cooper_predictive_2018}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-cooper_predictive_2018}{}}%
 Cooper, Crispin H. V. 2018. {``Predictive Spatial Network Analysis for High-Resolution Transport Modeling, Applied to Cyclist Flows, Mode Choice, and Targeting Investment.''} \emph{International Journal of Sustainable Transportation} 0 (0): 1--11. \url{https://doi.org/10.1080/15568318.2018.1432730}.
 
-\leavevmode\hypertarget{ref-friedrich_methods_2009}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-friedrich_methods_2009}{}}%
 Friedrich, Markus, and Manuel Galster. 2009. {``Methods for {Generating Connectors} in {Transport Planning Models}.''} \emph{Transportation Research Record} 2132 (1): 133--42. \url{https://doi.org/10.3141/2132-15}.
 
-\leavevmode\hypertarget{ref-gao_method_2021}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-gao_method_2021}{}}%
 Gao, Hong, Zhenjun Yan, Xu Hu, Zhaoyuan Yu, Wen Luo, Linwang Yuan, and Jiyi Zhang. 2021. {``A {Method} for {Exploring} and {Analyzing Spatiotemporal Patterns} of {Traffic Congestion} in {Expressway Networks Based} on {Origin}--{Destination Data}.''} \emph{ISPRS International Journal of Geo-Information} 10 (5): 288.
 
-\leavevmode\hypertarget{ref-guo_origindestination_2014}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-guo_origindestination_2014}{}}%
 Guo, Diansheng, and Xi Zhu. 2014. {``Origin-{Destination Flow Data Smoothing} and {Mapping}.''} \emph{IEEE Transactions on Visualization and Computer Graphics} 20 (12): 2043--52. \url{https://doi.org/10.1109/TVCG.2014.2346271}.
 
-\leavevmode\hypertarget{ref-he_simple_2018}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-he_simple_2018}{}}%
 He, Biao, Yan Zhang, Yu Chen, and Zhihui Gu. 2018. {``A {Simple Line Clustering Method} for {Spatial Analysis} with {Origin-Destination Data} and {Its Application} to {Bike-Sharing Movement Data}.''} \emph{ISPRS International Journal of Geo-Information} 7 (6): 203. \url{https://doi.org/10.3390/ijgi7060203}.
 
-\leavevmode\hypertarget{ref-horni_multiagent_2016}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-horni_multiagent_2016}{}}%
 Horni, Andreas, Kai Nagel, and Kay W. Axhausen. 2016. \emph{The {Multi-Agent Transport Simulation MATSim}}. {Ubiquity Press}. \url{https://doi.org/10.5334/baw}.
 
-\leavevmode\hypertarget{ref-jafari_investigation_2015}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-jafari_investigation_2015}{}}%
 Jafari, Ehsan, Mason D. Gemar, Natalia Ruiz Juri, and Jennifer Duthie. 2015. {``Investigation of {Centroid Connector Placement} for {Advanced Traffic Assignment Models} with {Added Network Detail}.''} \emph{Transportation Research Record: Journal of the Transportation Research Board} 2498 (June): 19--26. \url{https://doi.org/10.3141/2498-03}.
 
-\leavevmode\hypertarget{ref-katranji_mobility_2016}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-katranji_mobility_2016}{}}%
 Katranji, Mehdi, Etienne Thuillier, Sami Kraiem, Laurent Moalic, and Fouad Hadj Selem. 2016. {``Mobility Data Disaggregation: {A} Transfer Learning Approach.''} In \emph{2016 {IEEE} 19th {International Conference} on {Intelligent Transportation Systems} ({ITSC})}, 1672--77. \url{https://doi.org/10.1109/ITSC.2016.7795783}.
 
-\leavevmode\hypertarget{ref-leurent_stochastic_2011}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-leurent_stochastic_2011}{}}%
 Leurent, Fabien, Vincent Benezech, and Mahdi Samadzad. 2011. {``A Stochastic Model of Trip End Disaggregation in Traffic Assignment to a Transportation Network.''} \emph{Procedia - Social and Behavioral Sciences}, The {State} of the {Art} in the {European Quantitative Oriented Transportation} and {Logistics Research} -- 14th {Euro Working Group} on {Transportation} \& 26th {Mini Euro Conference} \& 1st {European Scientific Conference} on {Air Transport}, 20 (January): 485--94. \url{https://doi.org/10.1016/j.sbspro.2011.08.055}.
 
-\leavevmode\hypertarget{ref-li_effects_2019}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-li_effects_2019}{}}%
 Li, Haojie, Yingheng Zhang, Hongliang Ding, and Gang Ren. 2019. {``Effects of Dockless Bike-Sharing Systems on the Usage of the {London Cycle Hire}.''} \emph{Transportation Research Part A: Policy and Practice} 130 (December): 398--411. \url{https://doi.org/10.1016/j.tra.2019.09.050}.
 
-\leavevmode\hypertarget{ref-lindsey_minnesota_2013}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-lindsey_minnesota_2013}{}}%
 Lindsey, Greg, Steve Hankey, Xize Wang, and Junzhou Chen. 2013. {``The {Minnesota} Bicycle and Pedestrian Counting Initiative: {Methodologies} for Non-Motorized Traffic Monitoring.''} {Minnesota Department of Transportation}. \url{https://www.lrrb.org/media/reports/201324.pdf}.
 
-\leavevmode\hypertarget{ref-liu_snn_2021}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-liu_snn_2021}{}}%
 Liu, Qiliang, Jie Yang, Min Deng, Ci Song, and Wenkai Liu. 2021. {``{SNN}\_flow: A Shared Nearest-Neighbor-Based Clustering Method for Inhomogeneous Origin-Destination Flows.''} \emph{International Journal of Geographical Information Science}, 1--27.
 
-\leavevmode\hypertarget{ref-lovelace_propensity_2017}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-lovelace_propensity_2017}{}}%
 Lovelace, Robin, Anna Goodman, Rachel Aldred, Nikolai Berkoff, Ali Abbas, and James Woodcock. 2017. {``The {Propensity} to {Cycle Tool}: {An} Open Source Online System for Sustainable Transport Planning.''} \emph{Journal of Transport and Land Use} 10 (1). \url{https://doi.org/10.5198/jtlu.2016.862}.
 
-\leavevmode\hypertarget{ref-martin_origindestination_2018}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-martin_origindestination_2018}{}}%
 Martin, David, Christopher Gale, Samantha Cockings, and Andrew Harfoot. 2018. {``Origin-Destination Geodemographics for Analysis of Travel to Work Flows.''} \emph{Computers, Environment and Urban Systems} 67 (January): 68--79. \url{https://doi.org/10.1016/j.compenvurbsys.2017.09.002}.
 
-\leavevmode\hypertarget{ref-morgan_travel_2020}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-morgan_travel_2020}{}}%
 Morgan, Malcolm, and Robin Lovelace. 2020. {``Travel Flow Aggregation: Nationally Scalable Methods for Interactive and Online Visualisation of Transport Behaviour at the Road Network Level.''} \emph{Environment \& Planning B: Planning \& Design}, July. \url{https://doi.org/10.1177/2399808320942779}.
 
-\leavevmode\hypertarget{ref-openshaw_optimal_1977}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-openshaw_optimal_1977}{}}%
 Openshaw, S. 1977. {``Optimal Zoning Systems for Spatial Interaction Models.''} \emph{Environment and Planning A} 9 (2): 169--84. \url{https://doi.org/10.1068/a090169}.
 
-\leavevmode\hypertarget{ref-opie_commodityspecific_2009}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-opie_commodityspecific_2009}{}}%
 Opie, Keir, Jakub Rowinski, and Lazar N. Spasovic. 2009. {``Commodity-{Specific Disaggregation} of 2002 {Freight Analysis Framework Data} to {County Level} in {New Jersey}.''} \emph{Transportation Research Record} 2121 (1): 128--34. \url{https://doi.org/10.3141/2121-14}.
 
-\leavevmode\hypertarget{ref-shi_exploring_2019}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-shi_exploring_2019}{}}%
 Shi, Xiaoying, Fanshun Lv, Dewen Seng, Baixi Xing, and Jing Chen. 2019. {``Exploring the Evolutionary Patterns of Urban Activity Areas Based on Origin-Destination Data.''} \emph{IEEE Access} 7: 20416--31.
 
-\leavevmode\hypertarget{ref-wickham_ggplot2_2016}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-wickham_ggplot2_2016}{}}%
 Wickham, Hadley. 2016. \emph{Ggplot2: {Elegant Graphics} for {Data Analysis}}. 2nd ed. 2016 edition. {New York, NY}: {Springer}.
 
-\leavevmode\hypertarget{ref-zheng_big_2016}{}%
+\leavevmode\vadjust pre{\hypertarget{ref-zheng_big_2016}{}}%
 Zheng, Xinhu, Wei Chen, Pu Wang, Dayong Shen, Songhang Chen, Xiao Wang, Qingpeng Zhang, and Liuqing Yang. 2016. {``Big Data for Social Transportation.''} \emph{IEEE Transactions on Intelligent Transportation Systems} 17 (3): 620--30. \url{http://ieeexplore.ieee.org/abstract/document/7359138/}.
 
 \end{CSLReferences}
