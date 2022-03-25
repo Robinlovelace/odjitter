@@ -50,7 +50,7 @@ piggyback::pb_upload("jittering-paper-code.zip")
 
 
 <!-- badges: start -->
-<!-- [![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml) -->
+[![.github/workflows/render-rmarkdown.yaml](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml/badge.svg)](https://github.com/Robinlovelace/odjitter/actions/workflows/render-rmarkdown.yaml)
 <!-- badges: end -->
 
 # Abstract {-}
