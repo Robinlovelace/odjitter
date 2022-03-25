@@ -1,4 +1,6 @@
-# devtools::install_github("itsleeds/od")
+install.packages("remotes")
+remotes::install_github("itsleeds/od")
+remotes::install_github("dabreegster/odjitter", subdir = "r")
 library(sf)
 library(tmap)
 library(tidyverse)
@@ -16,7 +18,6 @@ central_edinburgh_5km = sf::st_buffer(central_edinburgh, dist = 5000)
 edinburgh_region = sf::read_sf("https://github.com/ITSLeeds/od/releases/download/v0.3.1/edinburgh_region.geojson")
 zones_centroids = sf::st_centroid(zones)
 zones_centroids_5km = zones_centroids[central_edinburgh_5km, ]
-
 
 # Figure 1 ----------------------------------------------------------------
 m1 = tm_shape(zones) + tm_polygons("TotPop2011", title = "Population", palette = "viridis") +
@@ -214,7 +215,21 @@ zones = sf::read_sf("zones.geojson")
 centroids = sf::read_sf("centroids.geojson")
 road_network_buffer = sf::read_sf("road_network_buffer.geojson")
 od_sf_disaggregated = od::od_jitter(od_sf, z = zones, road_network_buffer, max_per_od = 100)
-sf::write_sf(od_sf_disaggregated, "od_sf_disaggregated_100.geojson")
+# sf::write_sf(od_sf_disaggregated, "od_sf_disaggregated_100.geojson")
+plot(od_sf_disaggregated)
+
+})
+
+# In R with od implementation
+system.time({
+
+  od = readr::read_csv("od_central.csv")
+  zones = sf::read_sf("zones.geojson")
+  centroids = sf::read_sf("centroids.geojson")
+  road_network_buffer = sf::read_sf("road_network_buffer.geojson")
+  od_sf_disaggregated = odjitter::jitter(od_sf, zones = zones, road_network_buffer, disaggregation_threshold = 100)
+  # sf::write_sf(od_sf_disaggregated, "od_sf_disaggregated_100.geojson")
+  plot(od_sf_disaggregated)
 
 })
 
@@ -223,7 +238,12 @@ sf::write_sf(od_sf_disaggregated, "od_sf_disaggregated_100.geojson")
 # user    0m0.552s
 # sys     0m0.056s
 
-# # In R:
+# # In R (od package):
 #    user  system elapsed
 #  17.198   0.048  17.216
-17.2 / 0.6
+17.2 / 0.6 # 30 times faster
+
+# # In R (odjitter package)
+# user  system elapsed
+# 2.012   0.067   2.062
+17.2 / 2.062 # 8 times faster

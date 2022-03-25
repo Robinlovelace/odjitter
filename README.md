@@ -410,11 +410,11 @@ Advantages of this approach include simplicity, low computational cost
 and flexibility: the level of disaggregation can be adjusted depending
 on computational considerations. Full disaggregation (not demonstrated
 in this paper) would lead to one route being calculated for every trip;
-this would increase increase computational requirements but could
-generate outputs that could feed into agent based models (ABM) such as
-A/B Street and MATSim (Carlino et al. 2022; Horni, Nagel, and Axhausen
-2016). The approach has fewer data input requirements than established
-methods and could be used in setting where sub-zones are unavailable.
+this would increase computational requirements but could generate
+outputs that could feed into agent based models (ABM) such as A/B Street
+and MATSim (Carlino et al. 2022; Horni, Nagel, and Axhausen 2016). The
+approach has fewer data input requirements than established methods and
+could be used in setting where sub-zones are unavailable.
 
 <!-- A summary of the results is presented in Table \@ref(tab:sumtable). -->
 
