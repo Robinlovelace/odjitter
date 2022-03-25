@@ -306,7 +306,7 @@ knitr::include_graphics(c(
 ))
 ```
 
-The techniques outlined in the following sub-sections are perhaps best understood visually, as illustrated in each of the facetted maps in Figure \@ref(fig:jitters).
+The key elements of the jittering approach outlined in this paper are described in the following sub-sections, and are perhaps best understood visually, as illustrated in each of the facetted maps in Figure \@ref(fig:jitters).
 The subfigures show the flexibility of approach, with C) and D) demonstrating the use of vertices on the road network as start and end points, building on the observation from spatial network analysis that the density of the transport network is a reasonable proxy for travel demand [@cooper_predictive_2018].
 Other refinements including weighted subpoints could be used when data sources (e.g. building footprint areas) are available.
 
@@ -392,8 +392,6 @@ This dataset could contain known trip attractors such as city centers and work p
 For highly disaggregated flows in cases where accurate building datasets are available, building footprints could also be used.
 A useful, and widely available [@barrington-leigh_world_2017], input for subsampling is a transport road network, as illustrated in Figure \@ref(fig:jitters) (C).
 Additional refinements to the stochastic selection of origin and destination based on weights relating to other datasets are possible, as discussed in the final section.
-
-The key elements of the jittering approach outlined in this paper are described below.
 
 ## Disaggregation
 
