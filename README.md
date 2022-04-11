@@ -72,7 +72,7 @@ disaggregate OD pairs are sampled, and weights representing the
 importance of different trip ‘originators’ and ‘attractors’.
 <!-- appropriate start points and trip attractors, and weights highlighting the relative importance of different origin and destination points. -->
 
-OD data jittering can is a simple, transparent and flexible
+OD data jittering is a simple, transparent and flexible
 pre-processing stage that aims to represent the diffuse nature of travel
 patterns. This is particularly important when designing for active
 travel (Buehler and Dill 2016), explaining the choice of input data to
@@ -405,7 +405,7 @@ adjusted depending on requirements. Disadvantages relate to the use of
 random number generators (RNG), which can reduce reproducibility
 (overcome this by setting a ‘seed’, which makes the findings
 reproducible) and influence findings (generate more than one set of
-results and undertake testing to mitigate this drawback). Jitting is
+results and undertake testing to mitigate this drawback). Jittering is
 particularly well suited to modelling walking and cycling, which require
 diffuse networks. Taking disaggregation further, the approach can
 generate one desire line per trip that could feed into agent based
