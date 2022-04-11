@@ -80,7 +80,7 @@ In this paper we present a new approach which, unlike established approaches whi
 This 'jittering' approach is flexible, enabling the user to adjust the level of disaggregation, the location of start and end points from which disaggregate OD pairs are sampled, and weights representing the importance of different trip 'originators' and 'attractors'.
  <!-- appropriate start points and trip attractors, and weights highlighting the relative importance of different origin and destination points. -->
 
-OD data jittering can is a simple, transparent and flexible pre-processing stage that aims to represent the diffuse nature of travel patterns.
+OD data jittering is a simple, transparent and flexible pre-processing stage that aims to represent the diffuse nature of travel patterns.
 This is particularly important when designing for active travel [@buehler_bikeway_2016], explaining the choice of input data to illustrate the technique in this paper: it was developed in response to feedback from Edinburgh City Council (who funded a project based on the research) that route networks based on the Propensity to Cycle Tool approach [@lovelace_propensity_2017] were too sparse.
 Jittered OD data can be used with existing transport modelling workflows developed around centroid-based methods, as the basis of route network assignment, uptake modelling, and route network generation workflows [@morgan_travel_2020].
 <!-- todo: add flow diagram -->
@@ -493,7 +493,7 @@ Greater disaggregation leads to more diffuse networks as shown in Figure \@ref(f
 
 The advantages of this approach include simplicity, low computational cost and flexibility, with disaggregation (and network diffusion) levels adjusted depending on requirements.
 Disadvantages relate to the use of random number generators (RNG), which can reduce reproducibility (overcome this by setting a 'seed', which makes the findings reproducible) and influence findings (generate more than one set of results and undertake testing to mitigate this drawback).
-Jitting is particularly well suited to modelling walking and cycling, which require diffuse networks.
+Jittering is particularly well suited to modelling walking and cycling, which require diffuse networks.
 Taking disaggregation further, the approach can generate one desire line per trip that could feed into agent based models (ABM) such as A/B Street and MATSim [@abstreet_2022; @horni_multiagent_2016].
 Jittering has few input data requirements, enabling its use in situations where sub-zones are unavailable.
 
