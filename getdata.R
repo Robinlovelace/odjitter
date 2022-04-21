@@ -1,9 +1,9 @@
 # Get raw data into R:
 
 # preprocessing the scottish data
-u = "http://www.scotlandscensus.gov.uk/documents/additional_tables/WU03BSC_IZ2011_Scotland.xlsx"
-dir.create("data-raw")
-download.file(u, "data-raw/WU03BSC_IZ2011_Scotland.xlsx")
+#u = "http://www.scotlandscensus.gov.uk/documents/additional_tables/WU03BSC_IZ2011_Scotland.xlsx"
+#dir.create("data-raw")
+#download.file(u, "data-raw/WU03BSC_IZ2011_Scotland.xlsx")
 od_izo_header = readxl::read_excel("data-raw/WU03BSC_IZ2011_Scotland.xlsx")
 # View(od_izo_header)
 od_izo = readxl::read_excel("data-raw/WU03BSC_IZ2011_Scotland.xlsx", sheet = 2, skip = 3)
@@ -76,4 +76,4 @@ setwd("../..")
 saveRDS(iz_zones11_uk, "iz_zones11_uk.Rds")
 iz_zones11_uk = rmapshaper::ms_simplify(iz_zones11_uk, 0.08, sys = TRUE)
 saveRDS(iz_zones11_uk, "iz_zones11_uk_simplified.Rds")
-mapview::mapview(iz_zones11_uk[1:9, ])
+mapview::mapview(iz_zones11_uk)
