@@ -24,7 +24,8 @@ library(sf)
 
 iz_zones11_uk = readRDS("iz_zones11_uk_simplified.Rds")
 iz_cents11_uk = readRDS("iz_cents11_uk.Rds")
-edinburgh_region = readRDS("edinburgh_region.Rds")
+edinburgh_region = st_read("edinburgh_region.geojson")
+edinburgh_region <- st_transform(edinburgh_region, 4326)
 od_iz = readRDS("od_izo.Rds")
 
 # Subset to Edinburgh
