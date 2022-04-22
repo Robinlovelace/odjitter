@@ -1,12 +1,12 @@
 # Get raw data into R:
 
 # preprocessing the scottish data
-u = "http://www.scotlandscensus.gov.uk/documents/additional_tables/WU03BSC_IZ2011_Scotland.xlsx"
+#u = "http://www.scotlandscensus.gov.uk/documents/additional_tables/WU03BSC_IZ2011_Scotland.xlsx"
 dir.create("data-raw")
-download.file(u, "data-raw/WU03BSC_IZ2011_Scotland.xlsx")
-od_izo_header = readxl::read_excel("data-raw/WU03BSC_IZ2011_Scotland.xlsx")
+#download.file(u, "data-raw/WU03BSC_IZ2011_Scotland.xlsx")
+od_izo_header = readxl::read_excel("WU03BSC_IZ2011_Scotland.xlsx")
 # View(od_izo_header)
-od_izo = readxl::read_excel("data-raw/WU03BSC_IZ2011_Scotland.xlsx", sheet = 2, skip = 3)
+od_izo = readxl::read_excel("WU03BSC_IZ2011_Scotland.xlsx", sheet = 2, skip = 3)
 od_izo
 (od_izo_names = od_izo_header$`Scotland's Census 2011 - National Records of Scotland`[9:19])
 od_msoa = pct::get_od()
